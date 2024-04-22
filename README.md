@@ -1,6 +1,9 @@
 # ProjektWinfo
 ## Gruppe Gamma (Fall A)
 
+Trello:  
+https://trello.com/b/pp9FM3m6/projekt-winfo  
+
 Lastenheft:  
 https://moodle.w-hs.de/pluginfile.php/485234/mod_resource/content/3/20240411_Lastenheft_DVProjektWinfo_SS2024_Autovermietung.pdf  
 
