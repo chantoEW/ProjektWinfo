@@ -4,7 +4,7 @@ BPMN zur Autovermietung: https://academic.signavio.com/p/explorer#/directory/811
 
 # Rolleneinteilung
 
-Clown: @Joelk42
-Macher: @faschlag
-Zeitmanager: @maxwehning
-Koordinator: @chantoEW
+Clown: @Joelk42   
+Macher: @faschlag  
+Zeitmanager: @maxwehning  
+Koordinator: @chantoEW  
