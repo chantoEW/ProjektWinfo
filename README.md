@@ -1,6 +1,9 @@
 # ProjektWinfo
 ## Gruppe Gamma (Fall A)
 
+Zeiterfassung:  
+https://w-hs.sciebo.de/f/312592459  
+
 Trello:  
 https://trello.com/b/pp9FM3m6/projekt-winfo  
 
