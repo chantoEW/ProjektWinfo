@@ -1,7 +1,7 @@
 # ProjektWinfo
 ## Gruppe Gamma (Fall A)
 
-Fantt-Diagramm:  
+Gantt-Diagramm:  
 https://w-hs.sciebo.de/remote.php/webdav/Gantt-Diagramm_CRM.xlsx  
    
 Zeiterfassung:  
