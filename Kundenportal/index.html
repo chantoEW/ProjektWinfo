@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +18,7 @@
             padding: 20px;
             text-align: center;
         }
+
         nav {
             background-color: #555;
             color: #fff;
@@ -43,25 +45,96 @@
             bottom: 0;
             width: 100%;
         }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .input-field {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .modal {
+            display: none; /* Verstecke das Modal standardmäßig */
+            position: fixed; /* Positioniere es fest, um es über den Inhalt zu legen */
+            z-index: 1; /* Stelle sicher, dass es über dem Inhalt liegt */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Füge einen Scrollbalken hinzu, wenn der Inhalt zu groß ist */
+            background-color: rgba(0,0,0,0.4); /* Hintergrundfarbe mit Transparenz */
+            padding-top: 60px; /* Abstand vom oberen Rand */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* Zentriere das Modal vertikal und horizontal */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Setze die Breite des Modals */
+            border-radius: 5px;
+        }
+
+        /* Schließe das Modal, wenn der Benutzer auf das Schließen-Symbol klickt */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
+
 <body>
+
 <header>
     <h1>Willkommen im Kundenportal</h1>
 </header>
+
 <nav>
     <a href="#">Startseite</a>
-    <a href="#">Fahrzeugbuchung</a>
-    <a href="#">Meine Buchungen</a>
-    <a href="#">Profil</a>
-    <a href="#">Abmelden</a>
 </nav>
-<section>
-    <h2>Herzlich Willkommen zurück, [Kundenname]!</h2>
+
+<section id="mainContent">
+    <h2>Herzlich Willkommen bei der Autovermietung!</h2>
     <p>Hier können Sie Fahrzeuge buchen, Ihre aktuellen Buchungen einsehen und Ihr Profil verwalten.</p>
+    <input type="text" class="input-field" placeholder="Benutzername">
+    <br>
+    <input type="password" class="input-field" placeholder="Passwort">
+    <br>
+    <button class="button" onclick="window.location.href='#'">Anmelden</button>
+    <button onclick="window.location.href='registrierung.html'" class="button">Registrieren</button>
 </section>
+
 <footer>
     <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
 </footer>
+
+<script>
+
+</script>
+
 </body>
 </html>
