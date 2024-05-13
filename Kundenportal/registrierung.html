@@ -123,13 +123,13 @@
     <h2>Registrieren Sie sich für das Kundenportal</h2>
 </header>
 <section>
-    <form>
+    <form action="process_form.php" method="POST">
         <h2>Registrierungsformular</h2>
         <input type="text" class="input-field" placeholder="Benutzername">
         <br>
-        <input type="text" class="input-field" placeholder="Vorname">
+        <input name="vorname" id="vorname" type="text" class="input-field" placeholder="Vorname">
         <br>
-        <input type="text" class="input-field" placeholder="Nachname">
+        <input name="nachname" id="nachname" type="text" class="input-field" placeholder="Nachname">
         <br>
         <input type="password" class="input-field" placeholder="Passwort">
         <br>
@@ -137,68 +137,19 @@
         <br>
         <input type="email" class="input-field" placeholder="E-Mail-Adresse">
         <br>
-        <input type="date" class="input-field" placeholder="Geburtsdatum">
+        <input name="geburtsdatum" id="Gebursdatum" type="date" class="input-field" placeholder="Geburtsdatum">
         <br>
-        <input type="radio" class="input-field" name="kundentyp" value="Privatkunde"> Privatkunde
+        <input type="radio" class="input-field" id="privatkunde" name="kundentyp" value="Privatkunde">
+        <label for="privatkunde">Privatkunde</label>
         <br>
-        <input type="radio" class="input-field" name="kundentyp" value="Geschäftskunde"> Geschäftskunde
+        <input type="radio" class="input-field" id="geschaeftskunde" name="kundentyp" value="Geschäftskunde">
+        <label for="geschaeftskunde">Geschäftskunde</label>
         <br>
-        <button onclick=submitForm() class="button">Registrieren</button>
+        <button type="submit" class="button">Registrieren</button>
     </form>
 </section>
 <footer>
     <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
 </footer>
-
-<script>
-    function submitForm() {
-        // Formulardaten abrufen
-        var benutzername = document.getElementById('benutzername').value;
-        var vorname = document.getElementById('vorname').value;
-        var nachname = document.getElementById('nachname').value;
-        var passwort = document.getElementById('passwort').value;
-        var passwortWiederholen = document.getElementById('passwortWiederholen').value;
-        var email = document.getElementById('email').value;
-        var geburtsdatum = document.getElementById('geburtsdatum').value;
-        var privatkunde = document.getElementById('privatkunde').checked;
-        var geschaeftskunde = document.getElementById('geschaeftskunde').checked;
-
-        // Überprüfen, ob alle Felder ausgefüllt sind
-        if (benutzername && vorname && nachname && passwort && passwortWiederholen && email && geburtsdatum && (privatkunde || geschaeftskunde)) {
-            // Daten in JSON-Format konvertieren
-            var formData = {
-                Benutzername: benutzername,
-                Vorname: vorname,
-                Nachname: nachname,
-                Passwort: passwort,
-                PasswortWiederholen: passwortWiederholen,
-                Email: email,
-                Geburtsdatum: geburtsdatum,
-                Kundentyp: privatkunde ? 'Privatkunde' : 'Geschäftskunde'
-            };
-
-            // Daten in eine JSON-Datei schreiben (hier in der Konsole ausgegeben)
-            console.log(JSON.stringify(formData));
-
-            // Optional: Daten per AJAX an einen Server senden und in einer Datei speichern
-            // Hierzu benötigst du eine Serverseite, die die Daten entgegennimmt und in einer Datei speichert
-            // Beispiel für AJAX-Anfrage:
-            // $.ajax({
-            //     url: 'saveData.php',
-            //     type: 'POST',
-            //     data: formData,
-            //     success: function(response) {
-            //         console.log('Daten erfolgreich gespeichert');
-            //     },
-            //     error: function(xhr, status, error) {
-            //         console.error('Fehler beim Speichern der Daten');
-            //     }
-            // });
-        } else {
-            alert('Bitte füllen Sie alle Felder aus.');
-        }
-    }
-</script>
-
 </body>
 </html>
