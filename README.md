@@ -2,7 +2,7 @@
 ## Gruppe Gamma (Fall A)
 
 Gantt-Diagramm:  
-https://w-hs.sciebo.de/remote.php/webdav/Gantt-Diagramm_CRM.xlsx  
+[https://w-hs.sciebo.de/remote.php/webdav/Gantt-Diagramm_CRM.xlsx](https://w-hs.sciebo.de/remote.php/webdav/Workspace%20Prjekt%20Winfo/Gantt-Diagramm_CRM.xlsx)  
    
 Zeiterfassung:  
 https://w-hs.sciebo.de/f/312592459  
