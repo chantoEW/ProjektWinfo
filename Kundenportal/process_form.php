@@ -38,10 +38,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Hier kannst du entsprechende Aktionen basierend auf dem Kundentyp durchführen
         if ($kundentyp == 'Privatkunde') {
             // SQL-Query zum Einfügen der Daten in die entsprechende Tabelle
-            $sql = "INSERT INTO privatkunde (Benutzername, Vorname, Nachname, Passwort, eMail, Geburtsdatum) VALUES ('$benutzername', '$vorname', '$nachname', '$hashed_password', '$email', '$geburtsdatum')";
+            $sql = "INSERT INTO privatkunde (Benutzername, Vorname, Nachname, Passwort, eMail, Geburtsdatum, Kundentyp) VALUES ('$benutzername', '$vorname', '$nachname', '$hashed_password', '$email', '$geburtsdatum', '$kundentyp')";
         } elseif ($kundentyp == 'Geschäftskunde') {
             // SQL-Query zum Einfügen der Daten in die entsprechende Tabelle
-            $sql = "INSERT INTO geschäftskunde (Benutzername, Vorname, Nachname, Passwort, eMail, Geburtsdatum, Firma) VALUES ('$benutzername', '$vorname', '$nachname', '$hashed_password', '$email', '$geburtsdatum', '$firmenname')";
+            $sql = "INSERT INTO geschäftskunde (Benutzername, Vorname, Nachname, Passwort, eMail, Geburtsdatum, Firma, Kundentyp) VALUES ('$benutzername', '$vorname', '$nachname', '$hashed_password', '$email', '$geburtsdatum', '$firmenname', '$kundentyp')";
         } else {
             echo("Kundentyp ist ungültig");
         }
