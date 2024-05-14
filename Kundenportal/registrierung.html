@@ -30,6 +30,7 @@
             display: flex; /* Flexbox auf das Abschnitts-Element anwenden */
             justify-content: center; /* Zentriere den Inhalt horizontal */
             align-items: center; /* Zentriere den Inhalt vertikal */
+
         }
         nav {
             background-color: #555;
@@ -45,9 +46,7 @@
         nav a:hover {
             background-color: #777;
         }
-        section {
-            padding: 20px;
-        }
+
         footer {
             background-color: #333;
             color: #fff;
@@ -123,27 +122,32 @@
     <h2>Registrieren Sie sich für das Kundenportal</h2>
 </header>
 <section>
-    <form action="process_form.php" method="POST">
+    <form action="process_form.php" method="POST" id="registrierungsformular">
         <h2>Registrierungsformular</h2>
-        <input type="text" class="input-field" placeholder="Benutzername">
+        <input name="benutzername" type="text" class="input-field" placeholder="Benutzername">
         <br>
         <input name="vorname" id="vorname" type="text" class="input-field" placeholder="Vorname">
         <br>
         <input name="nachname" id="nachname" type="text" class="input-field" placeholder="Nachname">
         <br>
-        <input type="password" class="input-field" placeholder="Passwort">
+        <input name="passwort" type="password" class="input-field" placeholder="Passwort">
         <br>
-        <input type="password" class="input-field" placeholder="Passwort wiederholen">
+        <input name="passwort_wiederholen" type="password" class="input-field" placeholder="Passwort wiederholen">
         <br>
-        <input type="email" class="input-field" placeholder="E-Mail-Adresse">
+        <span id="passwort_fehlermeldung" style="color: red; display: none;">Die eingegebenen Passwörter stimmen nicht überein. Bitte überprüfen Sie Ihre Eingaben.</span>
+        <span id="passwort_uebereinstimmung" style="color: green; display: none;">Die Passwörter stimmen überein.</span>
+        <br>
+        <input name="email" type="email" class="input-field" placeholder="E-Mail-Adresse">
         <br>
         <input name="geburtsdatum" id="Gebursdatum" type="date" class="input-field" placeholder="Geburtsdatum">
         <br>
-        <input type="radio" class="input-field" id="privatkunde" name="kundentyp" value="Privatkunde">
+        <input type="radio" class="input-field" id="privatkunde" name="kundentyp" value="Privatkunde" checked>
         <label for="privatkunde">Privatkunde</label>
         <br>
-        <input type="radio" class="input-field" id="geschaeftskunde" name="kundentyp" value="Geschäftskunde">
+        <input type="radio" class="input-field" id="geschaeftskunde" name="kundentyp" value="Geschäftskunde" >
         <label for="geschaeftskunde">Geschäftskunde</label>
+        <br>
+        <input type="text" name="firmenname" id="firmenname" class="input-field" placeholder="Firmenname" style="display: none;">
         <br>
         <button type="submit" class="button">Registrieren</button>
     </form>
@@ -151,5 +155,47 @@
 <footer>
     <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
 </footer>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        var passwort = document.querySelector('input[name="passwort"]').value;
+        var passwortWiederholen = document.querySelector('input[name="passwort_wiederholen"]').value;
+
+        // Überprüfe, ob die Passwörter übereinstimmen
+        if (passwort !== passwortWiederholen) {
+            // Passwörter stimmen nicht überein, zeige die Fehlermeldung an
+            document.getElementById('passwort_fehlermeldung').style.display = 'inline';
+            document.getElementById('passwort_uebereinstimmung').style.display = 'none';
+            // Verhindere das Absenden des Formulars
+            event.preventDefault();
+        } else {
+            // Passwörter stimmen überein, zeige die positive Nachricht an
+            document.getElementById('passwort_fehlermeldung').style.display = 'none';
+            document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
+        }
+    });
+
+
+    document.querySelectorAll('input[name="kundentyp"]').forEach(function(radioButton) {
+        radioButton.addEventListener('change', function() {
+            if (this.value === 'Geschäftskunde') {
+                document.getElementById('firmenname').style.display = 'inline';
+            } else {
+                document.getElementById('firmenname').style.display = 'none';
+            }
+        });
+    });
+
+    document.getElementById('registrierungsformular').addEventListener('submit', function(event) {
+        var email = document.getElementById('email').value;
+        var emailRegex = /^[^\s@]+@[^\s@]+\.(?:com|de)$/;
+
+        if (!emailRegex.test(email)) {
+            alert('Bitte geben Sie eine gültige E-Mail-Adresse im Format "Text@Text.de" oder "Text@Text.com" ein.');
+            event.preventDefault(); // Verhindere das Absenden des Formulars
+        }
+    });
+</script>
+
 </body>
 </html>

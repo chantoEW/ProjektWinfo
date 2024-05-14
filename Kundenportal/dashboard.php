@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kundenportal Autovermietung</title>
+    <title>Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -112,38 +111,21 @@
         }
     </style>
 </head>
-
 <body>
-
-<header>
-    <h1>Willkommen im Kundenportal</h1>
-</header>
-
-<nav>
-    <a href="#">Startseite</a>
-</nav>
-
-<section id="mainContent">
-    <h2>Herzlich Willkommen bei der Autovermietung!</h2>
-    <p>Hier können Sie Fahrzeuge buchen, Ihre aktuellen Buchungen einsehen und Ihr Profil verwalten.</p>
-
-    <form action="login.php" method="POST">
-        <input type="text" name="benutzername" class="input-field" placeholder="Benutzername" required>
-        <br>
-        <input type="password" name="passwort" class="input-field" placeholder="Passwort" required>
-        <br>
-        <button type="submit" class="button">Anmelden</button>
-        <button onclick="window.location.href='registrierung.html'" class="button">Registrieren</button>
-    </form>
-</section>
-
-<footer>
-    <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
-</footer>
-
-<script>
-    console.log("Anmeldung gestartet");
-</script>
-
+<h1>Willkommen im Dashboard!</h1>
+<?php
+// Überprüfen, ob der Benutzer angemeldet ist
+session_start();
+if (isset($_SESSION['benutzername'])) {
+    $benutzername = $_SESSION['benutzername'];
+    echo "<p>Eingeloggt als: $benutzername</p>";
+    // Hier kannst du weitere Inhalte für das Dashboard hinzufügen
+} else {
+    // Benutzer ist nicht angemeldet, Weiterleitung zur Anmeldeseite
+    header("Location: login.php");
+    exit();
+}
+?>
+<a href="logout.php">Abmelden</a>
 </body>
 </html>
