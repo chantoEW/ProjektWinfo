@@ -16,10 +16,8 @@
             background-attachment: fixed; /* Hintergrundbild fixieren */
             background-color: rgba(244, 244, 244, 0.2); /* Transparente Hintergrundfarbe */
             color: #333;
-           
+            
         }
-
-
 
         header {
             background-color: #333;
@@ -135,12 +133,15 @@
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+           
         }
 
         .content {
             padding: 20px;
             border-bottom: 1px solid #ccc;
         }
+
+        
     </style>
 </head>
 
@@ -166,17 +167,32 @@
         <a href="#" class="link" onclick="switchTab('grunddaten')">Grunddaten</a>
         <a href="#" class="link" onclick="switchTab('kontaktdaten')">Kontaktdaten</a>
         <a href="#" class="link" onclick="switchTab('zahlungsdaten')">Zahlungsdaten</a>
+        <a href="#" class="link" onclick="switchTab('kennzahlen')">Kennzahlen</a>
     </nav>
     <div id="grunddaten" class="content">
         <div class="input-title">Grunddaten</div>
+        
+        <!-- Radiobuttons für Privat und Geschäftskunde -->
+        <label>
+            <input type="radio" name="kundentyp" value="privat" onclick="toggleFirmaFeld()" checked> Privat
+        </label>
+        <label>
+            <input type="radio" name="kundentyp" value="geschaeft" onclick="toggleFirmaFeld()"> Geschäftskunde
+        </label>
+        <br><br>
+        
         <label for="name">Name:</label><br>
         <input type="text" class="input-field" id="name" disabled><br>
         <label for="vorname">Vorname:</label><br>
         <input type="text" class="input-field" id="vorname" disabled><br>
         <label for="geburtsdatum">Geburtsdatum:</label><br>
         <input type="text" class="input-field" id="geburtsdatum" disabled><br>
-        <label for="firma">Firma:</label><br>
-        <input type="text" class="input-field" id="firma" disabled><br>
+        
+        <!-- Feld Firma, das ein-/ausgeblendet wird -->
+        <div id="firmaContainer" style="display: none;">
+            <label for="firma">Firma:</label><br>
+            <input type="text" class="input-field" id="firma" disabled><br>
+        </div>
     </div>
     <div id="kontaktdaten" class="content" style="display:none;">
         <div class="input-title">Kontaktdaten</div>
@@ -202,8 +218,14 @@
         <label for="inhaber">Inhaber:</label><br>
         <input type="text" class="input-field" id="inhaber" disabled><br>
     </div>
+    <div id="kennzahlen" class="content" style="display:none;">
+        <div class="input-title">Kennzahlen</div>
+        <label for="bonitaetsklasse">Bonitätsklasse:</label><br>
+        <input type="text" class="input-field" id="bonitaetsklasse" disabled><br>
+        <label for="abc_klassifikation">ABC-Klassifikation:</label><br>
+        <input type="text" class="input-field" id="abc_klassifikation" disabled><br>
+    </div>
 </section>
-
 
 <footer>
     <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
@@ -253,6 +275,17 @@
             pageTitle.innerText = "Kunde anzeigen";
         } else {
             pageTitle.innerText = "Kunde ändern";
+        }
+    }
+
+    // Funktion zum Ein-/Ausblenden des Firmenfeldes
+    function toggleFirmaFeld() {
+        var firmaContainer = document.getElementById("firmaContainer");
+        var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
+        if (kundentyp === "geschaeft") {
+            firmaContainer.style.display = "block";
+        } else {
+            firmaContainer.style.display = "none";
         }
     }
 
