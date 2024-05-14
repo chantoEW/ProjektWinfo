@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM-System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('hintergrundbild.jpg'); /* Hintergrundbild einfügen */
+            background-size: cover; /* Bildgröße anpassen */
+            background-repeat: no-repeat; /* Wiederholung des Bildes verhindern */
+            background-attachment: fixed; /* Hintergrundbild fixieren */
+            background-color: rgba(244, 244, 244, 0.2); /* Transparente Hintergrundfarbe */
+            color: #333;
+           
+        }
+
+
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #555;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav .link-container {
+            display: flex;
+            justify-content: baseline;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+        }
+
+        nav a:hover {
+            background-color: #777;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .link {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+        }
+
+        .link:hover {
+            background-color: #777;
+        }
+
+        .input-field {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: calc(100% - 22px); /* Adjusted width for better spacing */
+            box-sizing: border-box;
+        }
+
+        .input-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em; /* Increased font size for emphasis */
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 5px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1 id="pageTitle">Kunde anzeigen</h1>
+</header>
+
+<nav>
+    <div class="link-container">
+        <a href="#" class="link">Zurück</a>
+        <a href="#" class="link" onclick="toggleBearbeitungsmodus(); toggleTitel()">Daten ändern</a>
+        <a href="#" class="link" onclick="speichereDaten()" id="speichernLink" style="display: none;">Daten speichern</a>
+        <div id="kundenIdDiv">
+            Kunden-ID: <span id="kundenIdSpan"></span>
+        </div>
+    </div>
+</nav>
+
+<section id="mainContent" class="container">
+    <nav>
+        <a href="#" class="link" onclick="switchTab('grunddaten')">Grunddaten</a>
+        <a href="#" class="link" onclick="switchTab('kontaktdaten')">Kontaktdaten</a>
+        <a href="#" class="link" onclick="switchTab('zahlungsdaten')">Zahlungsdaten</a>
+    </nav>
+    <div id="grunddaten" class="content">
+        <div class="input-title">Grunddaten</div>
+        <label for="name">Name:</label><br>
+        <input type="text" class="input-field" id="name" disabled><br>
+        <label for="vorname">Vorname:</label><br>
+        <input type="text" class="input-field" id="vorname" disabled><br>
+        <label for="geburtsdatum">Geburtsdatum:</label><br>
+        <input type="text" class="input-field" id="geburtsdatum" disabled><br>
+        <label for="firma">Firma:</label><br>
+        <input type="text" class="input-field" id="firma" disabled><br>
+    </div>
+    <div id="kontaktdaten" class="content" style="display:none;">
+        <div class="input-title">Kontaktdaten</div>
+        <label for="strasse">Straße:</label><br>
+        <input type="text" class="input-field" id="strasse" disabled><br>
+        <label for="ort">Ort:</label><br>
+        <input type="text" class="input-field" id="ort" disabled><br>
+        <label for="postleitzahl">Postleitzahl:</label><br>
+        <input type="text" class="input-field" id="postleitzahl" disabled><br>
+        <label for="telefonnummer">Telefonnummer:</label><br>
+        <input type="text" class="input-field" id="telefonnummer" disabled><br>
+        <label for="mailadresse">Mailadresse:</label><br>
+        <input type="text" class="input-field" id="mailadresse" disabled><br>
+    </div>
+    <div id="zahlungsdaten" class="content" style="display:none;">
+        <div class="input-title">Zahlungsdaten</div>
+        <label for="blz">BLZ:</label><br>
+        <input type="text" class="input-field" id="blz" disabled><br>
+        <label for="institut">Institut:</label><br>
+        <input type="text" class="input-field" id="institut" disabled><br>
+        <label for="iban">IBAN:</label><br>
+        <input type="text" class="input-field" id="iban" disabled><br>
+        <label for="inhaber">Inhaber:</label><br>
+        <input type="text" class="input-field" id="inhaber" disabled><br>
+    </div>
+</section>
+
+
+<footer>
+    <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
+</footer>
+
+<script>
+    // Funktion zum Anzeigen der Kunden-ID
+    function anzeigenKundenId(kundenId) {
+        document.getElementById("kundenIdSpan").innerText = kundenId;
+    }
+
+    // Funktion zum Wechseln zwischen den verschiedenen Datenkategorien
+    function switchTab(tabName) {
+        var tabs = document.querySelectorAll('#mainContent > div');
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].style.display = "none";
+        }
+        document.getElementById(tabName).style.display = "block";
+    }
+
+    // Funktion zum Wechseln zwischen dem Anzeigen- und dem Ändern-Modus
+    function toggleBearbeitungsmodus() {
+        var inputs = document.querySelectorAll('#mainContent input');
+        var speichernLink = document.getElementById("speichernLink");
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].disabled = !inputs[i].disabled;
+        }
+        if (speichernLink.style.display === "none") {
+            speichernLink.style.display = "block";
+        } else {
+            speichernLink.style.display = "none";
+        }
+    }
+
+    // Funktion zum Speichern der Daten
+    function speichereDaten() {
+        // Hier könnten die Daten gespeichert werden
+        alert("Daten wurden gespeichert!");
+        // Nach dem Speichern können wir wieder in den Anzeigen-Modus wechseln
+        toggleBearbeitungsmodus();
+    }
+
+    // Funktion zum Wechseln des Titels
+    function toggleTitel() {
+        var pageTitle = document.getElementById("pageTitle");
+        if (pageTitle.innerText === "Kunde ändern") {
+            pageTitle.innerText = "Kunde anzeigen";
+        } else {
+            pageTitle.innerText = "Kunde ändern";
+        }
+    }
+
+    // Rufe die Funktion zum Anzeigen der Kunden-ID auf
+    anzeigenKundenId("123456789");
+</script>
+
+</body>
+
+</html>
