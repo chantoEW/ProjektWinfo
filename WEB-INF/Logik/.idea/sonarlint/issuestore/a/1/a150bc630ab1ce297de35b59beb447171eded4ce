@@ -1,15 +1,0 @@
-
-0
-java:S1220""Move this file to a named package.
-j
-java:S2095("HUse try-with-resources or close this "Connection" in a "finally" clause.(é«¦Òüÿÿÿÿ8ÍÁõ1
-l
-java:S2095,"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(ù¦Üé8ÍÁõ1
-W
-java:S1161":Add the "@Override" annotation above this method signature(‹¨¯¿8†¶Æ÷1
-u
-java:S1989"SHandle the following exception that could be thrown by "sendRedirect": IOException.(ÀË™Ïıÿÿÿÿ8¶Æ÷1
-u
-java:S1989 "SHandle the following exception that could be thrown by "sendRedirect": IOException.(©æ »şÿÿÿÿ8¡¶Æ÷1
-X
-java:S6437("6Revoke and change this password, as it is compromised.(é«¦Òüÿÿÿÿ8ŒÎÁõ1
