@@ -9,53 +9,76 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column; /* Der Body-Inhalt wird in einer vertikalen Spalte angezeigt */
-            align-items: center; /* Zentriere den Inhalt horizontal */
+            background-image: url('hintergrundbild.jpg'); /* Hintergrundbild einfügen */
+            background-size: cover; /* Bildgröße anpassen */
+            background-repeat: no-repeat; /* Wiederholung des Bildes verhindern */
+            background-attachment: fixed; /* Hintergrundbild fixieren */
+            background-color: rgba(244, 244, 244, 0.2); /* Transparente Hintergrundfarbe */
+            color: #333;
+
         }
+
         header {
             background-color: #333;
             color: #fff;
-            padding: 5px;
-            text-align: center;
-            position: page; /* Fixiere den Header oben auf der Seite */
-            width: 100%; /* Setze die Breite auf 100% der Bildschirmbreite */
-         }
-        /* Stelle sicher, dass der Inhalt unterhalb des Headers angezeigt wird */
-        section {
             padding: 20px;
-            width: 90%; /* Setze die Breite des Abschnitts */
-            margin-top: 5px; /* Setze den oberen Abstand, um Platz für den Header zu schaffen */
-            display: flex; /* Flexbox auf das Abschnitts-Element anwenden */
-            justify-content: center; /* Zentriere den Inhalt horizontal */
-            align-items: center; /* Zentriere den Inhalt vertikal */
-
+            text-align: center;
         }
+
         nav {
             background-color: #555;
             color: #fff;
             padding: 10px;
             text-align: center;
         }
+
+        nav .link-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         nav a {
             color: #fff;
             text-decoration: none;
             padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #555; /* Standard-Hintergrundfarbe für Tabs */
         }
+
+        nav a.selected {
+            background-color: #ccc; /* Hintergrundfarbe für ausgewählten Tab */
+        }
+
         nav a:hover {
             background-color: #777;
+        }
+
+        section {
+            padding: 20px;
         }
 
         footer {
             background-color: #333;
             color: #fff;
-            padding: 5px;
+            padding: 10px;
             text-align: center;
-            position: fixed;
-            bottom: 0;
+            position: relative; /* Geändert zu 'relative' */
             width: 100%;
+            clear: both; /* Hinzugefügt */
         }
+
+        .link {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+        }
+
+        .link:hover {
+            background-color: #777;
+        }
+
         .button {
             display: inline-block;
             background-color: #4CAF50;
@@ -70,38 +93,48 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
         .button:hover {
             background-color: #45a049;
         }
+
         .input-field {
             padding: 10px;
-            margin: 5px;
+            margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
+            width: calc(100% - 22px); /* Adjusted width for better spacing */
+            box-sizing: border-box;
         }
+
+        .input-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em; /* Increased font size for emphasis */
+        }
+
         .modal {
-            display: none; /* Verstecke das Modal standardmäßig */
-            position: fixed; /* Positioniere es fest, um es über den Inhalt zu legen */
-            z-index: 1; /* Stelle sicher, dass es über dem Inhalt liegt */
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto; /* Füge einen Scrollbalken hinzu, wenn der Inhalt zu groß ist */
-            background-color: rgba(0,0,0,0.4); /* Hintergrundfarbe mit Transparenz */
-            padding-top: 60px; /* Abstand vom oberen Rand */
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 5% auto; /* Zentriere das Modal vertikal und horizontal */
+            margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; /* Setze die Breite des Modals */
+            width: 80%;
             border-radius: 5px;
         }
 
-        /* Schließe das Modal, wenn der Benutzer auf das Schließen-Symbol klickt */
         .close {
             color: #aaa;
             float: right;
@@ -115,86 +148,223 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
 <header>
     <h2>Registrieren Sie sich für das Kundenportal</h2>
 </header>
-<section>
-    <form action="process_form.php" method="POST" id="registrierungsformular">
-        <h2>Registrierungsformular</h2>
-        <input name="benutzername" type="text" class="input-field" placeholder="Benutzername">
-        <br>
-        <input name="vorname" id="vorname" type="text" class="input-field" placeholder="Vorname">
-        <br>
-        <input name="nachname" id="nachname" type="text" class="input-field" placeholder="Nachname">
-        <br>
-        <input name="passwort" type="password" class="input-field" placeholder="Passwort">
-        <br>
-        <input name="passwort_wiederholen" type="password" class="input-field" placeholder="Passwort wiederholen">
-        <br>
+
+<nav>
+    <div class="link-container">
+        <a href="index.html" class="link">Startseite</a>
+        <!--<a href="#" class="link" onclick="toggleBearbeitungsmodus(); toggleTitel()">Daten ändern</a>-->
+    </div>
+</nav>
+
+<form action="process_form.php" method="POST" id="registrierungsformular">
+<section id="mainContent" class="container">
+    <nav>
+        <a href="#" class="link" onclick="switchTab('benutzerdaten')">Benutzerdaten</a>
+        <a href="#" class="link" onclick="switchTab('kontaktdaten')">Kontaktdaten</a>
+        <a href="#" class="link" onclick="switchTab('zahlungsdaten')">Zahlungsdaten</a>
+    </nav>
+
+    <div id="benutzerdaten" class="content">
+        <div class="input-title">Benutzerdaten</div>
+
+        <label style="display: inline-block;">
+            <input onclick="toggleFirmaFeld()" type="radio" class="input-field" id="privatkunde" name="kundentyp" value="Privatkunde" checked> Privatkunde
+        </label>
+        <label style="display: inline-block;">
+            <input onclick="toggleFirmaFeld()" type="radio" class="input-field" id="geschaeftskunde" name="kundentyp" value="Geschäftskunde"> Geschäftskunde
+        </label>
+        <br> <br>
+
+        <label for="benutzername">Benutzername</label><br>
+        <input id="benutzername" name="benutzername" type="text" class="input-field" required><br>
+
+        <label for="nachname">Nachname</label><br>
+        <input name="nachname" id="nachname" type="text" class="input-field" required><br>
+
+        <label for="vorname">Vorname</label><br>
+        <input name="vorname" id="vorname" type="text" class="input-field" required><br>
+
+        <label for="geburtsdatum">Geburtsdatum</label><br>
+        <input name="geburtsdatum" id="geburtsdatum" type="date" class="input-field" required><br>
+
+        <label for="passwort">Passwort</label><br>
+        <input id="passwort" name="passwort" type="password" class="input-field" required><br>
+
+        <label for="passwort_wiederholen">Passwort wiederholen</label><br>
+        <input id="passwort_wiederholen" name="passwort_wiederholen" type="password" class="input-field" required><br>
+
         <span id="passwort_fehlermeldung" style="color: red; display: none;">Die eingegebenen Passwörter stimmen nicht überein. Bitte überprüfen Sie Ihre Eingaben.</span>
-        <span id="passwort_uebereinstimmung" style="color: green; display: none;">Die Passwörter stimmen überein.</span>
-        <br>
-        <input name="email" type="email" class="input-field" placeholder="E-Mail-Adresse">
-        <br>
-        <input name="geburtsdatum" id="Gebursdatum" type="date" class="input-field" placeholder="Geburtsdatum">
-        <br>
-        <input type="radio" class="input-field" id="privatkunde" name="kundentyp" value="Privatkunde" checked>
-        <label for="privatkunde">Privatkunde</label>
-        <br>
-        <input type="radio" class="input-field" id="geschaeftskunde" name="kundentyp" value="Geschäftskunde" >
-        <label for="geschaeftskunde">Geschäftskunde</label>
-        <br>
-        <input type="text" name="firmenname" id="firmenname" class="input-field" placeholder="Firmenname" style="display: none;">
-        <br>
-        <button type="submit" class="button">Registrieren</button>
-    </form>
+        <span id="passwort_uebereinstimmung"
+              style="color: green; display: none;">Die Passwörter stimmen überein.</span>
+
+        <div id="firmaContainer" style="display: none;">
+            <label for="firmenname">Firma: </label>
+            <input type="text" name="firmenname" id="firmenname" class="input-field">
+        </div>
+
+    </div>
+
+    <div id="kontaktdaten" class="content" style="display:none;">
+        <div class="input-title">Kontaktdaten</div>
+
+        <label for="strasse">Straße und Hausnummer:</label><br>
+        <input type="text" class="input-field" id="strasse" required><br>
+
+        <label for="ort">Ort:</label><br>
+        <input type="text" class="input-field" id="ort" required><br>
+
+        <label for="postleitzahl">Postleitzahl:</label><br>
+        <input type="text" class="input-field" id="postleitzahl" required><br>
+
+        <label for="telefonnummer">Telefonnummer:</label><br>
+        <input type="text" class="input-field" id="telefonnummer" required><br>
+
+        <label for="email">E-Mail:</label><br>
+        <input id="email" name="email" type="email" class="input-field" required><br>
+
+    </div>
+
+    <div id="zahlungsdaten" class="content" style="display:none;">
+        <div class="input-title">Zahlungsdaten</div>
+
+        <label for="blz">BLZ:</label><br>
+        <input type="text" class="input-field" id="blz" required><br>
+
+        <label for="institut">Institut:</label><br>
+        <input type="text" class="input-field" id="institut" required><br>
+
+        <label for="iban">IBAN:</label><br>
+        <input type="text" class="input-field" id="iban" required><br>
+
+        <label for="inhaber">Inhaber:</label><br>
+        <input type="text" class="input-field" id="inhaber" required><br>
+
+        <button type="button" class="button" onclick="validiereFormular()">Registrieren</button>
+    </div>
 </section>
+</form>
+
 <footer>
     <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
 </footer>
 
 <script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-        var passwort = document.querySelector('input[name="passwort"]').value;
-        var passwortWiederholen = document.querySelector('input[name="passwort_wiederholen"]').value;
+    document.addEventListener("DOMContentLoaded", function() {
+        // Rufe die toggleFirmaFeld Funktion auf, um den Initialzustand des Formulars festzulegen
+        toggleFirmaFeld();
+    });
 
-        // Überprüfe, ob die Passwörter übereinstimmen
+    function validiereFormular() {
+        var passwort = document.getElementById('passwort').value;
+        var passwortWiederholen = document.getElementById('passwort_wiederholen').value;
+        var email = document.getElementById('email').value;
+        var firmaContainer = document.getElementById('firmaContainer');
+
+        var error = false;
+
         if (passwort !== passwortWiederholen) {
-            // Passwörter stimmen nicht überein, zeige die Fehlermeldung an
             document.getElementById('passwort_fehlermeldung').style.display = 'inline';
             document.getElementById('passwort_uebereinstimmung').style.display = 'none';
-            // Verhindere das Absenden des Formulars
-            event.preventDefault();
+            error = true;
         } else {
-            // Passwörter stimmen überein, zeige die positive Nachricht an
             document.getElementById('passwort_fehlermeldung').style.display = 'none';
             document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
         }
-    });
 
-
-    document.querySelectorAll('input[name="kundentyp"]').forEach(function(radioButton) {
-        radioButton.addEventListener('change', function() {
-            if (this.value === 'Geschäftskunde') {
-                document.getElementById('firmenname').style.display = 'inline';
-            } else {
-                document.getElementById('firmenname').style.display = 'none';
-            }
-        });
-    });
-
-    document.getElementById('registrierungsformular').addEventListener('submit', function(event) {
-        var email = document.getElementById('email').value;
         var emailRegex = /^[^\s@]+@[^\s@]+\.(?:com|de)$/;
-
         if (!emailRegex.test(email)) {
             alert('Bitte geben Sie eine gültige E-Mail-Adresse im Format "Text@Text.de" oder "Text@Text.com" ein.');
-            event.preventDefault(); // Verhindere das Absenden des Formulars
+            error = true;
         }
-    });
+
+        var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
+        if (kundentyp === "Geschäftskunde" && firmaContainer.style.display === "none") {
+            alert('Bitte geben Sie den Firmennamen ein.');
+            error = true;
+        }
+
+        markiereFehlendeFelder(); // Alle Felder markieren, die leer sind
+
+        if (!error) {
+            document.getElementById("registrierungsformular").submit(); // Formular absenden, wenn keine Fehler vorhanden sind
+        }
+    }
+
+    function markiereFehlendeFelder() {
+        var inputFields = document.querySelectorAll('.input-field[required]');
+        inputFields.forEach(function(field) {
+            if (!field.value) {
+                field.style.border = '1px solid red';
+            } else {
+                field.style.border = '1px solid #ccc';
+            }
+        });
+    }
+
+    // Funktion zum Wechseln zwischen den verschiedenen Datenkategorien
+    function switchTab(tabName) {
+        var tabs = document.querySelectorAll('#mainContent > div');
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].style.display = "none";
+        }
+        document.getElementById(tabName).style.display = "block";
+    }
+
+    // Funktion zum Wechseln zwischen dem Anzeigen- und dem Ändern-Modus
+    function toggleBearbeitungsmodus() {
+        var inputs = document.querySelectorAll('#mainContent input');
+        var speichernLink = document.getElementById("speichernLink");
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].disabled = !inputs[i].disabled;
+        }
+        if (speichernLink.style.display === "none") {
+            speichernLink.style.display = "block";
+        } else {
+            speichernLink.style.display = "none";
+        }
+    }
+
+    // Funktion zum Wechseln des Titels
+    function toggleTitel() {
+        var pageTitle = document.getElementById("pageTitle");
+        if (pageTitle.innerText === "Kunde ändern") {
+            pageTitle.innerText = "Kunde anzeigen";
+        } else {
+            pageTitle.innerText = "Kunde ändern";
+        }
+    }
+
+    // Funktion zum Ein-/Ausblenden des Firmenfeldes
+    function toggleFirmaFeld() {
+        var firmaContainer = document.getElementById("firmaContainer");
+        var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
+        if (kundentyp === "Geschäftskunde") {
+            firmaContainer.style.display = "block";
+        } else {
+            firmaContainer.style.display = "none";
+        }
+    }
+
 </script>
 
 </body>

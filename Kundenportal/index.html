@@ -10,8 +10,15 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-image: url('hintergrundbild.jpg'); /* Hintergrundbild einfügen */
+            background-size: cover; /* Bildgröße anpassen */
+            background-repeat: no-repeat; /* Wiederholung des Bildes verhindern */
+            background-attachment: fixed; /* Hintergrundbild fixieren */
+            background-color: rgba(244, 244, 244, 0.2); /* Transparente Hintergrundfarbe */
+            color: #333;
+
         }
+
         header {
             background-color: #333;
             color: #fff;
@@ -25,21 +32,26 @@
             padding: 10px;
             text-align: center;
         }
+
+        nav .link-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         nav a {
             color: #fff;
             text-decoration: none;
             padding: 10px 20px;
+            margin: 0 10px;
         }
+
         nav a:hover {
             background-color: #777;
         }
+
         section {
-            padding: 140px;
-            position: relative; /* Setze Position auf relativ für die Verwendung von Hintergrundbild */
-            background-image: url('Auto_.jpg'); /* Pfad zum Hintergrundbild */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            padding: 20px;
         }
 
         footer {
@@ -51,6 +63,18 @@
             bottom: 0;
             width: 100%;
         }
+
+        .link {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+        }
+
+        .link:hover {
+            background-color: #777;
+        }
+
         .button {
             display: inline-block;
             background-color: #4CAF50;
@@ -59,6 +83,7 @@
             padding: 10px 20px;
             text-align: center;
             text-decoration: none;
+            display: inline-block;
             font-size: 16px;
             margin: 4px 2px;
             cursor: pointer;
@@ -67,35 +92,44 @@
         .button:hover {
             background-color: #45a049;
         }
+
         .input-field {
             padding: 10px;
-            margin: 5px;
+            margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
+            width: calc(100% - 22px); /* Adjusted width for better spacing */
+            box-sizing: border-box;
         }
+
+        .input-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em; /* Increased font size for emphasis */
+        }
+
         .modal {
-            display: none; /* Verstecke das Modal standardmäßig */
-            position: fixed; /* Positioniere es fest, um es über den Inhalt zu legen */
-            z-index: 1; /* Stelle sicher, dass es über dem Inhalt liegt */
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto; /* Füge einen Scrollbalken hinzu, wenn der Inhalt zu groß ist */
-            background-color: rgba(0,0,0,0.4); /* Hintergrundfarbe mit Transparenz */
-            padding-top: 60px; /* Abstand vom oberen Rand */
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 5% auto; /* Zentriere das Modal vertikal und horizontal */
+            margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; /* Setze die Breite des Modals */
+            width: 80%;
             border-radius: 5px;
         }
 
-        /* Schließe das Modal, wenn der Benutzer auf das Schließen-Symbol klickt */
         .close {
             color: #aaa;
             float: right;
@@ -109,20 +143,36 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+
     </style>
 </head>
 
 <body>
 
 <header>
-    <h1>Willkommen im Kundenportal</h1>
+    <h1 id="pageTitle">Willkommen im Kundenportal</h1>
 </header>
 
 <nav>
-    <a href="#">Startseite</a>
 </nav>
 
-<section id="mainContent">
+<section id="mainContent" class="container">
+    <div class="content">
     <h2>Herzlich Willkommen bei der Autovermietung!</h2>
     <p>Hier können Sie Fahrzeuge buchen, Ihre aktuellen Buchungen einsehen und Ihr Profil verwalten.</p>
 
@@ -134,6 +184,7 @@
         <button type="submit" class="button">Anmelden</button>
         <button onclick="window.location.href='registrierung.html'" class="button">Registrieren</button>
     </form>
+    </div>
 </section>
 
 <footer>
