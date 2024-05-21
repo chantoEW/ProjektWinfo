@@ -36,9 +36,9 @@ try {
 
 // Verbindung zur Datenbank herstellen
 //$servername = "localhost";
-//$username = "username";
-//$password = "password";
-//$dbname = "crm_database";
+//$username = "projektwinfo";
+//$password = "projektwinfo";
+//$dbname = "portal";
 
 //$conn = new mysqli($servername, $username, $password, $dbname);
 //if ($conn->connect_error) {
@@ -49,7 +49,7 @@ try {
 //$currentDate = date("Y-m-d");
 
 // Datenbankabfrage, um Kunden mit Geburtstag heute zu finden
-//$sql = "SELECT * FROM customers WHERE DATE_FORMAT(birthday, '%m-%d') = DATE_FORMAT('$currentDate', '%m-%d')";
+//$sql = "SELECT a.Vorname, a.Name, b.KontaktID FROM privatkunde as a, kontaktdaten as b WHERE (a.KontaktID = b.KontaktID) AND (DATE_FORMAT(a.GebDatum, '%m-%d') = DATE_FORMAT('$currentDate', '%m-%d'))";
 //$result = $conn->query($sql);
 
 //if ($result->num_rows > 0) {
