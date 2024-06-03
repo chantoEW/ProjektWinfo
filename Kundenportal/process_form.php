@@ -59,10 +59,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $ZahlungsID = mysqli_insert_id($conn);
                             $sql = "UPDATE privatkunde SET KontaktID='$KontaktID', ZahlungsID='$ZahlungsID' WHERE PKundenID='$PKundenID'";
                             if (mysqli_query($conn, $sql)) {
-                                echo "Daten erfolgreich in die Datenbank eingefügt.";
+                                $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
+                                if (mysqli_query($conn, $sql)) {
+                                    echo "Daten erfolgreich in die Datenbank eingefügt.";
+                                } else {
+                                    echo "Fehler beim Einfügen der Log-In-Daten: " . mysqli_error($conn);
+                                }
                             } else {
-                                echo "Fehler beim Aktualisieren der Privatkunden-Daten: " . mysqli_error($conn);
-                            }
+                            echo "Fehler beim Aktualisieren der Privatkunden-Daten: " . mysqli_error($conn);
+                        }
                         } else {
                             echo "Fehler beim Einfügen der Zahlungsinformationen: " . mysqli_error($conn);
                         }
@@ -84,14 +89,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         echo("Kundentyp nicht ausgewählt");
-    }
-
-
-// SQL-Query ausführen
-    if (mysqli_query($conn, $sql)) {
-        echo "Daten erfolgreich in die Tabelle eingefügt.";
-    } else {
-        echo "Fehler beim Einfügen der Daten: " . mysqli_error($conn);
     }
 
 // Verbindung schließen
