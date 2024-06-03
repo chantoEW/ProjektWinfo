@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $passwort = $_POST['passwort']; // umbenannt in $passwort
 
     // Überprüfen, ob der Benutzer in der Datenbank existiert
-    $sql = "SELECT Benutzername, Passwort FROM firmenkunde WHERE Benutzername = '$benutzername' UNION ALL SELECT Benutzername, Passwort FROM privatkunde WHERE Benutzername = '$benutzername'";
+    $sql = "SELECT Benutzername, Passwort FROM user WHERE Benutzername = '$benutzername'";
     $result = $conn->query($sql);
 
     if ($result->num_rows == 1) {
