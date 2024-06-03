@@ -1,0 +1,165 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('hintergrundbild.jpg'); /* Hintergrundbild einfügen */
+    background-size: cover; /* Bildgröße anpassen */
+    background-repeat: no-repeat; /* Wiederholung des Bildes verhindern */
+    background-attachment: fixed; /* Hintergrundbild fixieren */
+    background-color: rgba(244, 244, 244, 0.2); /* Transparente Hintergrundfarbe */
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+nav .link-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #555; /* Standard-Hintergrundfarbe für Tabs */
+}
+
+nav a.selected {
+    background-color: #ccc; /* Hintergrundfarbe für ausgewählten Tab */
+}
+
+nav a:hover {
+    background-color: #777;
+}
+
+section {
+    padding: 20px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    position: relative; /* Geändert zu 'relative' */
+    width: 100%;
+    clear: both; /* Hinzugefügt */
+}
+
+.link {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+}
+
+.link:hover {
+    background-color: #777;
+}
+
+.button {
+    display: inline-block;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+.input-field {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: calc(100% - 22px); /* Adjusted width for better spacing */
+    box-sizing: border-box;
+}
+
+.input-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.1em; /* Increased font size for emphasis */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.error-input {
+    border: 1px solid red;
+}

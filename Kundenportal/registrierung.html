@@ -4,165 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrierung - Kundenportal Autovermietung</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url('hintergrundbild.jpg'); /* Hintergrundbild einfügen */
-            background-size: cover; /* Bildgröße anpassen */
-            background-repeat: no-repeat; /* Wiederholung des Bildes verhindern */
-            background-attachment: fixed; /* Hintergrundbild fixieren */
-            background-color: rgba(244, 244, 244, 0.2); /* Transparente Hintergrundfarbe */
-            color: #333;
-
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-
-        nav {
-            background-color: #555;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav .link-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-            background-color: #555; /* Standard-Hintergrundfarbe für Tabs */
-        }
-
-        nav a.selected {
-            background-color: #ccc; /* Hintergrundfarbe für ausgewählten Tab */
-        }
-
-        nav a:hover {
-            background-color: #777;
-        }
-
-        section {
-            padding: 20px;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            position: relative; /* Geändert zu 'relative' */
-            width: 100%;
-            clear: both; /* Hinzugefügt */
-        }
-
-        .link {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-        }
-
-        .link:hover {
-            background-color: #777;
-        }
-
-        .button {
-            display: inline-block;
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .button:hover {
-            background-color: #45a049;
-        }
-
-        .input-field {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: calc(100% - 22px); /* Adjusted width for better spacing */
-            box-sizing: border-box;
-        }
-
-        .input-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.1em; /* Increased font size for emphasis */
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            border-radius: 5px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .content {
-            padding: 20px;
-            border-bottom: 1px solid #ccc;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
@@ -222,6 +64,7 @@
             <input type="text" name="firmenname" id="firmenname" class="input-field">
         </div>
 
+        <button type="button" class="button" onclick="switchTab('kontaktdaten')">Weiter</button>
     </div>
 
     <div id="kontaktdaten" class="content" style="display:none;">
@@ -242,6 +85,8 @@
         <label for="email">E-Mail:</label><br>
         <input id="email" name="email" type="email" class="input-field" required><br>
 
+        <button type="button" class="button" onclick="switchTab('benutzerdaten')">Zurück</button>
+        <button type="button" class="button" onclick="switchTab('zahlungsdaten')">Weiter</button>
     </div>
 
     <div id="zahlungsdaten" class="content" style="display:none;">
@@ -259,6 +104,7 @@
         <label for="inhaber">Inhaber:</label><br>
         <input name="inhaber" type="text" class="input-field" id="inhaber" required><br>
 
+        <button type="button" class="button" onclick="switchTab('kontaktdaten')">Zurück</button>
         <button type="button" class="button" onclick="validiereFormular()">Registrieren</button>
     </div>
 </section>
@@ -268,104 +114,7 @@
     <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
 </footer>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Rufe die toggleFirmaFeld Funktion auf, um den Initialzustand des Formulars festzulegen
-        toggleFirmaFeld();
-    });
-
-    function validiereFormular() {
-        var passwort = document.getElementById('passwort').value;
-        var passwortWiederholen = document.getElementById('passwort_wiederholen').value;
-        var email = document.getElementById('email').value;
-        var firmaContainer = document.getElementById('firmaContainer');
-
-        var error = false;
-
-        if (passwort !== passwortWiederholen) {
-            document.getElementById('passwort_fehlermeldung').style.display = 'inline';
-            document.getElementById('passwort_uebereinstimmung').style.display = 'none';
-            error = true;
-        } else {
-            document.getElementById('passwort_fehlermeldung').style.display = 'none';
-            document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
-        }
-
-        var emailRegex = /^[^\s@]+@[^\s@]+\.(?:com|de)$/;
-        if (!emailRegex.test(email)) {
-            alert('Bitte geben Sie eine gültige E-Mail-Adresse im Format "Text@Text.de" oder "Text@Text.com" ein.');
-            error = true;
-        }
-
-        var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
-        if (kundentyp === "Geschäftskunde" && firmaContainer.style.display === "none") {
-            alert('Bitte geben Sie den Firmennamen ein.');
-            error = true;
-        }
-
-        markiereFehlendeFelder(); // Alle Felder markieren, die leer sind
-
-        if (!error) {
-            document.getElementById("registrierungsformular").submit(); // Formular absenden, wenn keine Fehler vorhanden sind
-        }
-    }
-
-    function markiereFehlendeFelder() {
-        var inputFields = document.querySelectorAll('.input-field[required]');
-        inputFields.forEach(function(field) {
-            if (!field.value) {
-                field.style.border = '1px solid red';
-            } else {
-                field.style.border = '1px solid #ccc';
-            }
-        });
-    }
-
-    // Funktion zum Wechseln zwischen den verschiedenen Datenkategorien
-    function switchTab(tabName) {
-        var tabs = document.querySelectorAll('#mainContent > div');
-        for (var i = 0; i < tabs.length; i++) {
-            tabs[i].style.display = "none";
-        }
-        document.getElementById(tabName).style.display = "block";
-    }
-
-    // Funktion zum Wechseln zwischen dem Anzeigen- und dem Ändern-Modus
-    function toggleBearbeitungsmodus() {
-        var inputs = document.querySelectorAll('#mainContent input');
-        var speichernLink = document.getElementById("speichernLink");
-        for (var i = 0; i < inputs.length; i++) {
-            inputs[i].disabled = !inputs[i].disabled;
-        }
-        if (speichernLink.style.display === "none") {
-            speichernLink.style.display = "block";
-        } else {
-            speichernLink.style.display = "none";
-        }
-    }
-
-    // Funktion zum Wechseln des Titels
-    function toggleTitel() {
-        var pageTitle = document.getElementById("pageTitle");
-        if (pageTitle.innerText === "Kunde ändern") {
-            pageTitle.innerText = "Kunde anzeigen";
-        } else {
-            pageTitle.innerText = "Kunde ändern";
-        }
-    }
-
-    // Funktion zum Ein-/Ausblenden des Firmenfeldes
-    function toggleFirmaFeld() {
-        var firmaContainer = document.getElementById("firmaContainer");
-        var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
-        if (kundentyp === "Geschäftskunde") {
-            firmaContainer.style.display = "block";
-        } else {
-            firmaContainer.style.display = "none";
-        }
-    }
-
-</script>
+<script src="registrierungLogik.js"></script>
 
 </body>
 </html>
