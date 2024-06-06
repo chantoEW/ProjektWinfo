@@ -2,7 +2,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'C:/xampp/phpMyAdmin/vendor/autoload.php';
+require 'C:/xampp/php/vendor/autoload.php';
 
 // E-Mail-Instanz erstellen
 $mail = new PHPMailer(true);
@@ -19,7 +19,7 @@ try {
 
     // Empfänger, Betreff und Nachricht einstellen
     $mail->setFrom('autovermietung.jomaface@outlook.de', 'Autovermietung jomaface');
-    $mail->addAddress('fschlaghecken@gmx.de', 'Fabian Schlaghecken');
+    $mail->addAddress('chantal.ewig@hotmail.com', 'Chantal Ewig');
     $mail->Subject = 'Test Email';
     $mail->isHTML(true);
     $mail->Body = 'This is a test email.';
