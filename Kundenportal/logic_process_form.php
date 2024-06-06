@@ -102,14 +102,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } elseif ($kundentyp == 'Geschäftskunde') {
             $firmenname = $_POST['firmenname'];
             // SQL-Query zum Einfügen der Daten in die entsprechende Tabelle
-            $sql = "INSERT INTO geschäftskunde (Benutzername, Vorname, Nachname, Passwort, eMail, Geburtsdatum, Firma, Kundentyp) VALUES ('$benutzername', '$vorname', '$nachname', '$hashed_password', '$email', '$geburtsdatum', '$firmenname', '$kundentyp')";
+            $sql = "INSERT INTO firmenkunde (Name, Vorname, GebDatum) VALUES ('$nachname', '$vorname', '$geburtsdatum')";
+            if (mysqli_query($conn, $sql)) {
+                $FKundenID = mysqli_insert_id($conn);
+                $sql = "INSERT INTO kunden (FKundenID, FKunde_PKunde) VALUES ('$FKundenID', 'f')";
+                if (mysqli_query($conn, $sql)) {
+                    $KundenID = mysqli_insert_id($conn);
+                    $sql = "INSERT INTO kontaktdaten (Strasse, Ort, PLZ, Telefonnummer, Mail, FKundenID, FKunde_PKunde) VALUES ('$strasse', '$ort', '$plz', '$telefonnummer', '$email', '$FKundenID', 'f')";
+                    if (mysqli_query($conn, $sql)) {
+                        $KontaktID = mysqli_insert_id($conn);
+                        $sql = "INSERT INTO zahlungsinformationen (BLZ, Institut, IBAN, Inhaber, KundenID) VALUES ('$blz', '$institut', '$iban', '$inhaber', '$KundenID')";
+                        if (mysqli_query($conn, $sql)) {
+                            $ZahlungsID = mysqli_insert_id($conn);
+                            $sql = "UPDATE firmenkunde SET KontaktID='$KontaktID', ZahlungsID='$ZahlungsID' WHERE FKundenID='$FKundenID'";
+                            if (mysqli_query($conn, $sql)) {
+                                $sql = "INSERT INTO firma (KontaktID, KundenID, Name) VALUES ('$KontaktID', '$KundenID', '$firmenname')";
+                                if (mysqli_query($conn, $sql)) {
+                                    $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
+                                    if (mysqli_query($conn, $sql)) {
+                                        echo "Daten erfolgreich in die Datenbank eingefügt.";
+                                    } else {
+                                        echo "Fehler beim Einfügen in die Tabelle user: " . mysqli_error($conn);}
+                                } else {
+                                    echo "Fehler beim Aktualisierung der Tabelle firma: " . mysqli_error($conn);}
+                            } else {
+                                echo "Fehler beim Aktualisierung der Tabelle firmenkunde: " . mysqli_error($conn);}
+                        } else {
+                            echo "Fehler beim Einfügen in die Tabelle zahlungsinformationen: " . mysqli_error($conn);}
+                    } else {
+                        echo "Fehler beim Einfügen in die Tabelle kontaktdaten: " . mysqli_error($conn);}
+                } else {
+                    echo "Fehler beim Einfügen in die Tabelle kunden: " . mysqli_error($conn);}
+            } else {
+                echo "Fehler beim Einfügen in die Tabelle firmenkunde: " . mysqli_error($conn);}
         } else {
-            echo("Kundentyp ist ungültig");
-        }
+            echo("Kundentyp ist ungültig");}
     } else {
-        echo("Kundentyp nicht ausgewählt");
+        echo("Kundentyp nicht ausgewählt");}
     }
-    logMessage("Alle SQL-Abfragen wurden durchgeführt");
+
+logMessage("Alle SQL-Abfragen wurden durchgeführt");
 
 // Verbindung schließen
     mysqli_close($conn);
