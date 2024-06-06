@@ -139,11 +139,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo("Kundentyp ist ungültig");}
     } else {
         echo("Kundentyp nicht ausgewählt");}
-    }
 
-logMessage("Alle SQL-Abfragen wurden durchgeführt");
+    logMessage("Alle SQL-Abfragen wurden durchgeführt");
 
-// Verbindung schließen
+    // Verbindung schließen
     mysqli_close($conn);
     logMessage("Verbindung geschlossen");
 
