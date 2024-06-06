@@ -50,29 +50,34 @@ if (isset($_SESSION['benutzername'])) {
 ?>
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<header style="display: flex; justify-content: center;"> <!-- Flexbox-Container für die Navigation -->
-    <nav style="margin-right: 10px;"><a href="login.html">Startseite</a></nav>
-    <nav><a href="login.html">Abmelden</a></nav>
-</header>
+
 <body>
-<section style="text-align: center;"> <!-- Zentriert den Inhalt horizontal -->
+
+<div class="link-container">
+<nav><a href="login.html">Startseite</a></nav>
+<nav><a href="login.html">Abmelden</a></nav>
+</div>
+
+<section id="mainContent" class="container"> <!-- Zentriert den Inhalt horizontal -->
     <div style="display: flex; flex-direction: column; align-items: center;"> <!-- Flex-Container für den Text und die Buttons -->
         <p style="margin-bottom: 20px;">Eingeloggt als: <?php echo $benutzername; ?></p>
         <div style="display: flex;"> <!-- Flex-Container für die Buttons -->
+            <button onclick="window.location.href='datenEinsehen.php'" name="einsehen" class="button">Benutzerdaten einsehen</button>
             <button onclick="window.location.href='datenÄndern.php'" name="ändern" class="button">Benutzerdaten ändern</button>
-            <button name="löschen" class="button">Benutzeraccount löschen</button>
+            <button onclick="window.location.href='datenLöschen.php'" name="löschen" class="button">Benutzeraccount löschen</button>
         </div>
     </div>
 </section>
 
 <footer>
-    &copy; 2024 Ihr Unternehmen. Alle Rechte vorbehalten.
+   <p> &copy; 2024 Ihr Unternehmen. Alle Rechte vorbehalten.</p>
 </footer>
 </body>
 </html>
