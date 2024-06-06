@@ -3,24 +3,23 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleFirmaFeld();
 });
 
-function logMessage(message) {
-    console.log(message); // Log to the console
-    sendLogToServer(message);
+function logMessage(message, type = 'INFO') {
+    console.log(`[${type}] ${message}`); // Log to the console
+    sendLogToServer(message, type);
 }
 
-function sendLogToServer(message) {
+function sendLogToServer(message, type) {
     fetch('logic_logging.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ log: message })
+        body: JSON.stringify({ log: message, type: type })
     })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => console.log('Server response:', data))
         .catch(error => console.error('Error:', error));
 }
-
 
 function validiereFormularBenutzer() {
     var passwort = document.getElementById('passwort').value;
@@ -77,7 +76,7 @@ function markiereFehlendeFelder() {
     inputFields.forEach(function(field) {
         if (!field.value) {
             field.style.border = '1px solid red';
-            logMessage("Nicht alle Felder wurden ausgefüllt")
+            logMessage("Nicht alle Felder wurden ausgefüllt", 'ERROR')
         } else {
             field.style.border = '1px solid #ccc';
         }
