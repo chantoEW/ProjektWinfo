@@ -38,20 +38,20 @@
 
 <script>
     console.log("Anmeldung gestartet");
-    function logMessage(message) {
-        console.log(message); // Log to the console
-        sendLogToServer(message);
+    function logMessage(message, type = 'INFO') {
+        console.log(`[${type}] ${message}`); // Log to the console
+        sendLogToServer(message, type);
     }
 
-    function sendLogToServer(message) {
+    function sendLogToServer(message, type) {
         fetch('logic_logging.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ log: message })
+            body: JSON.stringify({ log: message, type: type })
         })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => console.log('Server response:', data))
             .catch(error => console.error('Error:', error));
     }
