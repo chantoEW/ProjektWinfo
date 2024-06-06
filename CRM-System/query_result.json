@@ -1,1 +1,1 @@
-
+{"success":true,"data":{"FKundenID":2,"Name":"Schmidt","Vorname":"Julia","GebDatum":"1992-08-22","FirmenID":102,"ZahlungsID":2,"KontaktID":2,"Stra\u00dfe":"Beispielweg","Hausnummer":2,"Ort":"Beispielstadt","PLZ":23456,"Telefonnummer":987654321,"Mail":"test2@example.com","PKundenID":null,"FKunde_PKunde":"F","BLZ":10020030,"Sicherheitscode":456,"Institut":"Bank B","IBAN":"DE89370400440532013001","Ablaufdatum":"2025-12-31","Inhaber":"Erika Musterfrau","KundenID":2,"ID":2,"Benutzername":"user2","Passwort":"password2"}}
