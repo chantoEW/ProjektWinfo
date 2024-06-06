@@ -44,7 +44,7 @@ if (isset($_SESSION['benutzername'])) {
     $conn->close();
 } else {
     // Benutzer ist nicht angemeldet, Weiterleitung zur Anmeldeseite
-    header("Location: login.php");
+    header("Location: logic_login.php");
     exit();
 }
 ?>
