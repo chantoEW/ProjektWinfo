@@ -24,7 +24,7 @@
             <br>
             <input type="password" name="passwort" class="input-field" placeholder="Passwort" required>
             <br>
-            <a href="passwortVergessen" onclick="window.location.href='passwortMail.php'">Passwort vergessen?</a>
+            <a href="passwortVergessen" onclick="window.location.href='logic_passwortMail.php'">Passwort vergessen?</a>
             <br>
             <button type="submit" class="button">Anmelden</button>
             <button onclick="window.location.href='registrierung.html'" class="button">Registrieren</button>
@@ -44,7 +44,7 @@
     }
 
     function sendLogToServer(message) {
-        fetch('log.php', {
+        fetch('logic_logging.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

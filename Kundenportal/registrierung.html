@@ -65,7 +65,7 @@
                 <input type="text" name="firmenname" id="firmenname" class="input-field">
             </div>
 
-            <button type="button" class="button" onclick="switchTab('kontaktdaten')">Weiter</button>
+            <button type="button" class="button" onclick="validiereFormularBenutzer()">Weiter</button>
         </div>
 
         <div id="kontaktdaten" class="content" style="display:none;">
@@ -87,7 +87,7 @@
             <input id="email" name="email" type="email" class="input-field" required><br>
 
             <button type="button" class="button" onclick="switchTab('benutzerdaten')">Zurück</button>
-            <button type="button" class="button" onclick="switchTab('zahlungsdaten')">Weiter</button>
+            <button type="button" class="button" onclick="validiereFormularKontakt()">Weiter</button>
         </div>
 
         <div id="zahlungsdaten" class="content" style="display:none;">
@@ -106,7 +106,7 @@
             <input name="inhaber" type="text" class="input-field" id="inhaber" required><br>
 
             <button type="button" class="button" onclick="switchTab('kontaktdaten')">Zurück</button>
-            <button type="button" class="button" onclick="validiereFormular()">Registrieren</button>
+            <button type="button" class="button" onclick="validiereFormularZahlung()">Registrieren</button>
         </div>
     </section>
 </form>

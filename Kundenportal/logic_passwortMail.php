@@ -2,7 +2,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'C:/xampp/php/vendor/autoload.php';
+require 'C:/xampp/phpMyAdmin/vendor/autoload.php';
 
 // E-Mail-Instanz erstellen
 $mail = new PHPMailer(true);

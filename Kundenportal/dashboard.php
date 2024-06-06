@@ -59,7 +59,7 @@ if (isset($_SESSION['benutzername'])) {
 </head>
 
 <body>
-
+<div class="wrapper">
 <div class="link-container">
 <nav><a href="login.html">Startseite</a></nav>
 <nav><a href="login.html">Abmelden</a></nav>
@@ -70,7 +70,7 @@ if (isset($_SESSION['benutzername'])) {
         <p style="margin-bottom: 20px;">Eingeloggt als: <?php echo $benutzername; ?></p>
         <div style="display: flex;"> <!-- Flex-Container für die Buttons -->
             <button onclick="window.location.href='datenEinsehen.php'" name="einsehen" class="button">Benutzerdaten einsehen</button>
-            <button onclick="window.location.href='datenÄndern.php'" name="ändern" class="button">Benutzerdaten ändern</button>
+            <button onclick="window.location.href='logic_datenÄndern.php'" name="ändern" class="button">Benutzerdaten ändern</button>
             <button onclick="window.location.href='datenLöschen.php'" name="löschen" class="button">Benutzeraccount löschen</button>
         </div>
     </div>
@@ -79,5 +79,6 @@ if (isset($_SESSION['benutzername'])) {
 <footer>
    <p> &copy; 2024 Ihr Unternehmen. Alle Rechte vorbehalten.</p>
 </footer>
+</div>
 </body>
 </html>

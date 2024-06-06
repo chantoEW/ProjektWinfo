@@ -3,10 +3,29 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleFirmaFeld();
 });
 
-function validiereFormular() {
+function logMessage(message) {
+    console.log(message); // Log to the console
+    sendLogToServer(message);
+}
+
+function sendLogToServer(message) {
+    fetch('logic_logging.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ log: message })
+    })
+        .then(response => response.text())
+        .then(data => console.log('Server response:', data))
+        .catch(error => console.error('Error:', error));
+}
+
+
+function validiereFormularBenutzer() {
     var passwort = document.getElementById('passwort').value;
     var passwortWiederholen = document.getElementById('passwort_wiederholen').value;
-    var email = document.getElementById('email').value;
+
     var firmaContainer = document.getElementById('firmaContainer');
     var benutzername = document.getElementById('benutzername').value;
 
@@ -21,23 +40,36 @@ function validiereFormular() {
         document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
     }
 
-    var emailRegex = /^[^\s@]+@[^\s@]+\.(?:com|de)$/;
-    if (!emailRegex.test(email)) {
-        alert('Bitte geben Sie eine gültige E-Mail-Adresse im Format "Text@Text.de" oder "Text@Text.com" ein.');
-        error = true;
-    }
-
     var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
     if (kundentyp === "Geschäftskunde" && firmaContainer.style.display === "none") {
         alert('Bitte geben Sie den Firmennamen ein.');
         error = true;
     }
 
+    if (!error) {
+        switchTab('kontaktdaten');
+    }
+}
+
+function validiereFormularKontakt(){
+    var email = document.getElementById('email').value;
+    var error = false;
+
+    var emailRegex = /^[^\s@]+@[^\s@]+\.(?:com|de)$/;
+    if (!emailRegex.test(email)) {
+        alert('Bitte geben Sie eine gültige E-Mail-Adresse im Format "Text@Text.de" oder "Text@Text.com" ein.');
+        error = true;
+    }
+
     markiereFehlendeFelder(); // Alle Felder markieren, die leer sind
 
     if (!error) {
-        document.getElementById("registrierungsformular").submit(); // Formular absenden, wenn keine Fehler vorhanden sind
+        switchTab('zahlungsdaten');
     }
+}
+
+function validiereFormularZahlung(){
+    document.getElementById("registrierungsformular").submit(); // Formular absenden, wenn keine Fehler vorhanden sind
 }
 
 function markiereFehlendeFelder() {
@@ -45,6 +77,7 @@ function markiereFehlendeFelder() {
     inputFields.forEach(function(field) {
         if (!field.value) {
             field.style.border = '1px solid red';
+            logMessage("Nicht alle Felder wurden ausgefüllt")
         } else {
             field.style.border = '1px solid #ccc';
         }
