@@ -6,7 +6,7 @@ if (isset($_SESSION['benutzername'])) {
     $servername = "localhost";
     $username = "Chantal";
     $password = "";
-    $dbname = "autovermietung";
+    $dbname = "portal";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -19,25 +19,40 @@ if (isset($_SESSION['benutzername'])) {
     $benutzername = $_SESSION['benutzername'];
 
     // SQL-Abfrage, um den Vor- und Nachnamen des Benutzers abzurufen
-    $sql = "SELECT Vorname, Nachname FROM privatkunde WHERE Benutzername = '$benutzername' 
-            UNION 
-            SELECT Vorname, Nachname FROM geschäftskunde WHERE Benutzername = '$benutzername'";
+    $sql = "SELECT KundenID FROM user WHERE Benutzername = '$benutzername'";
     $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        // Daten des Benutzers abrufen
-        $row = $result->fetch_assoc();
-        $vorname = $row["Vorname"];
-        $nachname = $row["Nachname"];
+    $KundenID = mysqli_fetch_assoc($result);
+    $sql = "SELECT PKundenID, FKundenID, FKunde_PKunde FROM kunden WHERE KundenID = '" . $KundenID["KundenID"] . "'";
+    $result = mysqli_query($conn, $sql);
+    $result_kunde = mysqli_fetch_assoc($result);
+    if ($result_kunde["FKunde_PKunde"] == 'p')
+    {
+        $sql = "SELECT Vorname, Name FROM privatkunde WHERE PKundenID = '" . $result_kunde["PKundenID"] . "'";
+        $result = mysqli_query($conn, $sql);
+        $result_privatkunde = mysqli_fetch_assoc($result);
+        $vorname = $result_privatkunde["Vorname"];
+        $nachname = $result_privatkunde["Name"];
 
         // Kundenname im Header anzeigen
         echo "<header>";
         echo "<h1>Herzlich willkommen $vorname $nachname!</h1>";
         echo "</header>";
+    }
+    elseif ($result_kunde["Fkunde_PKunde"] == 'f')
+    {
+        $sql = "SELECT Vorname, Name, FirmenID FROM firmenkunde WHERE FKundenID = '" . $result_kunde["FKundenID"] . "'";
+        $result = mysqli_query($conn, $sql);
+        $result_privatkunde = mysqli_fetch_assoc($result);
+        $vorname = $result_privatkunde["Vorname"];
+        $nachname = $result_privatkunde["Name"];
+        $sql = "SELECT Name FROM firma WHERE FKundenID = '" . $result_kunde["FirmenID"] . "'";
+        $result = mysqli_query($conn, $sql);
+        $result_firma = mysqli_fetch_assoc($result);
 
-        // Weitere Inhalte der Seite hier einfügen
-    } else {
-        echo "Benutzerdaten nicht gefunden";
+        // Kundenname im Header anzeigen
+        echo "<header>";
+        echo "<h1>Herzlich willkommen $vorname $nachname (" . $result_firma["Name"] . ")!</h1>";
+        echo "</header>";
     }
 
     // Verbindung schließen

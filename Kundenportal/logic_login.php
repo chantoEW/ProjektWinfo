@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Überprüfen, ob der Benutzer in der Datenbank existiert
     $sql = "SELECT Benutzername, Passwort FROM user WHERE Benutzername = '$benutzername'";
-    $result = $conn->query($sql);
+    $result = mysqli_query($conn, $sql);;
 
     if ($result->num_rows == 1) {
         // Benutzer gefunden, überprüfen ob das Passwort übereinstimmt
