@@ -3,8 +3,6 @@
 
 [Zeiterfassung / Kostenreporting (Gantt Diagramm)](https://w-hs.sciebo.de/f/312592459)  
 
-[Trello-Board](https://trello.com/b/pp9FM3m6/projekt-winfo)
-
 [Lastenheft](https://moodle.w-hs.de/pluginfile.php/485234/mod_resource/content/3/20240411_Lastenheft_DVProjektWinfo_SS2024_Autovermietung.pdf)
 
 [BPMN-Diagramme (Signavio)](https://academic.signavio.com/p/explorer#)    

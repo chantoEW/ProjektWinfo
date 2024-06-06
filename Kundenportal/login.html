@@ -24,6 +24,8 @@
             <br>
             <input type="password" name="passwort" class="input-field" placeholder="Passwort" required>
             <br>
+            <a href="passwortVergessen" onclick="window.location.href='passwortMail.php'">Passwort vergessen?</a>
+            <br>
             <button type="submit" class="button">Anmelden</button>
             <button onclick="window.location.href='registrierung.html'" class="button">Registrieren</button>
         </form>
@@ -36,6 +38,25 @@
 
 <script>
     console.log("Anmeldung gestartet");
+    function logMessage(message) {
+        console.log(message); // Log to the console
+        sendLogToServer(message);
+    }
+
+    function sendLogToServer(message) {
+        fetch('log.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ log: message })
+        })
+            .then(response => response.text())
+            .then(data => console.log('Server response:', data))
+            .catch(error => console.error('Error:', error));
+    }
+
+    logMessage("Anmeldung gestartet");
 </script>
 
 </body>
