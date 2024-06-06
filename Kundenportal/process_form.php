@@ -1,4 +1,11 @@
 <?php
+
+function logMessage($message) {
+    $logFile = 'logfile.json';
+    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Verbindung zur Datenbank herstellen
     $servername = "localhost";
@@ -11,8 +18,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Verbindung überprüfen
     if ($conn->connect_error) {
         die("Verbindung fehlgeschlagen: " . $conn->connect_error);
+        logMessage("Verbindung zur Datenbank kann nicht hergestellt werden");
     } else {
         echo("Verbindung zur DB wurde hergestellt");
+        logMessage("Verbindung zur Datenbank wurde hergestellt und überprüft");
     }
 
 // Daten aus dem Formular erhalten
@@ -35,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $institut = $_POST['institut'];
     $iban = $_POST['iban'];
     $inhaber = $_POST['inhaber'];
+    logMessage("alle Daten aus dem Formular erhalten und in Variablen gespeichert");
 
 
     // Überprüfe, welcher Kundentyp ausgewählt wurde
@@ -90,11 +100,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo("Kundentyp nicht ausgewählt");
     }
+    logMessage("Alle SQL-Abfragen wurden durchgeführt");
 
 // Verbindung schließen
     mysqli_close($conn);
+    logMessage("Verbindung geschlossen");
 
 } else {
     echo "Formular wurde nicht gesendet";
+    logMessage("Das Formular wurde nicht gesendet");
 }
 ?>

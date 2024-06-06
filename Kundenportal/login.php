@@ -9,6 +9,7 @@ $dbname = "portal";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
+
 // Benutzereingaben überprüfen und Anmeldung durchführen
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $benutzername = $_POST['benutzername'];

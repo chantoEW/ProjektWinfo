@@ -50,6 +50,16 @@ section {
     padding: 20px;
 }
 
+section {
+    padding: 140px;
+    position: relative; /* Setze Position auf relativ für die Verwendung von Hintergrundbild */
+    /*background-image: url('Auto_.jpg'); /* Pfad zum Hintergrundbild */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
 footer {
     background-color: #333;
     color: #fff;
