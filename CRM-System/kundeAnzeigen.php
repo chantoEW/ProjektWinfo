@@ -205,9 +205,7 @@
             <a href="#" class="link" onclick="event.preventDefault();"><i class="bi bi-house"></i> Startseite</a>
             <a href="#" class="link"><i class="bi bi-pencil"></i> Kunde anlegen</a>
             <a href="#" class="link"><i class="bi bi-door-closed"></i> Abmelden</a>
-            <div id="kundenIdDiv">
-                <!-- Kunden-ID: <span id="kundenIdSpan"></span> -->
-            </div>
+            
         </div>
     </nav>
     <section id="mainContent">
@@ -220,10 +218,13 @@
             </nav>
             <div id="benutzerdaten" class="content">
                 <div class="input-title">Benutzerdaten</div>
+                
+                <span id="kundenIdDiv"></span><br><br>
                 <label><input type="radio" name="kundentyp" value="privat" onclick="toggleFirmaFeld()" checked disabled>
                     Privat</label>
                 <label><input type="radio" name="kundentyp" value="geschaeft" onclick="toggleFirmaFeld()" disabled>
                     Geschäftskunde</label>
+                 
                 <br><br>
                 <label for="benutzername">Benutzername:</label><br>
                 <input type="text" class="input-field" id="benutzername"><br>
@@ -473,6 +474,8 @@
                 document.getElementById('institut').value = data.data.Institut || '';
                 document.getElementById('iban').value = data.data.IBAN || '';
                 document.getElementById('inhaber').value = data.data.Inhaber || '';
+
+                document.getElementById('kundenIdDiv').innerHTML = "<b>Kunden-ID: " + data.data.FKundenID + "</b>" || '';
             } catch (error) {
                 console.error("Fehler beim Laden der JSON-Daten:", error);
             }

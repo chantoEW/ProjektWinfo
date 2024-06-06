@@ -243,3 +243,8 @@ button:hover {
     background-color: #45a049;
     /* Dunkleres Grün beim Hover */
 }
+
+#kundenIdDiv {
+
+    justify-content: right;
+}
