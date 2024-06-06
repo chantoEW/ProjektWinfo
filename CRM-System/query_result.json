@@ -1,1 +1,1 @@
-
+{"success":true,"data":{"FKundenID":1,"Name":"M\u00fcller","Vorname":"Hans","GebDatum":"1980-05-14","FirmenID":101,"ZahlungsID":1,"KontaktID":1,"Stra\u00dfe":"Musterstra\u00dfe","Hausnummer":1,"Ort":"Musterstadt","PLZ":12345,"Telefonnummer":123456789,"Mail":"test1@example.com","PKundenID":null,"FKunde_PKunde":"F","BLZ":10020030,"Sicherheitscode":123,"Institut":"Bank A","IBAN":"DE89370400440532013000","Ablaufdatum":"2024-12-31","Inhaber":"Max M\u00fcller","KundenID":1,"ID":1,"Benutzername":"user1","Passwort":"password1"}}

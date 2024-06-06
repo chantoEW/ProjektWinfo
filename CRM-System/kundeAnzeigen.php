@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="styleCRM.css" rel="stylesheet">
     <title>CRM-System</title>
-    <style>
+    <!--<style>
         html,
         body {
             font-family: Arial, sans-serif;
@@ -191,7 +192,7 @@
             background-color: #45a049;
             /* Dunkleres Grün beim Hover */
         }
-    </style>
+    </style>-->
 </head>
 
 <body>

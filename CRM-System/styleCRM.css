@@ -1,0 +1,245 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('hintergrundbild.jpg');
+    /* Hintergrundbild einfügen */
+    background-size: cover;
+    /* Bildgröße anpassen */
+    background-repeat: no-repeat;
+    /* Wiederholung des Bildes verhindern */
+    background-attachment: fixed;
+    /* Hintergrundbild fixieren */
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Transparente Hintergrundfarbe */
+    color: #000;
+    /* Schriftfarbe schwarz */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+nav .link-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+}
+
+nav a:hover {
+    background-color: #777;
+}
+
+.container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    width: 80%;
+    /* Set the width to 80% */
+    max-width: 900px;
+    /* Reduce the max-width */
+    margin: 20px auto;
+    /* Center the container */
+    background-color: rgba(255, 255, 255, 0.9);
+    /* Weißer transparenter Hintergrund */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    /* Reduced gap between input fields */
+    margin-bottom: 15px;
+    /* Added margin-bottom for better spacing */
+}
+
+.form-group label {
+    flex: 1 1 100%;
+    font-weight: bold;
+    margin-bottom: 5px;
+    /* Reduced bottom margin for labels */
+}
+
+.input-field {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    flex: 1 1 calc(50% - 22px);
+    /* Adjusted width for better spacing */
+    box-sizing: border-box;
+    background-color: #fff;
+    /* Hintergrundfarbe der Eingabefelder weiß */
+    color: #000;
+    /* Schriftfarbe der Eingabefelder schwarz */
+}
+
+.input-title {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    /* Increased font size for emphasis */
+    text-align: center;
+    width: 100%;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button:hover {
+    background-color: #ffffff;
+    color: #333;
+}
+
+#mainContent {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    width: 100%;
+}
+
+.link {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+}
+
+.link:hover {
+    background-color: #777;
+}
+
+.input-field {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: calc(100% - 22px);
+    /* Adjusted width for better spacing */
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #333;
+}
+
+.input-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    /* Increased font size for emphasis */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.content {
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.btn {
+    background-color: #4CAF50;
+    /* Grüne Hintergrundfarbe */
+    border: none;
+    /* Kein Rand */
+    color: white;
+    /* Weiße Schriftfarbe */
+    padding: 10px 20px;
+    /* Innenabstand */
+    text-align: center;
+    /* Zentrierte Ausrichtung */
+    text-decoration: none;
+    /* Keine Unterstreichung */
+    display: inline-block;
+    /* Element wird inline-block dargestellt */
+    font-size: 16px;
+    /* Schriftgröße */
+    border-radius: 5px;
+    /* Abgerundete Ecken */
+    cursor: pointer;
+    /* Zeiger ändern, um Benutzerinteraktion anzuzeigen */
+    transition: background-color 0.3s ease;
+    /* Weiche Übergänge für Hintergrundfarbe */
+    display: flex;
+}
+
+.btn:hover {
+    background-color: #45a049;
+    /* Dunkleres Grün beim Hover */
+}
