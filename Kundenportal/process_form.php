@@ -36,6 +36,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $iban = $_POST['iban'];
     $inhaber = $_POST['inhaber'];
 
+    // Überprüfe, ob der Benutzername bereits existiert
+    $sql = "SELECT * FROM user WHERE Benutzername = '$benutzername'";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result->num_rows > 0) {
+        // Benutzername existiert bereits, zeige eine Nachricht an und leite dann weiter
+        echo "<script>alert('Der Benutzername existiert bereits. Bitte wählen Sie einen anderen Benutzernamen.'); window.location.href='registrierung.html';</script>";
+        exit();
+    }
 
     // Überprüfe, welcher Kundentyp ausgewählt wurde
     if (isset($_POST['kundentyp'])) {
@@ -66,8 +75,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     echo "Fehler beim Einfügen der Log-In-Daten: " . mysqli_error($conn);
                                 }
                             } else {
-                            echo "Fehler beim Aktualisieren der Privatkunden-Daten: " . mysqli_error($conn);
-                        }
+                                echo "Fehler beim Aktualisieren der Privatkunden-Daten: " . mysqli_error($conn);
+                            }
                         } else {
                             echo "Fehler beim Einfügen der Zahlungsinformationen: " . mysqli_error($conn);
                         }
@@ -82,8 +91,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } elseif ($kundentyp == 'Geschäftskunde') {
             $firmenname = $_POST['firmenname'];
-        // SQL-Query zum Einfügen der Daten in die entsprechende Tabelle
-        $sql = "INSERT INTO geschäftskunde (Benutzername, Vorname, Nachname, Passwort, eMail, Geburtsdatum, Firma, Kundentyp) VALUES ('$benutzername', '$vorname', '$nachname', '$hashed_password', '$email', '$geburtsdatum', '$firmenname', '$kundentyp')";
+            // SQL-Query zum Einfügen der Daten in die entsprechende Tabelle
+            $sql = "INSERT INTO geschäftskunde (Benutzername, Vorname, Nachname, Passwort, eMail, Geburtsdatum, Firma, Kundentyp) VALUES ('$benutzername', '$vorname', '$nachname', '$hashed_password', '$email', '$geburtsdatum', '$firmenname', '$kundentyp')";
         } else {
             echo("Kundentyp ist ungültig");
         }
