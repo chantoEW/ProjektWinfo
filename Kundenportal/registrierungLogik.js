@@ -3,33 +3,12 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleFirmaFeld();
 });
 
-function logMessage(message) {
-    console.log(message); // Log to the console
-    sendLogToServer(message);
-}
-
-function sendLogToServer(message) {
-    fetch('log.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ log: message })
-    })
-        .then(response => response.text())
-        .then(data => console.log('Server response:', data))
-        .catch(error => console.error('Error:', error));
-}
-
-// Example usage
-logMessage('This is a test log message from JavaScript');
-
-
 function validiereFormular() {
     var passwort = document.getElementById('passwort').value;
     var passwortWiederholen = document.getElementById('passwort_wiederholen').value;
     var email = document.getElementById('email').value;
     var firmaContainer = document.getElementById('firmaContainer');
+    var benutzername = document.getElementById('benutzername').value;
 
     var error = false;
 
@@ -37,7 +16,6 @@ function validiereFormular() {
         document.getElementById('passwort_fehlermeldung').style.display = 'inline';
         document.getElementById('passwort_uebereinstimmung').style.display = 'none';
         error = true;
-        logMessage("Passwortwiederholung fehlgeschlagen");
     } else {
         document.getElementById('passwort_fehlermeldung').style.display = 'none';
         document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
@@ -47,7 +25,6 @@ function validiereFormular() {
     if (!emailRegex.test(email)) {
         alert('Bitte geben Sie eine gültige E-Mail-Adresse im Format "Text@Text.de" oder "Text@Text.com" ein.');
         error = true;
-        logMessage("E-Mail-Format ist nicht korrekt");
     }
 
     var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
