@@ -1,35 +1,57 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRM-System Autovermietung</title>
-    <style>
-        /* Ihr CSS bleibt unverändert */
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 <header>
-    <h1>Willkommen im CRM-System</h1>
+    <h1 id="pageTitle">Willkommen im CRM-System</h1>
 </header>
 <nav>
-    <a href="#">Startseite</a>
-    <a href="#">Anmelden</a>
 </nav>
-<section>
-    <h2>Bitte loggen Sie sich mit Ihren Mitarbeiterdaten ein</h2>
-    <form action="/projektWINFO/MALogin" method="POST"> <!-- Ändern der Action auf den Pfad Ihres Servlets -->
-        <label for="username">Benutzername:</label><br>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="password">Passwort:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-        <input type="submit" value="Anmelden">
-    </form>
+<section id="mainContent" class="container">
+    <div class="content">
+        <form action="logic_login.php" method="POST">
+            <input type="text" name="benutzername" class="input-field" placeholder="Benutzername" required>
+            <br>
+            <input type="password" name="passwort" class="input-field" placeholder="Passwort" required>
+            <br>
+            <button type="submit" class="button">Anmelden</button>
+        </form>
+    </div>
 </section>
 
-</section>
 <footer>
     <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
 </footer>
+
+<script>
+    console.log("Anmeldung gestartet");
+    function logMessage(message, type = 'INFO') {
+        console.log(`[${type}] ${message}`); // Log to the console
+        sendLogToServer(message, type);
+    }
+
+    function sendLogToServer(message, type) {
+        fetch('logic_logging.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ log: message, type: type })
+        })
+            .then(response => response.json())
+            .then(data => console.log('Server response:', data))
+            .catch(error => console.error('Error:', error));
+    }
+
+    logMessage("Anmeldung gestartet");
+</script>
+
 </body>
 </html>

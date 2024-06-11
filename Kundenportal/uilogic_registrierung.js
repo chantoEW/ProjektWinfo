@@ -24,30 +24,56 @@ function sendLogToServer(message, type) {
 function validiereFormularBenutzer() {
     var passwort = document.getElementById('passwort').value;
     var passwortWiederholen = document.getElementById('passwort_wiederholen').value;
-
     var firmaContainer = document.getElementById('firmaContainer');
     var benutzername = document.getElementById('benutzername').value;
 
     var error = false;
 
-    if (passwort !== passwortWiederholen) {
-        document.getElementById('passwort_fehlermeldung').style.display = 'inline';
-        document.getElementById('passwort_uebereinstimmung').style.display = 'none';
-        error = true;
-    } else {
-        document.getElementById('passwort_fehlermeldung').style.display = 'none';
-        document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
-    }
+    fetch('check_username.php?benutzername=' + encodeURIComponent(benutzername))
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            // Antwort verarbeiten
+            if (data.trim() === 'exists') {
+                document.getElementById('username_error').style.display = 'inline';
+                error = true; // Setze den Fehlerstatus auf true, wenn der Benutzername existiert
+            } else {
+                document.getElementById('username_error').style.display = 'none';
+                error = false; // Setze den Fehlerstatus auf false, wenn der Benutzername nicht existiert
+            }
 
-    var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
-    if (kundentyp === "Geschäftskunde" && firmaContainer.style.display === "none") {
-        alert('Bitte geben Sie den Firmennamen ein.');
-        error = true;
-    }
+            // Führe die restliche Validierung und das Absenden des Formulars aus
+            // nur wenn keine Fehler aufgetreten sind
+            if (!error) {
+                // Führe die restliche Validierung durch
+                if (passwort !== passwortWiederholen) {
+                    document.getElementById('passwort_fehlermeldung').style.display = 'inline';
+                    document.getElementById('passwort_uebereinstimmung').style.display = 'none';
+                    error = true;
+                } else {
+                    document.getElementById('passwort_fehlermeldung').style.display = 'none';
+                    document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
+                }
 
-    if (!error) {
-        switchTab('kontaktdaten');
-    }
+                var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
+                if (kundentyp === "Geschäftskunde" && firmaContainer.style.display === "none") {
+                    alert('Bitte geben Sie den Firmennamen ein.');
+                    error = true;
+                }
+
+                // Alle Felder markieren, die leer sind
+                markiereFehlendeFelder();
+
+                // Wenn keine Fehler vorhanden sind, Formular absenden
+                if (!error) {
+                    switchTab('kontaktdaten');
+                }
+            }
+        })
+        .catch(function(error) {
+            console.error('Fehler beim Senden der AJAX-Anfrage:', error);
+        });
 }
 
 function validiereFormularKontakt(){
