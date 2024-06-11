@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 function logMessage($message) {
     $logFile = 'logfile.json';
     $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
@@ -26,8 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Daten aus dem Formular erhalten
     $benutzername = $_POST['benutzername'];
+    $_SESSION['benutzername'] = $benutzername;
     $nachname = $_POST['nachname'];
+    $_SESSION['nachname'] = $nachname;
     $vorname = $_POST['vorname'];
+    $_SESSION['vorname'] = $vorname;
     $rohGeburtsdatum = $_POST['geburtsdatum'];
     // Datum in das richtige Format konvertieren
     $geburtsdatum = date("Y-m-d", strtotime($rohGeburtsdatum));
@@ -81,6 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
                                 if (mysqli_query($conn, $sql)) {
                                     echo "Daten erfolgreich in die Datenbank eingefügt.";
+                                    include 'registrierungsMail.php';
                                 } else {
                                     echo "Fehler beim Einfügen der Log-In-Daten: " . mysqli_error($conn);
                                 }
