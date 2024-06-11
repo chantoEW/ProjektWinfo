@@ -18,7 +18,7 @@
     </div>
 </nav>
 
-<form action="logic_process_form.php" method="POST" id="registrierungsformular">
+<form action="logic_registrationForm.php" method="POST" id="registrierungsformular">
     <section id="mainContent" class="container">
         <nav>
             <a href="#" class="link" onclick="switchTab('benutzerdaten')">Benutzerdaten</a>
@@ -84,7 +84,7 @@
             <input name="telefonnummer" type="text" class="input-field" id="telefonnummer" required><br>
 
             <label for="email">E-Mail:</label><br>
-            <input id="email" name="email" type="email" class="input-field" required><br>
+            <input id="login.email" name="email" type="email" class="input-field" required><br>
 
             <button type="button" class="button" onclick="switchTab('benutzerdaten')">Zurück</button>
             <button type="button" class="button" onclick="validiereFormularKontakt()">Weiter</button>

@@ -7,7 +7,7 @@ if (isset($_SESSION['benutzername'])) {
     $servername = "localhost";
     $username = "Chantal";
     $password = "";
-    $dbname = "autovermietung";
+    $dbname = "portal";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -188,9 +188,11 @@ if (isset($_SESSION['benutzername'])) {
     </style>
 </head>
 <body>
+
 <header>
     <h2>Ändern Sie Ihre Daten im Kundenportal</h2>
 </header>
+
 <section>
     <form>
         <h2>Datenänderungsformular</h2>
@@ -228,6 +230,7 @@ if (isset($_SESSION['benutzername'])) {
         <button type="submit" class="button">Daten ändern!</button>
     </form>
 </section>
+
 <footer>
     <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
 </footer>

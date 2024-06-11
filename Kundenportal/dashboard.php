@@ -84,9 +84,9 @@ if (isset($_SESSION['benutzername'])) {
     <div style="display: flex; flex-direction: column; align-items: center;"> <!-- Flex-Container für den Text und die Buttons -->
         <p style="margin-bottom: 20px;">Eingeloggt als: <?php echo $benutzername; ?></p>
         <div style="display: flex;"> <!-- Flex-Container für die Buttons -->
-            <button onclick="window.location.href='datenEinsehen.php'" name="einsehen" class="button">Benutzerdaten einsehen</button>
+            <button onclick="window.location.href='logic_datenEinsehen.php'" name="einsehen" class="button">Benutzerdaten einsehen</button>
             <button onclick="window.location.href='logic_datenÄndern.php'" name="ändern" class="button">Benutzerdaten ändern</button>
-            <button onclick="window.location.href='datenLöschen.php'" name="löschen" class="button">Benutzeraccount löschen</button>
+            <button onclick="window.location.href='logic_datenLöschen.php'" name="löschen" class="button">Benutzeraccount löschen</button>
         </div>
     </div>
 </section>
