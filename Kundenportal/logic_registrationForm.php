@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
                                 if (mysqli_query($conn, $sql)) {
                                     echo "Daten erfolgreich in die Datenbank eingefügt.";
-                                    include 'registrierungsMail.php';
+                                    include 'mail_registrierung_privatkunde.php';
                                 } else {
                                     echo "Fehler beim Einfügen der Log-In-Daten: " . mysqli_error($conn);
                                 }
@@ -125,6 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
                                     if (mysqli_query($conn, $sql)) {
                                         echo "Daten erfolgreich in die Datenbank eingefügt.";
+                                        include 'mail_registrierung_firmenkunde.php';
                                     } else {
                                         echo "Fehler beim Einfügen in die Tabelle user: " . mysqli_error($conn);}
                                 } else {
