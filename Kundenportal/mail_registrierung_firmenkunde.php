@@ -48,7 +48,7 @@ try {
                     <h2 style='color: #333;'>Der Registrierungsvorgang wurde erfolgreich abgeschlossen!</h2>
                     <p style='color: #666;'>Liebe/r " . htmlspecialchars($vorname) . " " . htmlspecialchars($nachname) . " (" . htmlspecialchars($firmenname) .",</p>
                     <p style='color: #666;'>Ab sofort können Sie sich mit Ihrem Benutzernamen " . htmlspecialchars($benutzername) . " in unserem Kundenportal einloggen!</p>
-                    <p style='color: #666;'>Mit freundlichen Grüßen,<br>Ihr Autovermietungsteam</p>
+                    <p style='color: #666;'>Mit freundlichen Grüßen,<br>Ihre Autovermietung jomace</p>
                 </div>
             </body>
             </html>";
