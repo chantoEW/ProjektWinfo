@@ -29,51 +29,45 @@ function validiereFormularBenutzer() {
 
     var error = false;
 
-    fetch('check_username.php?benutzername=' + encodeURIComponent(benutzername))
-        .then(function(response) {
-            return response.text();
-        })
-        .then(function(data) {
-            // Antwort verarbeiten
-            if (data.trim() === 'exists') {
-                document.getElementById('username_error').style.display = 'inline';
-                error = true; // Setze den Fehlerstatus auf true, wenn der Benutzername existiert
+    // Simulierte Validierung des Benutzernamens ohne AJAX
+    // Annahme: checkUsername() ist eine Funktion, die asynchron den Benutzernamen prüft
+    checkUsername(benutzername, function(exists) {
+        if (exists) {
+            document.getElementById('username_error').style.display = 'inline';
+            error = true; // Setzt den Fehlerstatus auf true, wenn der Benutzername existiert
+        } else {
+            document.getElementById('username_error').style.display = 'none';
+            error = false; // Setzt den Fehlerstatus auf false, wenn der Benutzername nicht existiert
+        }
+
+        // Weitere Validierung nur ausführen, wenn keine Fehler aufgetreten sind
+        if (!error) {
+            // Validierung der Passwörter
+            if (passwort !== passwortWiederholen) {
+                document.getElementById('passwort_fehlermeldung').style.display = 'inline';
+                document.getElementById('passwort_uebereinstimmung').style.display = 'none';
+                error = true;
             } else {
-                document.getElementById('username_error').style.display = 'none';
-                error = false; // Setze den Fehlerstatus auf false, wenn der Benutzername nicht existiert
+                document.getElementById('passwort_fehlermeldung').style.display = 'none';
+                document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
             }
 
-            // Führe die restliche Validierung und das Absenden des Formulars aus
-            // nur wenn keine Fehler aufgetreten sind
+            // Validierung des Firmennamens, falls Geschäftskunde ausgewählt ist
+            var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
+            if (kundentyp === "Geschäftskunde" && firmaContainer.style.display === "none") {
+                alert('Bitte geben Sie den Firmennamen ein.');
+                error = true;
+            }
+
+            // Markiere alle leeren Pflichtfelder
+            markiereFehlendeFelder();
+
+            // Wenn keine Fehler vorhanden sind, öffne das Erfolgspopup
             if (!error) {
-                // Führe die restliche Validierung durch
-                if (passwort !== passwortWiederholen) {
-                    document.getElementById('passwort_fehlermeldung').style.display = 'inline';
-                    document.getElementById('passwort_uebereinstimmung').style.display = 'none';
-                    error = true;
-                } else {
-                    document.getElementById('passwort_fehlermeldung').style.display = 'none';
-                    document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
-                }
-
-                var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
-                if (kundentyp === "Geschäftskunde" && firmaContainer.style.display === "none") {
-                    alert('Bitte geben Sie den Firmennamen ein.');
-                    error = true;
-                }
-
-                // Alle Felder markieren, die leer sind
-                markiereFehlendeFelder();
-
-                // Wenn keine Fehler vorhanden sind, Formular absenden
-                if (!error) {
-                    switchTab('kontaktdaten');
-                }
+                switchTab('kontaktdaten');
             }
-        })
-        .catch(function(error) {
-            console.error('Fehler beim Senden der AJAX-Anfrage:', error);
-        });
+        }
+    });
 }
 
 function validiereFormularKontakt() {
@@ -92,7 +86,7 @@ function validiereFormularKontakt() {
         switchTab('zahlungsdaten');
     }
     else {
-        logMessage("Das Kontaktformular ist nicht vollständig", 'ERROR');
+        logMessage("Das Kontaktformular ist nicht vollständig");
     }
 }
 
@@ -166,11 +160,8 @@ function openSuccessMessageModal() {
 // Funktion zum Schließen des Popup-Fensters für die Erfolgsmeldung
 function closeSuccessMessageModal() {
     var modal = document.getElementById("successMessageModal");
-    if (modal) {
-        modal.style.display = "none";
-    } else {
-        console.error('Das Modal-Element wurde nicht gefunden.');
-    }
+    modal.style.display = "none";
+    window.location.href = "login.html"; // Weiterleitung zur Login-Seite
 }
 
 // Funktion zum Markieren aller leeren Pflichtfelder
@@ -179,16 +170,12 @@ function markiereFehlendeFelder() {
     inputFields.forEach(function(field) {
         if (!field.value) {
             field.style.border = '1px solid red';
-            logMessage("Nicht alle Felder wurden ausgefüllt", 'ERROR');
+            logMessage("Nicht alle Felder wurden ausgefüllt", 'ERROR')
         } else {
             field.style.border = '1px solid #ccc';
         }
     });
 }
-
-
-// Weitere Funktionen (logMessage, sendLogToServer, etc.) bleiben wie zuvor
-
 
 // Funktion zum Wechseln zwischen den verschiedenen Datenkategorien
 function switchTab(tabName) {
