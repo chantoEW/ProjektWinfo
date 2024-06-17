@@ -1,6 +1,33 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Rufe die toggleFirmaFeld Funktion auf, um den Initialzustand des Formulars festzulegen
     toggleFirmaFeld();
+
+    // Event Listener für den "Weiter"-Button in jedem Formularabschnitt
+    var weiterButtons = document.querySelectorAll('.weiter-button');
+    weiterButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Verhindert das Standardverhalten des Buttons
+
+            // Leere den Cache, indem die Eingabefelder aktualisiert werden
+            aktualisiereEingabefelder();
+
+            // Je nach Tab-Namen die entsprechende Validierungsfunktion aufrufen
+            var tabName = button.dataset.tab;
+            switch (tabName) {
+                case 'benutzerdaten':
+                    validiereFormularBenutzer();
+                    break;
+                case 'kontaktdaten':
+                    validiereFormularKontakt();
+                    break;
+                case 'zahlungsdaten':
+                    validiereFormularZahlung();
+                    break;
+                default:
+                    console.error('Ungültiger Tab-Name');
+            }
+        });
+    });
 });
 
 function logMessage(message, type = 'INFO') {
@@ -40,12 +67,18 @@ function validiereFormularBenutzer() {
             error = false; // Setzt den Fehlerstatus auf false, wenn der Benutzername nicht existiert
         }
 
-        // Weitere Validierung nur ausführen, wenn keine Fehler aufgetreten sind
+        // Validierung nur ausführen, wenn keine Fehler aufgetreten sind
         if (!error) {
             // Validierung der Passwörter
-            if (passwort !== passwortWiederholen) {
+            if (passwort.length < 8) { // Überprüfung auf Mindestlänge von 8 Zeichen
                 document.getElementById('passwort_fehlermeldung').style.display = 'inline';
                 document.getElementById('passwort_uebereinstimmung').style.display = 'none';
+                document.getElementById('passwort_fehlermeldung').innerText = 'Das Passwort muss mindestens 8 Zeichen lang sein.';
+                error = true;
+            } else if (passwort !== passwortWiederholen) {
+                document.getElementById('passwort_fehlermeldung').style.display = 'inline';
+                document.getElementById('passwort_uebereinstimmung').style.display = 'none';
+                document.getElementById('passwort_fehlermeldung').innerText = 'Die Passwörter stimmen nicht überein.';
                 error = true;
             } else {
                 document.getElementById('passwort_fehlermeldung').style.display = 'none';
@@ -84,8 +117,7 @@ function validiereFormularKontakt() {
 
     if (!error) {
         switchTab('zahlungsdaten');
-    }
-    else {
+    } else {
         logMessage("Das Kontaktformular ist nicht vollständig");
     }
 }
@@ -219,4 +251,12 @@ function toggleFirmaFeld() {
     } else {
         firmaContainer.style.display = "none";
     }
+}
+
+// Funktion zum Aktualisieren der Eingabefelder
+function aktualisiereEingabefelder() {
+    var inputs = document.querySelectorAll('#mainContent input, #mainContent select');
+    inputs.forEach(function(input) {
+        input.value = input.value; // Setze den Wert erneut, um den Cache zu leeren
+    });
 }
