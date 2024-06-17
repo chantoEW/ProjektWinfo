@@ -76,38 +76,119 @@ function validiereFormularBenutzer() {
         });
 }
 
-function validiereFormularKontakt(){
-    var email = document.getElementById('email').value;
+function validiereFormularKontakt() {
+    var email = document.getElementById('login.email').value;
     var error = false;
 
-    var emailRegex = /^[^\s@]+@[^\s@]+\.(?:com|de)$/;
+    var emailRegex = /^[^\s@]+@[^\s@]+\.(?:com|de)$/; // Beispielhaftes Regex-Muster
     if (!emailRegex.test(email)) {
         alert('Bitte geben Sie eine gültige E-Mail-Adresse im Format "Text@Text.de" oder "Text@Text.com" ein.');
         error = true;
     }
 
-    markiereFehlendeFelder(); // Alle Felder markieren, die leer sind
+    markiereFehlendeFelder(); // Markiert alle leeren Pflichtfelder
 
     if (!error) {
         switchTab('zahlungsdaten');
     }
+    else {
+        logMessage("Das Kontaktformular ist nicht vollständig", 'ERROR');
+    }
 }
 
-function validiereFormularZahlung(){
-    document.getElementById("registrierungsformular").submit(); // Formular absenden, wenn keine Fehler vorhanden sind
+function validiereFormularZahlung() {
+    var passwort = document.getElementById('passwort').value;
+    var passwortWiederholen = document.getElementById('passwort_wiederholen').value;
+    var firmaContainer = document.getElementById('firmaContainer');
+    var benutzername = document.getElementById('benutzername').value;
+
+    var error = false;
+
+    // Simulierte Validierung des Benutzernamens ohne AJAX
+    // Annahme: checkUsername() ist eine Funktion, die asynchron den Benutzernamen prüft
+    checkUsername(benutzername, function(exists) {
+        if (exists) {
+            document.getElementById('username_error').style.display = 'inline';
+            error = true; // Setzt den Fehlerstatus auf true, wenn der Benutzername existiert
+        } else {
+            document.getElementById('username_error').style.display = 'none';
+            error = false; // Setzt den Fehlerstatus auf false, wenn der Benutzername nicht existiert
+        }
+
+        // Weitere Validierung nur ausführen, wenn keine Fehler aufgetreten sind
+        if (!error) {
+            // Validierung der Passwörter
+            if (passwort !== passwortWiederholen) {
+                document.getElementById('passwort_fehlermeldung').style.display = 'inline';
+                document.getElementById('passwort_uebereinstimmung').style.display = 'none';
+                error = true;
+            } else {
+                document.getElementById('passwort_fehlermeldung').style.display = 'none';
+                document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
+            }
+
+            // Validierung des Firmennamens, falls Geschäftskunde ausgewählt ist
+            var kundentyp = document.querySelector('input[name="kundentyp"]:checked').value;
+            if (kundentyp === "Geschäftskunde" && firmaContainer.style.display === "none") {
+                alert('Bitte geben Sie den Firmennamen ein.');
+                error = true;
+            }
+
+            // Markiere alle leeren Pflichtfelder
+            markiereFehlendeFelder();
+
+            // Wenn keine Fehler vorhanden sind, öffne das Erfolgspopup
+            if (!error) {
+                openSuccessMessageModal();
+            }
+        }
+    });
 }
 
+// Simulierte Funktion für die Überprüfung des Benutzernamens
+function checkUsername(username, callback) {
+    // Hier könnte eine asynchrone Überprüfung des Benutzernamens erfolgen
+    // Beispiel: Hier wird der Benutzername "testuser" als existierend angenommen
+    var exists = (username === "testuser");
+    callback(exists);
+}
+
+// Funktion zum Öffnen des Popup-Fensters für die Erfolgsmeldung
+function openSuccessMessageModal() {
+    var modal = document.getElementById("successMessageModal");
+    if (modal) {
+        modal.style.display = "block";
+    } else {
+        console.error('Das Modal-Element wurde nicht gefunden.');
+    }
+}
+
+// Funktion zum Schließen des Popup-Fensters für die Erfolgsmeldung
+function closeSuccessMessageModal() {
+    var modal = document.getElementById("successMessageModal");
+    if (modal) {
+        modal.style.display = "none";
+    } else {
+        console.error('Das Modal-Element wurde nicht gefunden.');
+    }
+}
+
+// Funktion zum Markieren aller leeren Pflichtfelder
 function markiereFehlendeFelder() {
     var inputFields = document.querySelectorAll('.input-field[required]');
     inputFields.forEach(function(field) {
         if (!field.value) {
             field.style.border = '1px solid red';
-            logMessage("Nicht alle Felder wurden ausgefüllt", 'ERROR')
+            logMessage("Nicht alle Felder wurden ausgefüllt", 'ERROR');
         } else {
             field.style.border = '1px solid #ccc';
         }
     });
 }
+
+
+// Weitere Funktionen (logMessage, sendLogToServer, etc.) bleiben wie zuvor
+
 
 // Funktion zum Wechseln zwischen den verschiedenen Datenkategorien
 function switchTab(tabName) {

@@ -6,6 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kundenportal Autovermietung</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Stil für das Popup-Fenster */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Gemeinsamer Stil für Popup-Fenster */
+        .modal-message {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-message-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,15 +76,15 @@
         <h2>Herzlich Willkommen bei der Autovermietung!</h2>
         <p>Hier können Sie Fahrzeuge buchen, Ihre aktuellen Buchungen einsehen und Ihr Profil verwalten.</p>
 
-        <form action="logic_login.php" method="POST">
+        <form id="loginForm" action="logic_login.php" method="POST">
             <input type="text" name="benutzername" class="input-field" placeholder="Benutzername" required>
             <br>
             <input type="password" name="passwort" class="input-field" placeholder="Passwort" required>
             <br>
-            <a href="logic_passwortMail.php">Passwort vergessen?</a>
+            <a href="#" id="forgotPasswordLink">Passwort vergessen?</a>
             <br>
             <button type="submit" class="button">Anmelden</button>
-            <button onclick="window.location.href='registrierung.html'" class="button">Registrieren</button>
+            <button type="button" onclick="window.location.href='registrierung.html'" class="button">Registrieren</button>
         </form>
     </div>
 </section>
@@ -36,8 +93,29 @@
     <p>&copy; 2024 Autovermietung. Alle Rechte vorbehalten.</p>
 </footer>
 
+<!-- Popup-Fenster für Passwort vergessen -->
+<div id="forgotPasswordModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Passwort vergessen</h2>
+        <form id="forgotPasswordForm" action="javascript:void(0);" method="POST" onsubmit="sendPasswordEmail()">
+            <input type="text" id="forgotPasswordUsername" name="benutzername" class="input-field" placeholder="Benutzername" required>
+            <br>
+            <button type="submit" class="button">E-Mail versenden</button>
+        </form>
+    </div>
+</div>
+
+<!-- Popup-Fenster für Erfolgsmeldung -->
+<div id="successMessageModal" class="modal-message">
+    <div class="modal-message-content">
+        <span class="close">&times;</span>
+        <h2>E-Mail wurde versendet</h2>
+        <p>Ihnen wurde eine E-Mail zum Zurücksetzen Ihres Passworts gesendet.</p>
+    </div>
+</div>
+
 <script>
-    logMessage("Anmeldung gestartet");
     function logMessage(message, type = 'INFO') {
         console.log(`[${type}] ${message}`); // Log to the console
         sendLogToServer(message, type);
@@ -56,7 +134,62 @@
             .catch(error => console.error('Error:', error));
     }
 
+    // Popup-Fenster für Passwort vergessen öffnen
+    var modalForgotPassword = document.getElementById("forgotPasswordModal");
+    var btnForgotPassword = document.getElementById("forgotPasswordLink");
+    var spanForgotPassword = document.getElementsByClassName("close")[0];
 
+    btnForgotPassword.onclick = function() {
+        modalForgotPassword.style.display = "block";
+    }
+
+    spanForgotPassword.onclick = function() {
+        modalForgotPassword.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modalForgotPassword) {
+            modalForgotPassword.style.display = "none";
+        }
+    }
+
+    // Popup-Fenster für Erfolgsmeldung öffnen
+    var modalSuccessMessage = document.getElementById("successMessageModal");
+    var spanSuccessMessage = document.getElementsByClassName("close")[1];
+
+    function openSuccessMessage() {
+        modalSuccessMessage.style.display = "block";
+    }
+
+    spanSuccessMessage.onclick = function() {
+        modalSuccessMessage.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modalSuccessMessage) {
+            modalSuccessMessage.style.display = "none";
+        }
+    }
+
+    function sendPasswordEmail() {
+        var username = document.getElementById("forgotPasswordUsername").value;
+
+        fetch('logic_passwortMail.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ benutzername: username })
+        })
+            .then(response => response.json())
+            .then(data => {
+                openSuccessMessage(); // Popup-Fenster für Erfolgsmeldung öffnen
+            })
+            .catch(error => {
+                alert('Fehler beim Senden der E-Mail.');
+                console.error('Error:', error);
+            });
+    }
 </script>
 
 </body>
