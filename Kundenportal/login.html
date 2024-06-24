@@ -117,12 +117,17 @@
 
 <script>
     function logMessage(message, type = 'INFO') {
+        if (!['ERROR', 'INFO', 'WARNING'].includes(type)) {
+            console.error(`[ERROR] Invalid log type: ${type}`);
+            return;
+        }
         console.log(`[${type}] ${message}`); // Log to the console
         sendLogToServer(message, type);
     }
 
     function sendLogToServer(message, type) {
-        fetch('logic_logging.php', {
+        // Adjust the path to the PHP file
+        fetch('../logic_logging.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -133,6 +138,7 @@
             .then(data => console.log('Server response:', data))
             .catch(error => console.error('Error:', error));
     }
+
 
     // Popup-Fenster für Passwort vergessen öffnen
     var modalForgotPassword = document.getElementById("forgotPasswordModal");
@@ -184,10 +190,12 @@
             .then(response => response.json())
             .then(data => {
                 openSuccessMessage(); // Popup-Fenster für Erfolgsmeldung öffnen
+                logMessage('Die Mail zum Passwort vergessen, wurde erfolgreich versendet.');
             })
             .catch(error => {
                 alert('Fehler beim Senden der E-Mail.');
                 console.error('Error:', error);
+                logMessage('Fehler beim Senden der Passwort vergessen Mail', 'ERROR');
             });
     }
 </script>

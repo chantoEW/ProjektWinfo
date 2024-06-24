@@ -72,3 +72,24 @@
 2024-06-24 13:25:46 [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
 2024-06-24 13:26:15 [INFO] - Alle Kontaktdaten wurden angegeben
 2024-06-24 13:26:33 [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-06-24 13:49:47 [ERROR] - This is an error message from another PHP file.
+2024-06-24 13:49:47 [INFO] - DB Verbindung hergestellt
+2024-06-24 13:49:47 [INFO] - Falsches Passwort
+2024-06-24 13:53:08 [ERROR] - This is an error message from another PHP file.
+2024-06-24 13:53:08 [INFO] - DB Verbindung hergestellt
+2024-06-24 13:53:08 [ERROR] - Falsches Passwort
+2024-06-24 13:55:43 [ERROR] - This is an error message from another PHP file.
+2024-06-24 13:55:43 [INFO] - DB Verbindung hergestellt
+2024-06-24 13:55:43 [ERROR] - Falsches Passwort
+2024-06-24 13:56:29 [ERROR] - This is an error message from another PHP file.
+2024-06-24 13:56:29 [INFO] - DB Verbindung hergestellt
+2024-06-24 13:56:29 [ERROR] - Falsches Passwort
+2024-06-24 13:57:51 [ERROR] - This is an error message from another PHP file.
+2024-06-24 13:57:51 [INFO] - DB Verbindung hergestellt
+2024-06-24 13:57:51 [ERROR] - Falsches Passwort
+2024-06-24 14:00:51 [ERROR] - This is an error message from another PHP file.
+2024-06-24 14:00:51 [INFO] - DB Verbindung hergestellt
+2024-06-24 14:00:51 [ERROR] - Falsches Passwort
+2024-06-24 14:01:04 [ERROR] - This is an error message from another PHP file.
+2024-06-24 14:01:04 [INFO] - DB Verbindung hergestellt
+2024-06-24 14:01:04 [ERROR] - Falsches Passwort
