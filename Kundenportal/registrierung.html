@@ -67,10 +67,10 @@
             <div class="input-title">Benutzerdaten</div>
 
             <label style="display: inline-block;">
-                <input onclick="toggleFirmaFeld()" type="radio" class="input-field" id="privatkunde" name="kundentyp" value="Privatkunde" checked> Privatkunde
+                <input onclick="toggleFirmaFeld()" type="radio" class="input-field" id="privatkunde" name="kundentyp" value="Privatkunde" checked required> Privatkunde
             </label>
             <label style="display: inline-block;">
-                <input onclick="toggleFirmaFeld()" type="radio" class="input-field" id="geschaeftskunde" name="kundentyp" value="Geschäftskunde"> Geschäftskunde
+                <input onclick="toggleFirmaFeld()" type="radio" class="input-field" id="geschaeftskunde" name="kundentyp" value="Geschäftskunde" required> Geschäftskunde
             </label>
             <br> <br>
 
@@ -101,7 +101,7 @@
                 <input type="text" name="firmenname" id="firmenname" class="input-field">
             </div>
 
-            <button type="button" class="button" onclick="validiereFormularBenutzer()">Weiter</button>
+            <button type="button" class="weiter-button" onclick="validiereFormularBenutzer()">Weiter</button>
         </div>
 
         <div id="kontaktdaten" class="content" style="display:none;">
@@ -123,7 +123,7 @@
             <input id="login.email" name="email" type="email" class="input-field" required><br>
 
             <button type="button" class="button" onclick="switchTab('benutzerdaten')">Zurück</button>
-            <button type="button" class="button" onclick="validiereFormularKontakt()">Weiter</button>
+            <button type="button" class="weiter-button" onclick="validiereFormularKontakt()">Weiter</button>
         </div>
 
         <div id="zahlungsdaten" class="content" style="display:none;">
@@ -142,7 +142,7 @@
             <input name="inhaber" type="text" class="input-field" id="inhaber" required><br>
 
             <button type="button" class="button" onclick="switchTab('kontaktdaten')">Zurück</button>
-            <button type="button" class="button" onclick="validiereFormularZahlung()">Registrieren</button>
+            <button type="button" class="weiter-button" onclick="validiereFormularZahlung()">Registrieren</button>
         </div>
     </section>
 </form>
@@ -152,6 +152,8 @@
     <div class="modal-content">
         <span class="close" onclick="closeSuccessMessageModal()">&times;</span>
         <p>Registrierung erfolgreich!</p>
+        <p>Die Daten wurden erfolgreich übermittelt. </p>
+        <p>Sie erhalten eine E-Mail, sobald die Plausibilitätsprüfung durchgeführt wurde.</p>
         <p>Vielen Dank für Ihre Registrierung.</p>
     </div>
 </div>

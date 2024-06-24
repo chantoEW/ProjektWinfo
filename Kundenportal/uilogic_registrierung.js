@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleFirmaFeld();
 
     // Event Listener für den "Weiter"-Button in jedem Formularabschnitt
-    var weiterButtons = document.querySelectorAll('.weiter-button');
+    var weiterButtons = document.querySelectorAll('.button');
     weiterButtons.forEach(function(button) {
         button.addEventListener('click', function(event) {
             event.preventDefault(); // Verhindert das Standardverhalten des Buttons
@@ -15,19 +15,48 @@ document.addEventListener("DOMContentLoaded", function() {
             var tabName = button.dataset.tab;
             switch (tabName) {
                 case 'benutzerdaten':
-                    validiereFormularBenutzer();
+                    if (sindAlleFelderGefuellt('benutzerdaten')) {
+                        validiereFormularBenutzer();
+                    } else {
+                        alert('Bitte füllen Sie alle Pflichtfelder aus.');
+                    }
                     break;
                 case 'kontaktdaten':
-                    validiereFormularKontakt();
+                    if (sindAlleFelderGefuellt('kontaktdaten')) {
+                        validiereFormularKontakt();
+                    } else {
+                        alert('Bitte füllen Sie alle Pflichtfelder aus.');
+                    }
                     break;
                 case 'zahlungsdaten':
-                    validiereFormularZahlung();
+                    if (sindAlleFelderGefuellt('zahlungsdaten')) {
+                        validiereFormularZahlung();
+                    } else {
+                        alert('Bitte füllen Sie alle Pflichtfelder aus.');
+                    }
                     break;
                 default:
                     console.error('Ungültiger Tab-Name');
             }
         });
     });
+
+    // Funktion zum Markieren aller leeren Pflichtfelder und Rückgabe des Status
+    function sindAlleFelderGefuellt(tabName) {
+        var allFilled = true;
+        var inputFields = document.querySelectorAll('#' + tabName + ' .input-field[required]');
+        inputFields.forEach(function(field) {
+            if (!field.value.trim()) { // trim() entfernt führende und nachfolgende Leerzeichen
+                field.style.border = '1px solid red';
+                allFilled = false;
+            } else {
+                field.style.border = '1px solid #ccc';
+            }
+        });
+        return allFilled;
+    }
+
+    // Weitere Funktionen hier unten ...
 });
 
 function logMessage(message, type = 'INFO') {
@@ -93,7 +122,7 @@ function validiereFormularBenutzer() {
             }
 
             // Markiere alle leeren Pflichtfelder
-            markiereFehlendeFelder();
+            markiereFehlendeFelder('benutzerdaten');
 
             // Wenn keine Fehler vorhanden sind, öffne das Erfolgspopup
             if (!error) {
@@ -113,7 +142,7 @@ function validiereFormularKontakt() {
         error = true;
     }
 
-    markiereFehlendeFelder(); // Markiert alle leeren Pflichtfelder
+    markiereFehlendeFelder('kontaktdaten'); // Markiert alle leeren Pflichtfelder
 
     if (!error) {
         switchTab('zahlungsdaten');
@@ -161,7 +190,7 @@ function validiereFormularZahlung() {
             }
 
             // Markiere alle leeren Pflichtfelder
-            markiereFehlendeFelder();
+            markiereFehlendeFelder('zahlungsdaten');
 
             // Wenn keine Fehler vorhanden sind, öffne das Erfolgspopup
             if (!error) {
@@ -197,10 +226,10 @@ function closeSuccessMessageModal() {
 }
 
 // Funktion zum Markieren aller leeren Pflichtfelder
-function markiereFehlendeFelder() {
-    var inputFields = document.querySelectorAll('.input-field[required]');
+function markiereFehlendeFelder(tabName) {
+    var inputFields = document.querySelectorAll('#' + tabName + ' .input-field[required]');
     inputFields.forEach(function(field) {
-        if (!field.value) {
+        if (!field.value.trim()) { // trim() entfernt führende und nachfolgende Leerzeichen
             field.style.border = '1px solid red';
             logMessage("Nicht alle Felder wurden ausgefüllt", 'ERROR')
         } else {
