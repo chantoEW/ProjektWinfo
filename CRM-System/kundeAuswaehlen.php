@@ -182,12 +182,14 @@
         // Überprüfung nach dem Absenden des Formulars
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST['kundentyp'])) {
+                
                 $kundentyp = $_POST['kundentyp'];
+                
                 if ($kundentyp == 'privatkunde') {
 
                     // SQL-Abfrage
                     $sql = "SELECT pk.PKundenID, pk.Name, pk.Vorname, pk.GebDatum, kd.Strasse, kd.Ort, kd.PLZ FROM privatkunde AS pk JOIN kontaktdaten AS kd ON kd.PKundenID = pk.PKundenID WHERE 1=1";
-
+                    //echo  $_POST['kundenId'];
                     // Filter hinzufügen
                     if (!empty($_POST['kundenId'])) {
                         $kundenId = $conn->real_escape_string($_POST['kundenId']);

@@ -55,64 +55,73 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                 <a href="#" class="link" onclick="event.preventDefault(); switchTab('zahlungsdaten')">Zahlungsdaten</a>
                 <a href="#" class="link" onclick="event.preventDefault(); switchTab('kennzahlen')">Kennzahlen</a>
             </nav>
-            <div id="benutzerdaten" class="content">
-                <div class="input-title">Benutzerdaten</div>
+            <form  method="POST" action="kundeAendernSpeichern.php">
+                <div id="benutzerdaten" class="content">
+                    <div class="input-title">Benutzerdaten</div>
 
-                <span id="kundenIdDiv"></span><br><br>
-                <label><input type="radio" name="kundentyp" value="privat" onclick="toggleFirmaFeld()" <?php if ($kundentyp === 'P')
-                    echo 'checked'; ?> disabled>
-                    Privat</label>
-                <label><input type="radio" name="kundentyp" value="geschaeft" onclick="toggleFirmaFeld()" <?php if ($kundentyp === 'F')
-                    echo 'checked'; ?> disabled>
-                    Geschäftskunde</label>
+                    <span id="kundenIdDiv"></span><br><br>
+                    <input type="text" name="kundenId">
+                    
+                    <input type="radio" name="kundentyp" value="privat" onclick="toggleFirmaFeld()">
+                    <label>Privatkunde</label>
+                    <input type="radio" name="kundentyp" value="geschaeft" onclick="toggleFirmaFeld()">
+                    <label>Geschäftskunde</label> 
+                    <!--<div style="display: none">
+                        <input type="radio" name="kundentyp" value="privat" >
+                        <label>Privatkunde</label>
+                        <input type="radio" name="kundentyp" value="geschaeft">
+                        <label>Geschäftskunde</label> 
+                    </div>-->
 
-                <br><br>
-                <label for="benutzername">Benutzername:</label><br>
-                <input type="text" class="input-field" id="benutzername"><br>
-                <label for="passwort">Passwort:</label><br>
-                <input type="password" class="input-field" id="passwort"><br>
-                <label for="name">Name:</label><br>
-                <input type="text" class="input-field" id="name"><br>
-                <label for="vorname">Vorname:</label><br>
-                <input type="text" class="input-field" id="vorname"><br>
-                <label for="geburtsdatum">Geburtsdatum:</label><br>
-                <input type="date" class="input-field" id="geburtsdatum"><br>
-                <div id="firmaContainer" style="display: none;">
-                    <label for="firma">Firma:</label><br>
-                    <input type="text" class="input-field" id="firma"><br>
+                    <br><br>
+                    <label for="benutzername">Benutzername:</label><br>
+                    <input type="text" class="input-field" id="benutzername" name="benutzername"><br>
+                    <label for="passwort">Passwort:</label><br>
+                    <input type="password" class="input-field" id="passwort" name="passwort"><br>
+                    <label for="name">Name:</label><br>
+                    <input type="text" class="input-field" id="name" name="name"><br>
+                    <label for="vorname">Vorname:</label><br>
+                    <input type="text" class="input-field" id="vorname" name="vorname"><br>
+                    <label for="geburtsdatum">Geburtsdatum:</label><br>
+                    <input type="date" class="input-field" id="geburtsdatum" name="geburtsdatum"><br>
+                    <div id="firmaContainer">
+                        <label for="firma" id="firmenlabel">Firma:</label><br>
+                        <input type="text" class="input-field" id="firma" name="firma"><br>
+                    </div>
                 </div>
-            </div>
-            <div id="kontaktdaten" class="content" style="display:none;">
-                <div class="input-title">Kontaktdaten</div>
-                <label for="strasse">Straße:</label><br>
-                <input type="text" class="input-field" id="strasse"><br>
-                <label for="ort">Ort:</label><br>
-                <input type="text" class="input-field" id="ort"><br>
-                <label for="postleitzahl">Postleitzahl:</label><br>
-                <input type="text" class="input-field" id="postleitzahl"><br>
-                <label for="telefonnummer">Telefonnummer:</label><br>
-                <input type="text" class="input-field" id="telefonnummer"><br>
-                <label for="mailadresse">Mailadresse:</label><br>
-                <input type="text" class="input-field" id="mailadresse"><br>
-            </div>
-            <div id="zahlungsdaten" class="content" style="display:none;">
-                <div class="input-title">Zahlungsdaten</div>
-                <label for="blz">BLZ:</label><br>
-                <input type="text" class="input-field" id="blz"><br>
-                <label for="institut">Institut:</label><br>
-                <input type="text" class="input-field" id="institut"><br>
-                <label for="iban">IBAN:</label><br>
-                <input type="text" class="input-field" id="iban"><br>
-                <label for="inhaber">Inhaber:</label><br>
-                <input type="text" class="input-field" id="inhaber"><br>
-            </div>
-            <div id="kennzahlen" class="content" style="display:none;">
-                <div class="input-title">Kennzahlen</div>
-                <label for="bonitaetsklasse">Bonitätsklasse:</label><br>
-                <input type="text" class="input-field" id="bonitaetsklasse"><br>
-                <label for="abc_klassifikation">ABC-Klassifikation:</label><br>
-                <input type="text" class="input-field" id="abc_klassifikation"><br>
-            </div>
+                <div id="kontaktdaten" class="content" style="display:none;">
+                    <div class="input-title">Kontaktdaten</div>
+                    <label for="strasse">Straße:</label><br>
+                    <input type="text" class="input-field" id="strasse" name="strasse"><br>
+                    <label for="ort">Ort:</label><br>
+                    <input type="text" class="input-field" id="ort" name="ort"><br>
+                    <label for="postleitzahl">Postleitzahl:</label><br>
+                    <input type="text" class="input-field" id="postleitzahl" name="postleitzahl"><br>
+                    <label for="telefonnummer">Telefonnummer:</label><br>
+                    <input type="text" class="input-field" id="telefonnummer" name="telefonnummer"><br>
+                    <label for="mailadresse">Mailadresse:</label><br>
+                    <input type="text" class="input-field" id="mailadresse" name="mailadresse"><br>
+                </div>
+                <div id="zahlungsdaten" class="content" style="display:none;">
+                    <div class="input-title">Zahlungsdaten</div>
+                    <label for="blz">BLZ:</label><br>
+                    <input type="text" class="input-field" id="blz" name="blz"><br>
+                    <label for="institut">Institut:</label><br>
+                    <input type="text" class="input-field" id="institut" name="institut"><br>
+                    <label for="iban">IBAN:</label><br>
+                    <input type="text" class="input-field" id="iban" name="iban"><br>
+                    <label for="inhaber">Inhaber:</label><br>
+                    <input type="text" class="input-field" id="inhaber" name="inhaber"><br>
+                </div>
+                <div id="kennzahlen" class="content" style="display:none;">
+                    <div class="input-title">Kennzahlen</div>
+                    <label for="bonitaetsklasse">Bonitätsklasse:</label><br>
+                    <input type="text" class="input-field" id="bonitaetsklasse" name="bonitaetsklasse"><br>
+                    <label for="abc_klassifikation">ABC-Klassifikation:</label><br>
+                    <input type="text" class="input-field" id="abc_klassifikation" name="abc_klassifikation"><br>
+                </div>
+                <button type="submit">Speichern</button>
+            </form>
         </div>
 
     </section>
@@ -219,12 +228,35 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                 }
 
                 // Wert von FKunde_PKunde extrahieren
-                $kundentyp = '';
-                if (isset($jsonData['data']['FKunde_PKunde'])) {
+    
+                /*if (isset($jsonData['data']['FKunde_PKunde'])) {
                     $kundentyp = $jsonData['data']['FKunde_PKunde'];
+                }*/
+                $sqlForP = "SELECT FKunde_PKunde FROM kunden WHERE KundenID = ?";
+                $stmt2 = $conn->prepare($sqlForP);
+                $stmt2->bind_param("i", $id);
+                $stmt2->execute();
+                $result2 = $stmt2->get_result();
+                if ($result2 === false) {
+                    die("Fehler beim Abrufen des Ergebnisses: " . $stmt2->error);
+                }
+                if ($result2->num_rows > 0) {
+                    while ($row = $result2->fetch_assoc()) {
+
+                        // Weitere Verarbeitung der Daten hier
+                        $kundentyp = $row['FKunde_PKunde'];
+                    }
+                } else {
+                    echo "Keine Ergebnisse gefunden.";
                 }
 
-                if($kundentyp == 'F') {
+
+                $stmt2->close();
+
+
+
+                if ($kundentyp == 'F') {
+
                     $sql = "SELECT * 
                     FROM firmenkunde AS fk
                     JOIN kontaktdaten AS kd
@@ -233,11 +265,12 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                     ON fk.FKundenID = zi.KundenID
                     JOIN user 
                     ON user.KundenID = fk.FKundenID
+                    JOIN firma
+                    ON fk.FKundenID = firma.KundenID
                     WHERE fk.FKundenID = ?";
 
-                }
-                else if($kundentyp == 'P')
-                {
+                } else if ($kundentyp == 'P') {
+
                     $sql = "SELECT * 
                     FROM privatkunde AS pk
                     JOIN kontaktdaten AS kd
@@ -250,7 +283,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                 }
 
                 // SQL-Abfrage
-                
+    
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $id);
                 $stmt->execute();
@@ -269,7 +302,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                         error_log("JSON-Datei erfolgreich geschrieben: " . $jsonFilename);
                     }
                 } else {
-                    $error = ['success' => false, 'error' => 'Keine Daten gefunden'];
+                    $error = ['success' => false, 'error' => 'Keine Daten gefunden1'];
                     echo json_encode($error);
 
                     // Fehler in query_result.json speichern
@@ -359,7 +392,21 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                 document.getElementById('iban').value = data.data.IBAN || '';
                 document.getElementById('inhaber').value = data.data.Inhaber || '';
 
-                document.getElementById('kundenIdDiv').innerHTML = "<b>Kunden-ID: " + data.data.FKundenID + "</b>" || '';
+                if (data.data.Firmenname != null) {
+                    document.getElementById('firma').value = data.data.Firmenname || '';
+                    document.getElementById('kundenIdDiv').innerHTML = "<b>Kunden-ID: " + data.data.FKundenID + "</b>" || '';
+                    document.getElementsByName('kundenId')[0].value = data.data.FKundenID || '';
+                    document.getElementsByName('kundentyp')[1].checked = true;
+                    //document.getElementsByName('kundentyp')[3].checked = true;
+                }
+                else {
+                    document.getElementById('kundenIdDiv').innerHTML = "<b>Kunden-ID: " + data.data.PKundenID + "</b>" || '';
+                    document.getElementsByName('kundenId')[0].value = data.data.PKundenID || '';
+                    document.getElementsByName('kundentyp')[0].checked = true;
+                    //document.getElementsByName('kundentyp')[2].checked = true;
+                    document.getElementById('firmaContainer').style.display = 'none';
+
+                }
             } catch (error) {
                 console.error("Fehler beim Laden der JSON-Daten:", error);
             }
