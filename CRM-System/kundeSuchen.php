@@ -168,6 +168,18 @@
             <div class="input-title">Suche nach Kunden</div>
 
             <div class="form-group">
+                <label>Kundentyp:</label>
+                <span><label>
+                    <input type="radio" name="kundentyp" value="privatkunde">
+                    Privatkunde
+                </label>
+                <label>
+                    <input type="radio" name="kundentyp" value="geschaeftskunde">
+                    Geschäftskunde
+                </label></span>
+            </div>
+
+            <div class="form-group">
                 <label for="kundenId">Kunden-ID:</label>
                 <input type="text" class="input-field" id="kundenId" name="kundenId">
             </div>

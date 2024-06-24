@@ -1,3 +1,28 @@
+<?php
+$jsonFilePath = 'query_result.json';
+
+// JSON-Datei einlesen
+$jsonString = file_get_contents($jsonFilePath);
+
+// Überprüfen, ob das Einlesen erfolgreich war
+if ($jsonString === false) {
+    die("Fehler beim Einlesen der JSON-Datei.");
+}
+
+// JSON-Daten dekodieren
+$jsonData = json_decode($jsonString, true);
+
+// Überprüfen, ob das Dekodieren erfolgreich war
+if ($jsonData === null) {
+    die("Fehler beim Dekodieren der JSON-Daten.");
+}
+
+// Wert von FKunde_PKunde extrahieren
+$kundentyp = '';
+if (isset($jsonData['data']['FKunde_PKunde'])) {
+    $kundentyp = $jsonData['data']['FKunde_PKunde'];
+}
+?>
 <!DOCTYPE html>
 <html lang="de">
 
@@ -7,192 +32,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="styleCRM.css" rel="stylesheet">
     <title>CRM-System</title>
-    <!--<style>
-        html,
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            background-image: url('hintergrundbild.jpg');
-            /* Hintergrundbild einfügen */
-            background-size: cover;
-            /* Bildgröße anpassen */
-            background-repeat: no-repeat;
-            /* Wiederholung des Bildes verhindern */
-            background-attachment: fixed;
-            /* Hintergrundbild fixieren */
-            background-color: rgba(244, 244, 244, 0.2);
-            /* Transparente Hintergrundfarbe */
-            color: #333;
-            overflow-x: hidden;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-
-        nav {
-            background-color: #555;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav .link-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-        }
-
-        nav a:hover {
-            background-color: #777;
-        }
-
-        #mainContent {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 20px;
-            width: 100%;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            width: 100%;
-        }
-
-        .link {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-        }
-
-        .link:hover {
-            background-color: #777;
-        }
-
-        .input-field {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: calc(100% - 22px);
-            /* Adjusted width for better spacing */
-            box-sizing: border-box;
-            background-color: #fff;
-            color: #333;
-        }
-
-        .input-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-            /* Increased font size for emphasis */
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            border-radius: 5px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .container {
-            max-width: 800px;
-            width: 100%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            /* Weißer, leicht transparenter Hintergrund */
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            /* Vertikale Scrollleiste */
-            /*max-height: calc(100vh - 200px); /* Maximale Höhe für Scrollbereich */
-        }
-
-        .content {
-            padding: 20px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .btn {
-            background-color: #4CAF50;
-            /* Grüne Hintergrundfarbe */
-            border: none;
-            /* Kein Rand */
-            color: white;
-            /* Weiße Schriftfarbe */
-            padding: 10px 20px;
-            /* Innenabstand */
-            text-align: center;
-            /* Zentrierte Ausrichtung */
-            text-decoration: none;
-            /* Keine Unterstreichung */
-            display: inline-block;
-            /* Element wird inline-block dargestellt */
-            font-size: 16px;
-            /* Schriftgröße */
-            border-radius: 5px;
-            /* Abgerundete Ecken */
-            cursor: pointer;
-            /* Zeiger ändern, um Benutzerinteraktion anzuzeigen */
-            transition: background-color 0.3s ease;
-            /* Weiche Übergänge für Hintergrundfarbe */
-            display: flex;
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-            /* Dunkleres Grün beim Hover */
-        }
-    </style>-->
 </head>
 
 <body>
@@ -200,12 +39,12 @@
         <h1 id="pageTitle">Kundendaten ändern</h1>
     </header>
     <nav>
-    <div class="link-container">
+        <div class="link-container">
             <a href="#" class="link"><i class="bi bi-arrow-left"></i> Zurück</a>
             <a href="#" class="link" onclick="event.preventDefault();"><i class="bi bi-house"></i> Startseite</a>
             <a href="#" class="link"><i class="bi bi-pencil"></i> Kunde anlegen</a>
             <a href="#" class="link"><i class="bi bi-door-closed"></i> Abmelden</a>
-            
+
         </div>
     </nav>
     <section id="mainContent">
@@ -218,13 +57,15 @@
             </nav>
             <div id="benutzerdaten" class="content">
                 <div class="input-title">Benutzerdaten</div>
-                
+
                 <span id="kundenIdDiv"></span><br><br>
-                <label><input type="radio" name="kundentyp" value="privat" onclick="toggleFirmaFeld()" checked disabled>
+                <label><input type="radio" name="kundentyp" value="privat" onclick="toggleFirmaFeld()" <?php if ($kundentyp === 'P')
+                    echo 'checked'; ?> disabled>
                     Privat</label>
-                <label><input type="radio" name="kundentyp" value="geschaeft" onclick="toggleFirmaFeld()" disabled>
+                <label><input type="radio" name="kundentyp" value="geschaeft" onclick="toggleFirmaFeld()" <?php if ($kundentyp === 'F')
+                    echo 'checked'; ?> disabled>
                     Geschäftskunde</label>
-                 
+
                 <br><br>
                 <label for="benutzername">Benutzername:</label><br>
                 <input type="text" class="input-field" id="benutzername"><br>
@@ -358,9 +199,34 @@
                     die("Verbindung fehlgeschlagen: " . $conn->connect_error);
                 }
 
-                // SQL-Abfrage
-                $sql = "SELECT * 
-                    FROM firmenkunde AS fk 
+
+                $jsonFilePath = 'query_result.json';
+
+                // JSON-Datei einlesen
+                $jsonString = file_get_contents($jsonFilePath);
+
+                // Überprüfen, ob das Einlesen erfolgreich war
+                if ($jsonString === false) {
+                    die("Fehler beim Einlesen der JSON-Datei.");
+                }
+
+                // JSON-Daten dekodieren
+                $jsonData = json_decode($jsonString, true);
+
+                // Überprüfen, ob das Dekodieren erfolgreich war
+                if ($jsonData === null) {
+                    die("Fehler beim Dekodieren der JSON-Daten.");
+                }
+
+                // Wert von FKunde_PKunde extrahieren
+                $kundentyp = '';
+                if (isset($jsonData['data']['FKunde_PKunde'])) {
+                    $kundentyp = $jsonData['data']['FKunde_PKunde'];
+                }
+
+                if($kundentyp == 'F') {
+                    $sql = "SELECT * 
+                    FROM firmenkunde AS fk
                     JOIN kontaktdaten AS kd
                     ON fk.FKundenID = kd.FKundenID
                     JOIN zahlungsinformationen AS zi
@@ -368,6 +234,23 @@
                     JOIN user 
                     ON user.KundenID = fk.FKundenID
                     WHERE fk.FKundenID = ?";
+
+                }
+                else if($kundentyp == 'P')
+                {
+                    $sql = "SELECT * 
+                    FROM privatkunde AS pk
+                    JOIN kontaktdaten AS kd
+                    ON pk.PKundenID = kd.PKundenID
+                    JOIN zahlungsinformationen AS zi
+                    ON pk.PKundenID = zi.KundenID
+                    JOIN user 
+                    ON user.KundenID = pk.PKundenID
+                    WHERE pk.PKundenID = ?";
+                }
+
+                // SQL-Abfrage
+                
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $id);
                 $stmt->execute();
@@ -435,6 +318,7 @@
             error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
         }
     }
+
     ?>
 
 
@@ -465,7 +349,7 @@
                 document.getElementById('benutzername').value = data.data.Benutzername || '';
                 document.getElementById('passwort').value = data.data.Passwort || '';
                 document.getElementById('geburtsdatum').value = data.data.GebDatum || '';
-                document.getElementById('strasse').value = data.data.Straße || '';
+                document.getElementById('strasse').value = data.data.Strasse || '';
                 document.getElementById('ort').value = data.data.Ort || '';
                 document.getElementById('postleitzahl').value = data.data.PLZ || '';
                 document.getElementById('telefonnummer').value = data.data.Telefonnummer || '';

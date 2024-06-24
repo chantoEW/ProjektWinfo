@@ -179,45 +179,51 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        // SQL-Abfrage
-        $sql = "SELECT fk.FKundenID, fk.Name, fk.Vorname, fk.GebDatum, kd.Straße, kd.Ort, kd.PLZ FROM firmenkunde AS fk JOIN kontaktdaten AS kd ON kd.FKundenID = fk.FKundenID WHERE 1=1";
+        // Überprüfung nach dem Absenden des Formulars
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($_POST['kundentyp'])) {
+                $kundentyp = $_POST['kundentyp'];
+                if ($kundentyp == 'privatkunde') {
 
-        // Filter hinzufügen
-        if (!empty($_POST['kundenId'])) {
-            $kundenId = $conn->real_escape_string($_POST['kundenId']);
-            $sql .= " AND fk.FKundenID = '$kundenId'";
-        }
+                    // SQL-Abfrage
+                    $sql = "SELECT pk.PKundenID, pk.Name, pk.Vorname, pk.GebDatum, kd.Strasse, kd.Ort, kd.PLZ FROM privatkunde AS pk JOIN kontaktdaten AS kd ON kd.PKundenID = pk.PKundenID WHERE 1=1";
 
-        if (!empty($_POST['name'])) {
-            $name = $conn->real_escape_string($_POST['name']);
-            $sql .= " AND Name LIKE '%$name%'";
-        }
+                    // Filter hinzufügen
+                    if (!empty($_POST['kundenId'])) {
+                        $kundenId = $conn->real_escape_string($_POST['kundenId']);
+                        $sql .= " AND pk.PKundenID = '$kundenId'";
+                    }
 
-        if (!empty($_POST['vorname'])) {
-            $vorname = $conn->real_escape_string($_POST['vorname']);
-            $sql .= " AND Vorname LIKE '%$vorname%'";
-        }
+                    if (!empty($_POST['name'])) {
+                        $name = $conn->real_escape_string($_POST['name']);
+                        $sql .= " AND Name LIKE '%$name%'";
+                    }
 
-        if (!empty($_POST['strasse'])) {
-            $strasse = $conn->real_escape_string($_POST['strasse']);
-            $sql .= " AND kd.Straße LIKE '%$strasse%'";
-        }
+                    if (!empty($_POST['vorname'])) {
+                        $vorname = $conn->real_escape_string($_POST['vorname']);
+                        $sql .= " AND Vorname LIKE '%$vorname%'";
+                    }
 
-        if (!empty($_POST['ort'])) {
-            $ort = $conn->real_escape_string($_POST['ort']);
-            $sql .= " AND Ort LIKE '%$ort%'";
-        }
+                    if (!empty($_POST['strasse'])) {
+                        $strasse = $conn->real_escape_string($_POST['strasse']);
+                        $sql .= " AND kd.Strasse LIKE '%$strasse%'";
+                    }
 
-        if (!empty($_POST['postleitzahl'])) {
-            $plz = $conn->real_escape_string($_POST['postleitzahl']);
-            $sql .= " AND PLZ LIKE '%$plz%'";
-        }
+                    if (!empty($_POST['ort'])) {
+                        $ort = $conn->real_escape_string($_POST['ort']);
+                        $sql .= " AND Ort LIKE '%$ort%'";
+                    }
 
-        $result = $conn->query($sql);
+                    if (!empty($_POST['postleitzahl'])) {
+                        $plz = $conn->real_escape_string($_POST['postleitzahl']);
+                        $sql .= " AND PLZ LIKE '%$plz%'";
+                    }
 
-        if ($result->num_rows > 0) {
-            // Ausgabe der Ergebnisse als HTML-Tabelle
-            echo "<style>
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        // Ausgabe der Ergebnisse als HTML-Tabelle
+                        echo "<style>
                 table {
                     border-collapse: collapse;
                     width: 100%;
@@ -241,8 +247,8 @@
                 }
               </style>";
 
-            echo "<table>";
-            echo "<tr>
+                        echo "<table>";
+                        echo "<tr>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Vorname</th>
@@ -252,22 +258,119 @@
                 <th>Postleitzahl</th>
               </tr>";
 
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr onclick=\"speichereID(" . $row["FKundenID"] . ")\">";
-                echo "<td>" . $row["FKundenID"] . "</td>";
-                echo "<td>" . $row["Name"] . "</td>";
-                echo "<td>" . $row["Vorname"] . "</td>";
-                echo "<td>" . $row["GebDatum"] . "</td>";
-                echo "<td>" . $row["Straße"] . "</td>";
-                echo "<td>" . $row["Ort"] . "</td>";
-                echo "<td>" . $row["PLZ"] . "</td>";
-                echo "</tr>";
-            }
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr onclick=\"speichereID(" . $row["PKundenID"] . ")\">";
+                            echo "<td>" . $row["PKundenID"] . "</td>";
+                            echo "<td>" . $row["Name"] . "</td>";
+                            echo "<td>" . $row["Vorname"] . "</td>";
+                            echo "<td>" . $row["GebDatum"] . "</td>";
+                            echo "<td>" . $row["Strasse"] . "</td>";
+                            echo "<td>" . $row["Ort"] . "</td>";
+                            echo "<td>" . $row["PLZ"] . "</td>";
+                            echo "</tr>";
+                        }
 
-            echo "</table>";
-        } else {
-            echo "0 results";
+                        echo "</table>";
+                    } else {
+                        echo "0 results";
+                    }
+
+                } elseif ($kundentyp == 'geschaeftskunde') {
+                    // SQL-Abfrage
+                    $sql = "SELECT fk.FKundenID, fk.Name, fk.Vorname, fk.GebDatum, kd.Strasse, kd.Ort, kd.PLZ FROM firmenkunde AS fk JOIN kontaktdaten AS kd ON kd.FKundenID = fk.FKundenID WHERE 1=1";
+
+                    // Filter hinzufügen
+                    if (!empty($_POST['kundenId'])) {
+                        $kundenId = $conn->real_escape_string($_POST['kundenId']);
+                        $sql .= " AND fk.FKundenID = '$kundenId'";
+                    }
+
+                    if (!empty($_POST['name'])) {
+                        $name = $conn->real_escape_string($_POST['name']);
+                        $sql .= " AND Name LIKE '%$name%'";
+                    }
+
+                    if (!empty($_POST['vorname'])) {
+                        $vorname = $conn->real_escape_string($_POST['vorname']);
+                        $sql .= " AND Vorname LIKE '%$vorname%'";
+                    }
+
+                    if (!empty($_POST['strasse'])) {
+                        $strasse = $conn->real_escape_string($_POST['strasse']);
+                        $sql .= " AND kd.Strasse LIKE '%$strasse%'";
+                    }
+
+                    if (!empty($_POST['ort'])) {
+                        $ort = $conn->real_escape_string($_POST['ort']);
+                        $sql .= " AND Ort LIKE '%$ort%'";
+                    }
+
+                    if (!empty($_POST['postleitzahl'])) {
+                        $plz = $conn->real_escape_string($_POST['postleitzahl']);
+                        $sql .= " AND PLZ LIKE '%$plz%'";
+                    }
+
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        // Ausgabe der Ergebnisse als HTML-Tabelle
+                        echo "<style>
+                table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    margin: 20px 0;
+                    font-family: Arial, sans-serif;
+                }
+                th, td {
+                    border: 1px solid #dddddd;
+                    text-align: left;
+                    padding: 8px;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+                tr:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+                tr:hover {
+                    background-color: #e0e0e0;
+                    cursor: pointer;
+                }
+              </style>";
+
+                        echo "<table>";
+                        echo "<tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Vorname</th>
+                <th>Geburtsdatum</th>
+                <th>Straße</th>
+                <th>Ort</th>
+                <th>Postleitzahl</th>
+              </tr>";
+
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr onclick=\"speichereID(" . $row["FKundenID"] . ")\">";
+                            echo "<td>" . $row["FKundenID"] . "</td>";
+                            echo "<td>" . $row["Name"] . "</td>";
+                            echo "<td>" . $row["Vorname"] . "</td>";
+                            echo "<td>" . $row["GebDatum"] . "</td>";
+                            echo "<td>" . $row["Strasse"] . "</td>";
+                            echo "<td>" . $row["Ort"] . "</td>";
+                            echo "<td>" . $row["PLZ"] . "</td>";
+                            echo "</tr>";
+                        }
+
+                        echo "</table>";
+                    } else {
+                        echo "0 results";
+                    }
+                }
+            } else {
+                echo "Kein Kundentyp ausgewählt.";
+            }
         }
+
 
         $conn->close();
         ?>
