@@ -1,3 +1,26 @@
+function logMessage(message, type = 'INFO') {
+    if (!['ERROR', 'INFO', 'WARNING'].includes(type)) {
+        console.error(`[ERROR] Invalid log type: ${type}`);
+        return;
+    }
+    console.log(`[${type}] ${message}`); // Log to the console
+    sendLogToServer(message, type);
+}
+
+function sendLogToServer(message, type) {
+    // Adjust the path to the PHP file
+    fetch('../logic_logging.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ log: message, type: type })
+    })
+        .then(response => response.json())
+        .then(data => console.log('Server response:', data))
+        .catch(error => console.error('Error:', error));
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     // Rufe die toggleFirmaFeld Funktion auf, um den Initialzustand des Formulars festzulegen
     toggleFirmaFeld();
@@ -37,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     break;
                 default:
                     console.error('Ungültiger Tab-Name');
+                    logMessage('Ungültiger Tab-Name', 'ERROR');
             }
         });
     });
@@ -59,24 +83,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // Weitere Funktionen hier unten ...
 });
 
-function logMessage(message, type = 'INFO') {
-    console.log(`[${type}] ${message}`); // Log to the console
-    sendLogToServer(message, type);
-}
-
-function sendLogToServer(message, type) {
-    fetch('logic_logging.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ log: message, type: type })
-    })
-        .then(response => response.json())
-        .then(data => console.log('Server response:', data))
-        .catch(error => console.error('Error:', error));
-}
-
 function validiereFormularBenutzer() {
     var passwort = document.getElementById('passwort').value;
     var passwortWiederholen = document.getElementById('passwort_wiederholen').value;
@@ -91,6 +97,7 @@ function validiereFormularBenutzer() {
         if (exists) {
             document.getElementById('username_error').style.display = 'inline';
             error = true; // Setzt den Fehlerstatus auf true, wenn der Benutzername existiert
+            logMessage('Der Benutzername existiert bereits', 'ERROR');
         } else {
             document.getElementById('username_error').style.display = 'none';
             error = false; // Setzt den Fehlerstatus auf false, wenn der Benutzername nicht existiert
@@ -104,11 +111,13 @@ function validiereFormularBenutzer() {
                 document.getElementById('passwort_uebereinstimmung').style.display = 'none';
                 document.getElementById('passwort_fehlermeldung').innerText = 'Das Passwort muss mindestens 8 Zeichen lang sein.';
                 error = true;
+                logMessage('Das Passwort ist nicht lang genug', 'ERROR');
             } else if (passwort !== passwortWiederholen) {
                 document.getElementById('passwort_fehlermeldung').style.display = 'inline';
                 document.getElementById('passwort_uebereinstimmung').style.display = 'none';
                 document.getElementById('passwort_fehlermeldung').innerText = 'Die Passwörter stimmen nicht überein.';
                 error = true;
+                logMessage('Das Passwort wurde nicht korrekt wiederholt', 'ERROR');
             } else {
                 document.getElementById('passwort_fehlermeldung').style.display = 'none';
                 document.getElementById('passwort_uebereinstimmung').style.display = 'inline';
@@ -119,6 +128,7 @@ function validiereFormularBenutzer() {
             if (kundentyp === "Geschäftskunde" && firmaContainer.style.display === "none") {
                 alert('Bitte geben Sie den Firmennamen ein.');
                 error = true;
+                logMessage('Firmenname wurde nicht eingegeben', 'ERROR');
             }
 
             // Markiere alle leeren Pflichtfelder
@@ -127,6 +137,10 @@ function validiereFormularBenutzer() {
             // Wenn keine Fehler vorhanden sind, öffne das Erfolgspopup
             if (!error) {
                 switchTab('kontaktdaten');
+                logMessage('Alle Benutzerdaten wurden korrekt ausgefüllt');
+            }
+            else {
+                logMessage('Benutzerdaten wurden nicht korrekt ausgefüllt', 'ERROR');
             }
         }
     });
@@ -146,8 +160,9 @@ function validiereFormularKontakt() {
 
     if (!error) {
         switchTab('zahlungsdaten');
+        logMessage('Alle Kontaktdaten wurden angegeben');
     } else {
-        logMessage("Das Kontaktformular ist nicht vollständig");
+        logMessage('Das Kontaktformular ist nicht vollständig', 'ERROR');
     }
 }
 
@@ -195,6 +210,7 @@ function validiereFormularZahlung() {
             // Wenn keine Fehler vorhanden sind, öffne das Erfolgspopup
             if (!error) {
                 openSuccessMessageModal();
+                logMessage('Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen');
             }
         }
     });
@@ -231,7 +247,7 @@ function markiereFehlendeFelder(tabName) {
     inputFields.forEach(function(field) {
         if (!field.value.trim()) { // trim() entfernt führende und nachfolgende Leerzeichen
             field.style.border = '1px solid red';
-            logMessage("Nicht alle Felder wurden ausgefüllt", 'ERROR')
+            logMessage('Nicht alle Felder wurden ausgefüllt', 'ERROR')
         } else {
             field.style.border = '1px solid #ccc';
         }

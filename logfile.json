@@ -59,3 +59,16 @@
 2024-06-10 15:32:20 [INFO] - Anmeldung gestartet
 2024-06-10 15:32:26 - DB Verbindung hergestellt
 2024-06-10 15:32:26 - Benutzer Chantal ist angemeldet
+2024-06-24 13:19:41 [ERROR] - This is an error message.
+2024-06-24 13:19:41 [WARNING] - This is a warning message.
+2024-06-24 13:19:41 [INFO] - This is an info message.
+2024-06-24 13:20:11 [ERROR] - Benutzerdaten wurden nicht korrekt ausgefüllt
+2024-06-24 13:24:57 [ERROR] - Benutzerdaten wurden nicht korrekt ausgefüllt
+2024-06-24 13:24:57 [ERROR] - Das Passwort ist nicht lang genug
+2024-06-24 13:25:20 [ERROR] - Benutzerdaten wurden nicht korrekt ausgefüllt
+2024-06-24 13:25:20 [ERROR] - Das Passwort wurde nicht korrekt wiederholt
+2024-06-24 13:25:39 [ERROR] - Benutzerdaten wurden nicht korrekt ausgefüllt
+2024-06-24 13:25:39 [ERROR] - Das Passwort wurde nicht korrekt wiederholt
+2024-06-24 13:25:46 [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
+2024-06-24 13:26:15 [INFO] - Alle Kontaktdaten wurden angegeben
+2024-06-24 13:26:33 [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
