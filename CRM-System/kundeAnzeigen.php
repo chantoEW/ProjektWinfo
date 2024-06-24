@@ -43,6 +43,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
             <a href="javascript:history.back()" class="link"><i class="bi bi-arrow-left"></i> Zurück</a>
             <a href="startseite.html" class="link" onclick="event.preventDefault();"><i class="bi bi-house"></i> Startseite</a>
             <a href="../Kundenportal/registrierung.html" class="link"><i class="bi bi-pencil"></i> Kunde anlegen</a>
+            <!--<a href="kundeLoeschen.php" class="link"><i class="bi bi-trash"></i> Kunde löschen</a>-->
             <a href="#" class="link"><i class="bi bi-door-closed"></i> Abmelden</a>
 
         </div>
@@ -60,7 +61,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                     <div class="input-title">Benutzerdaten</div>
 
                     <span id="kundenIdDiv"></span><br><br>
-                    <input type="text" name="kundenId">
+                    <input type="text" name="kundenId" id="kundenIdFeld">
                     
                     <input type="radio" name="kundentyp" value="privat" onclick="toggleFirmaFeld()">
                     <label>Privatkunde</label>
@@ -121,6 +122,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                     <input type="text" class="input-field" id="abc_klassifikation" name="abc_klassifikation"><br>
                 </div>
                 <button type="submit">Speichern</button>
+                <button type="submit" formaction="kundeLoeschen.php">Kunde löschen</button>
             </form>
         </div>
 
