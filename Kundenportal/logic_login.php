@@ -2,7 +2,8 @@
 session_start();
 
 function logMessage($logMessage, $logType = 'INFO') {
-    $directory = 'C:\\Users\\Lenovo\\OneDrive - studmail.w-hs.de\\_Studium\\ProjektWinfo'; // Absolute path to the target directory
+    $directory = dirname(__FILE__) . '/..'; // Absolute path to one level higher directory
+    // $directory = '../logic_logging.php'; // Absolute path to the target directory
     $fileName = 'logfile.json';
     $logFile = $directory . DIRECTORY_SEPARATOR . $fileName;
 
@@ -18,8 +19,6 @@ function logMessage($logMessage, $logType = 'INFO') {
     file_put_contents($logFile, $formattedMessage, FILE_APPEND);
 }
 
-// Example of logging an error message
-logMessage('This is an error message from another PHP file.', 'ERROR');
 
 // Verbindung zur Datenbank herstellen
 $servername = "localhost";
