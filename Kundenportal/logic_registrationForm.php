@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($kundentyp == 'Privatkunde') {
             // SQL-Query zum Einfügen der Daten in die entsprechende Tabelle
             // $sql = "INSERT INTO privatkunde (Benutzername, Vorname, Nachname, Passwort, eMail, Geburtsdatum, Kundentyp) VALUES ('$benutzername', '$vorname', '$nachname', '$hashed_password', '$email', '$geburtsdatum', '$kundentyp')";
-            $sql = "INSERT INTO privatkunde (Name, Vorname, GebDatum) VALUES ('$nachname', '$vorname', '$geburtsdatum')";
+            $sql = "INSERT INTO privatkunde (Name, Vorname, GebDatum) VALUES ('$nachname', '$vorname', '$geburtsdatum', EINTRITTSDATUM!!)";
             if (mysqli_query($conn, $sql)) {
                 $PKundenID = mysqli_insert_id($conn);
                 $sql = "INSERT INTO kunden (PKundenID, FKunde_PKunde) VALUES ('$PKundenID', 'p')";

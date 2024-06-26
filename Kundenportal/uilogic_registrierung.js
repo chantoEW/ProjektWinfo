@@ -209,6 +209,7 @@ function validiereFormularZahlung() {
 
             // Wenn keine Fehler vorhanden sind, öffne das Erfolgspopup
             if (!error) {
+                document.getElementById("registrierungsformular").submit(); // Formular absenden, wenn keine Fehler vorhanden sind
                 openSuccessMessageModal();
                 logMessage('Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen');
             }

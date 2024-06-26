@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $passwort = $_POST['passwort']; // umbenannt in $passwort
 
     // Überprüfen, ob der Benutzer in der Datenbank existiert
-    $sql = "SELECT Benutzername, Passwort FROM user WHERE Benutzername = '$benutzername'";
+    $sql = "SELECT Benutzername, Passwort FROM mitarbeiteruser WHERE Benutzername = '$benutzername'";
     $result = mysqli_query($conn, $sql);
 
     if ($result->num_rows == 1) {
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['benutzername'] = $benutzername;
             echo "Benutzer erfolgreich angemeldet";
             // Weiterleitung zur Dashboard-Seite
-            header("Location: dashboard.php");
+            header("Location: http://localhost:3000/d/ddptnazf4qfb4f/marketingauswertung?orgId=1&from=1719292876793&to=1719314476793&kiosk");
             exit();
         } else {
             // Passwort stimmt nicht überein
