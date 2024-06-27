@@ -47,9 +47,10 @@ try {
             </head>
             <body>
                 <div style='background-color: #f4f4f4; padding: 20px;'>
-                    <p style='color: #666;'>Liebe/r " . htmlspecialchars($vorname) . " " . htmlspecialchars($nachname) . " (" . htmlspecialchars($firmenname) .",</p>
+                    <p style='color: #666;'>Liebe/r <strong>" . htmlspecialchars($vorname) . "</strong> <strong>" . htmlspecialchars($nachname) . "</strong> (Firma: <strong>" . htmlspecialchars($firmenname) ."</strong>),</p>
                     <p style='color: #666;'>Die Plausibilitätsprüfung wurde erfgolgreich abgeschlossen. Bitte bestätigen Sie Ihre E-Mail-Adresse über folgenden Link.</p>
-                    <p style='color: #666;'>Anschließend können Sie sich mit Ihrem Benutzernamen " . htmlspecialchars($benutzername) . " in unserem Kundenportal einloggen!</p>
+                    <p><a href='$confirmationLink' style='color: #1a73e8;'>Registrierung bestätigen</a></p>
+                    <p style='color: #666;'>Anschließend können Sie sich mit Ihrem Benutzernamen <strong>" . htmlspecialchars($benutzername) . "</strong> in unserem Kundenportal einloggen!</p>
                     <p style='color: #666;'>Mit freundlichen Grüßen,<br>Ihre Autovermietung jomace</p>
                 </div>
             </body>

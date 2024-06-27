@@ -34,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $benutzername = $_POST['benutzername'];
     $passwort = $_POST['passwort']; // umbenannt in $passwort
 
-    // Überprüfen, ob der Benutzer in der Datenbank existiert
-    $sql = "SELECT a.Benutzername, a.Passwort, c.Bestaetigung FROM user as a, kunden as b, kontaktdaten as c WHERE (a.KundenID = b. KundenID) AND (b.PKundenID = c.PKundenID) AND (a.Benutzername = '$benutzername')";
+    // Überprüfen, ob der Benutzer in der Privatkunden-Datenbank existiert
+    $sql = "SELECT a.Benutzername, a.Passwort, c.Bestaetigung FROM user as a, kunden as b, kontaktdaten as c WHERE (a.KundenID = b. KundenID) AND ((b.FKundenID = c.FKundenID) OR (b.PKundenID = c.PKundenID)) AND (a.Benutzername = '$benutzername')";
     $result = mysqli_query($conn, $sql);
 
     if ($result->num_rows == 1) {

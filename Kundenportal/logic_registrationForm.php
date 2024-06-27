@@ -112,6 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } elseif ($kundentyp == 'Geschäftskunde') {
             $firmenname = $_POST['firmenname'];
+            $_SESSION['firmenname'] = $firmenname;
             // SQL-Query zum Einfügen der Daten in die entsprechende Tabelle
             $sql = "INSERT INTO firmenkunde (Name, Vorname, GebDatum, Eintrittsdatum) VALUES ('$nachname', '$vorname', '$geburtsdatum', '$eintrittsdatum')";
             if (mysqli_query($conn, $sql)) {
@@ -130,6 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $ZahlungsID = mysqli_insert_id($conn);
                             echo "$ZahlungsID";
                             $sql = "INSERT INTO firma (KontaktID, KundenID, Name) VALUES ('$KontaktID', '$KundenID', '$firmenname')";
+                            mysqli_query($conn, $sql);
                             $FirmenID = mysqli_insert_id($conn);
                             echo "$FirmenID";
                             if (mysqli_query($conn, $sql)) {

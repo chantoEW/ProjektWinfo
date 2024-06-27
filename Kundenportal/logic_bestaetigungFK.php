@@ -49,7 +49,7 @@ if (isset($_GET['benutzername'])) {
                 }
                 else
                 {
-                    $sql = "UPDATE Kontaktdaten SET Bestaetigung = '1' WHERE PKundenID = '$PKundenID'";
+                    $sql = "UPDATE Kontaktdaten SET Bestaetigung = '1' WHERE FKundenID = '$FKundenID'";
                     if (mysqli_query($conn, $sql)) {
                         echo("E-Mail-Adresse wurde erfolgreich bestätigt! Sie können sich nun einloggen.");
                     }else{
