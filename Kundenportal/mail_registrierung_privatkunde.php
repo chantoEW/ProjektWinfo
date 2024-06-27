@@ -24,7 +24,7 @@ try {
     // Zeichencodierung setzen
     $mail->CharSet = 'UTF-8';
 
-    $confirmationLink = "http://localhost/projektWINFO/Kundenportal/logic_bestaetigungPK?benutzername=$benutzername";
+    $confirmationLink = "http://localhost/projektWINFO/Kundenportal/logic_bestaetigungPK.php?benutzername=$benutzername";
 
     // Empfänger, Betreff und Nachricht einstellen
     $mail->setFrom('autovermietung.jomaface@outlook.de', 'Autovermietung jomaface');
@@ -46,7 +46,6 @@ try {
             </head>
             <body>
                 <div style='background-color: #f4f4f4; padding: 20px;'>
-                    <h2 style='color: #333;'>Der Registrierungsvorgang wurde erfolgreich abgeschlossen!</h2>
                     <p style='color: #666;'>Liebe/r " . htmlspecialchars($vorname) . " " . htmlspecialchars($nachname) . ",</p>
                     <p style='color: #666;'>Die Plausibilitätsprüfung wurde erfgolgreich abgeschlossen. Bitte bestätigen Sie Ihre E-Mail-Adresse über folgenden Link:</p>
                     <p><a href='$confirmationLink' style='color: #1a73e8;'>Registrierung bestätigen</a></p>

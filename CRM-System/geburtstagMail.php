@@ -52,7 +52,7 @@ foreach ($rows as $row) {
     $mail->Host = 'smtp.office365.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'autovermietung.jomaface@outlook.de';
-    $mail->Password = 'projektwinfo!';
+    $mail->Password = '!krusewhs';
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
 

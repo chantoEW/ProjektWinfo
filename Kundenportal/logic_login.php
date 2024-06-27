@@ -35,20 +35,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $passwort = $_POST['passwort']; // umbenannt in $passwort
 
     // Überprüfen, ob der Benutzer in der Datenbank existiert
-    $sql = "SELECT Benutzername, Passwort FROM user WHERE Benutzername = '$benutzername'";
+    $sql = "SELECT a.Benutzername, a.Passwort, c.Bestaetigung FROM user as a, kunden as b, kontaktdaten as c WHERE (a.KundenID = b. KundenID) AND (b.PKundenID = c.PKundenID) AND (a.Benutzername = '$benutzername')";
     $result = mysqli_query($conn, $sql);
 
     if ($result->num_rows == 1) {
-        // Benutzer gefunden, überprüfen ob das Passwort übereinstimmt
         $row = $result->fetch_assoc();
+
+            // Benutzer gefunden, überprüfen ob das Passwort übereinstimmt
         if (password_verify($passwort, $row['Passwort'])) {
-            // Passwort stimmt überein, Benutzer ist erfolgreich angemeldet
+            //Übeprüfung, ob E-Mail-Adresse bestätigt wurde
+            if ($row['Bestaetigung'] == 1)
+            {
+            // Passwort stimmt überein und E-Mail-Adresse wurde bestätigt, Benutzer ist erfolgreich angemeldet
             $_SESSION['benutzername'] = $benutzername;
             echo "<script>alert('Benutzer erfolgreich angemeldet');</script>";
             logMessage("Benutzer $benutzername ist angemeldet");
             // Weiterleitung zur Dashboard-Seite
             echo "<script>window.location.href = 'dashboard.php';</script>";
             exit();
+            }
+            else {
+                echo "<script>alert('E-Mail-Adresse wurde nicht bestätigt. Bitte bestätigen Sie Ihre E-Mail-Adresse über den zugesendeten Link!');</script>";
+                echo "<script>window.location.href = 'login.html';</script>";
+            }
         } else {
             // Passwort stimmt nicht überein
             echo "<script>alert('Falsches Passwort'); window.location.href = 'login.html';</script>";

@@ -1,5 +1,11 @@
 <?php
 
+function logMessage($message) {
+    $logFile = 'logfile.json';
+    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
+}
+
 // Verbindung zur Datenbank herstellen
 $servername = "localhost";
 $username = "Chantal";
@@ -10,42 +16,57 @@ $dbname = "portal";
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Verbindung überprüfen
 if ($conn->connect_error) {
-    die("Verbindung fehlgeschlagen: " . $conn->connect_error);
     logMessage("Verbindung zur Datenbank kann nicht hergestellt werden");
 } else {
-    echo("Verbindung zur DB wurde hergestellt");
     logMessage("Verbindung zur Datenbank wurde hergestellt und überprüft");
 }
 
 if (isset($_GET['benutzername'])) {
     $benutzername = $_GET['benutzername'];
 
-    // Benutzer mit diesem Token finden (Beispiel: PDO)
-    $sql = "SELECT KundenID FROM users WHERE benutzername = '$benutzername'";
+    // KundenID des Users finden
+    $sql = "SELECT KundenID FROM user WHERE benutzername = '$benutzername'";
     if (mysqli_query($conn, $sql)) {
-        $KundenID = mysqli_insert_id($conn);
-        $sql = "SELECT PKundenID FROM kunden WHERE KundenID = '$KundenID'";
-        mysqli_query($conn, $sql);
-        $FKundenID = mysqli_insert_id($conn);
-        $sql = "SELECT ... FROM Kontaktdaten WHERE FKundenID = '$FKundenID'";
-        $result = mysqli_query($conn, $sql);
-        if ($result->num_rows == 1) {
-            if ($result){
-                echo("E-Mail-Adresse wurde bereits bestätigt!");
-            }
-            else
+        $result_KundenID = mysqli_query($conn, $sql);
+        $row_KundenID = mysqli_fetch_assoc($result_KundenID);
+        $KundenID = $row_KundenID['KundenID'];
+
+        // FKundenID herausfinden
+        $sql = "SELECT FKundenID FROM kunden WHERE KundenID = '$KundenID'";
+        if (mysqli_query($conn, $sql)) {
+            $result_FKundenID = mysqli_query($conn, $sql);
+            $row_FKundenID = mysqli_fetch_assoc($result_FKundenID);
+            $FKundenID = $row_FKundenID['FKundenID'];
+
+            // Bestätigungswert herausfinden
+            $sql = "SELECT Bestaetigung FROM kontaktdaten WHERE FKundenID = '$FKundenID'";
+            if (mysqli_query($conn, $sql)){
+                $result_Bestaetigung = mysqli_query($conn, $sql);
+                $row_Bestaetigung = mysqli_fetch_assoc($result_Bestaetigung);
+                if ($row_Bestaetigung['Bestaetigung'] == 1) {
+
+                    echo("E-Mail-Adresse wurde bereits bestätigt!");
+                }
+                else
+                {
+                    $sql = "UPDATE Kontaktdaten SET Bestaetigung = '1' WHERE PKundenID = '$PKundenID'";
+                    if (mysqli_query($conn, $sql)) {
+                        echo("E-Mail-Adresse wurde erfolgreich bestätigt! Sie können sich nun einloggen.");
+                    }else{
+                        echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
+                    }
+                }
+            } else
             {
-                $sql = "UPDATE Kontaktdaten SET bestaetigt = true WHERE FKundenID = '$FKundenID'";
-                echo("E-Mail-Adresse wurde erfolgreich bestätigt! Sie können sich nun einloggen.");
+                echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
             }
-        }
-        else
+        } else
         {
-            echo("Es wurde kein passendes Kundenkonto gefunden! Bitte versuchen Sie es später erneut.");
+            echo("Es wurde kein passendes Firmen-Kundenkonto gefunden! Bitte versuchen Sie es später erneut.");
         }
     } else
     {
-        echo 'Es konnte kein passender User gefunden werde! Bitte versuchen Sie es später erneut.';
+        echo("Es wurde kein passendes Kundenkonto gefunden! Bitte versuchen Sie es später erneut.");
     }
 } else {
     echo 'Kein Bestätigungstoken angegeben.';

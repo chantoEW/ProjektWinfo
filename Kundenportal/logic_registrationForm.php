@@ -59,6 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+    //Eintrittsdatum für Datensatz bereitstellen:
+    $eintrittsdatum = date("Y-m-d");
+
     // Überprüfe, welcher Kundentyp ausgewählt wurde
     if (isset($_POST['kundentyp'])) {
         $kundentyp = $_POST['kundentyp'];
@@ -67,19 +70,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($kundentyp == 'Privatkunde') {
             // SQL-Query zum Einfügen der Daten in die entsprechende Tabelle
             // $sql = "INSERT INTO privatkunde (Benutzername, Vorname, Nachname, Passwort, eMail, Geburtsdatum, Kundentyp) VALUES ('$benutzername', '$vorname', '$nachname', '$hashed_password', '$email', '$geburtsdatum', '$kundentyp')";
-            $sql = "INSERT INTO privatkunde (Name, Vorname, GebDatum) VALUES ('$nachname', '$vorname', '$geburtsdatum', EINTRITTSDATUM!!)";
+            $sql = "INSERT INTO privatkunde (Name, Vorname, GebDatum, Eintrittsdatum) VALUES ('$nachname', '$vorname', '$geburtsdatum', '$eintrittsdatum')";
             if (mysqli_query($conn, $sql)) {
                 $PKundenID = mysqli_insert_id($conn);
+                echo "$PKundenID";
                 $sql = "INSERT INTO kunden (PKundenID, FKunde_PKunde) VALUES ('$PKundenID', 'p')";
                 if (mysqli_query($conn, $sql)) {
                     $KundenID = mysqli_insert_id($conn);
+                    echo "$KundenID";
                     $sql = "INSERT INTO kontaktdaten (Strasse, Ort, PLZ, Telefonnummer, Mail, PKundenID, FKunde_PKunde) VALUES ('$strasse', '$ort', '$plz', '$telefonnummer', '$email', '$PKundenID', 'p')";
                     if (mysqli_query($conn, $sql)) {
                         $KontaktID = mysqli_insert_id($conn);
+                        echo "$KontaktID";
                         $sql = "INSERT INTO zahlungsinformationen (BLZ, Institut, IBAN, Inhaber, KundenID) VALUES ('$blz', '$institut', '$iban', '$inhaber', '$KundenID')";
                         if (mysqli_query($conn, $sql)) {
                             $ZahlungsID = mysqli_insert_id($conn);
-                            $sql = "UPDATE privatkunde SET KontaktID='$KontaktID', ZahlungsID='$ZahlungsID' WHERE PKundenID='$PKundenID'";
+                            echo "$ZahlungsID";
+                            $sql = "UPDATE privatkunde SET KontaktID='$KontaktID', ZahlungsID='$ZahlungsID', KundenID='$KundenID' WHERE PKundenID='$PKundenID'";
                             if (mysqli_query($conn, $sql)) {
                                 $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
                                 if (mysqli_query($conn, $sql)) {
@@ -106,21 +113,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } elseif ($kundentyp == 'Geschäftskunde') {
             $firmenname = $_POST['firmenname'];
             // SQL-Query zum Einfügen der Daten in die entsprechende Tabelle
-            $sql = "INSERT INTO firmenkunde (Name, Vorname, GebDatum) VALUES ('$nachname', '$vorname', '$geburtsdatum')";
+            $sql = "INSERT INTO firmenkunde (Name, Vorname, GebDatum, Eintrittsdatum) VALUES ('$nachname', '$vorname', '$geburtsdatum', '$eintrittsdatum')";
             if (mysqli_query($conn, $sql)) {
                 $FKundenID = mysqli_insert_id($conn);
+                echo "$FKundenID";
                 $sql = "INSERT INTO kunden (FKundenID, FKunde_PKunde) VALUES ('$FKundenID', 'f')";
                 if (mysqli_query($conn, $sql)) {
                     $KundenID = mysqli_insert_id($conn);
+                    echo "$KundenID";
                     $sql = "INSERT INTO kontaktdaten (Strasse, Ort, PLZ, Telefonnummer, Mail, FKundenID, FKunde_PKunde) VALUES ('$strasse', '$ort', '$plz', '$telefonnummer', '$email', '$FKundenID', 'f')";
                     if (mysqli_query($conn, $sql)) {
                         $KontaktID = mysqli_insert_id($conn);
+                        echo "$KontaktID";
                         $sql = "INSERT INTO zahlungsinformationen (BLZ, Institut, IBAN, Inhaber, KundenID) VALUES ('$blz', '$institut', '$iban', '$inhaber', '$KundenID')";
                         if (mysqli_query($conn, $sql)) {
                             $ZahlungsID = mysqli_insert_id($conn);
-                            $sql = "UPDATE firmenkunde SET KontaktID='$KontaktID', ZahlungsID='$ZahlungsID' WHERE FKundenID='$FKundenID'";
+                            echo "$ZahlungsID";
+                            $sql = "INSERT INTO firma (KontaktID, KundenID, Name) VALUES ('$KontaktID', '$KundenID', '$firmenname')";
+                            $FirmenID = mysqli_insert_id($conn);
+                            echo "$FirmenID";
                             if (mysqli_query($conn, $sql)) {
-                                $sql = "INSERT INTO firma (KontaktID, KundenID, Name) VALUES ('$KontaktID', '$KundenID', '$firmenname')";
+                                $sql = "UPDATE firmenkunde SET ZahlungsID='$ZahlungsID', KundenID='$KundenID', FirmenID='$FirmenID' WHERE FKundenID='$FKundenID'";
                                 if (mysqli_query($conn, $sql)) {
                                     $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
                                     if (mysqli_query($conn, $sql)) {
@@ -129,9 +142,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     } else {
                                         echo "Fehler beim Einfügen in die Tabelle user: " . mysqli_error($conn);}
                                 } else {
-                                    echo "Fehler beim Aktualisierung der Tabelle firma: " . mysqli_error($conn);}
+                                    echo "Fehler beim Aktualisierung der Tabelle firmenkunde: " . mysqli_error($conn);}
                             } else {
-                                echo "Fehler beim Aktualisierung der Tabelle firmenkunde: " . mysqli_error($conn);}
+                                echo "Fehler beim Einfügen in die Tabelle firma: " . mysqli_error($conn);}
                         } else {
                             echo "Fehler beim Einfügen in die Tabelle zahlungsinformationen: " . mysqli_error($conn);}
                     } else {
