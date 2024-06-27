@@ -39,7 +39,7 @@
     </nav>
     
     <section class="container">
-        <form method="POST" action="mailVersenden.php">
+        <form method="POST" action="marketingaktionMail.php">
             <div class="form-group">
                 <label for="emailSubject">Betreff:</label>
                 <input type="text" id="emailSubject" name="emailSubject" class="input-field" required>
@@ -57,6 +57,10 @@
                 <div>
                     <input type="radio" id="kundenB" name="empfaenger" value="b-kunden">
                     <label for="kundenB">B-Kunden</label>
+                </div>
+                <div>
+                    <input type="radio" id="kundenC" name="empfaenger" value="c-kunden">
+                    <label for="kundenC">C-Kunden</label>
                 </div>
                 <div>
                     <input type="radio" id="kundenAlle" name="empfaenger" value="alle">
