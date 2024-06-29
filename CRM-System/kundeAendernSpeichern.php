@@ -56,27 +56,35 @@ if (
     $sql = '';
     if ($kundentyp == 'geschaeft') {
         $sql = "SELECT * 
-    FROM firmenkunde AS fk
-    JOIN kontaktdaten AS kd
-    ON fk.FKundenID = kd.FKundenID
-    JOIN zahlungsinformationen AS zi
-    ON fk.FKundenID = zi.KundenID
-    JOIN user 
-    ON user.KundenID = fk.FKundenID
-    JOIN firma
-    ON fk.FKundenID = firma.kundenID
-    WHERE fk.FKundenID = ?";
+                    FROM kunden AS k
+                    JOIN firmenkunde AS fk
+                    ON k.FKundenID = fk.FKundenID
+                    JOIN zahlungsinformationen AS zi
+                    ON fk.ZahlungsID = zi.ZahlungsID
+                    JOIN user 
+                    ON user.KundenID = k.KundenID
+                    JOIN firma
+                    ON fk.FirmenID = firma.FirmenID
+                    JOIN kontaktdaten AS kd
+                    ON firma.KontaktID = kd.KontaktID
+                    JOIN kundenauswertung AS ka
+                    ON ka.KundenID = k.KundenID
+                    WHERE k.KundenID = ?";
 
     } else if ($kundentyp == 'privat') {
         $sql = "SELECT * 
-    FROM privatkunde AS pk
-    JOIN kontaktdaten AS kd
-    ON pk.PKundenID = kd.PKundenID
-    JOIN zahlungsinformationen AS zi
-    ON pk.PKundenID = zi.KundenID
-    JOIN user 
-    ON user.KundenID = pk.PKundenID
-    WHERE pk.PKundenID = ?";
+                    FROM kunden AS k
+                    JOIN privatkunde AS pk
+                    ON pk.PKundenID = k.PKundenID
+                    JOIN kontaktdaten AS kd
+                    ON pk.KontaktID = kd.KontaktID
+                    JOIN zahlungsinformationen AS zi
+                    ON pk.ZahlungsID = zi.ZahlungsID
+                    JOIN user 
+                    ON user.KundenID = k.KundenID
+                    JOIN kundenauswertung AS ka
+                    ON ka.KundenID = k.KundenID
+                    WHERE k.KundenID = ?";
     }
 
 
@@ -170,35 +178,50 @@ if (
             $params[] = $inhaber;
             $types .= "s";
         }
-        /*if ($existingData['bonitaetsklasse'] != $bonitaetsklasse) {
-            $updates[] = "bonitaetsklasse = ?";
+        if ($existingData['Bonitätsklasse'] != $bonitaetsklasse) {
+            $updates[] = "Bonitätsklasse = ?";
             $params[] = $bonitaetsklasse;
             $types .= "s";
         }
-        if ($existingData['abc_klassifikation'] != $abc_klassifikation) {
-            $updates[] = "abc_klassifikation = ?";
+        if ($existingData['ABC_Klasse'] != $abc_klassifikation) {
+            $updates[] = "ABC_Klasse = ?";
             $params[] = $abc_klassifikation;
             $types .= "s";
-        }*/
+        }
 
-
+      
 
         if (count($updates) > 0) {
             $params[] = $kundenId;
             $types .= "i";
             if ($kundentyp == 'geschaeft') {
-                $sql = "UPDATE firmenkunde AS fk
-            JOIN kontaktdaten AS kd ON fk.FKundenID = kd.FKundenID
-            JOIN zahlungsinformationen AS zi ON fk.FKundenID = zi.KundenID
-            JOIN user ON user.KundenID = fk.FKundenID
-            JOIN firma ON fk.FKundenID = firma.kundenID
+                $sql = "UPDATE kunden AS k
+        JOIN firmenkunde AS fk
+        ON k.FKundenID = fk.FKundenID
+        JOIN zahlungsinformationen AS zi
+        ON fk.ZahlungsID = zi.ZahlungsID
+        JOIN user 
+        ON user.KundenID = k.KundenID
+        JOIN firma
+        ON fk.FirmenID = firma.FirmenID
+        JOIN kontaktdaten AS kd
+        ON firma.KontaktID = kd.KontaktID
+        JOIN kundenauswertung AS ka
+        ON ka.KundenID = k.KundenID
             SET " . implode(", ", $updates) . " 
             WHERE fk.FKundenID = ?";
             } else if ($kundentyp == 'privat') {
-                $sql = "UPDATE privatkunde AS pk
-            JOIN kontaktdaten AS kd ON pk.PKundenID = kd.PKundenID
-            JOIN zahlungsinformationen AS zi ON pk.PKundenID = zi.KundenID
-            JOIN user ON user.KundenID = pk.PKundenID
+                $sql = "UPDATE kunden AS k
+                    JOIN privatkunde AS pk
+                    ON pk.PKundenID = k.PKundenID
+                    JOIN kontaktdaten AS kd
+                    ON pk.KontaktID = kd.KontaktID
+                    JOIN zahlungsinformationen AS zi
+                    ON pk.ZahlungsID = zi.ZahlungsID
+                    JOIN user 
+                    ON user.KundenID = k.KundenID
+                    JOIN kundenauswertung AS ka
+                    ON ka.KundenID = k.KundenID
             SET " . implode(", ", $updates) . " 
             WHERE pk.PKundenID = ?";
             }
