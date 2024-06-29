@@ -260,28 +260,36 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                 if ($kundentyp == 'F') {
 
                     $sql = "SELECT * 
-                    FROM firmenkunde AS fk
-                    JOIN kontaktdaten AS kd
-                    ON fk.FKundenID = kd.FKundenID
+                    FROM kunden AS k
+                    JOIN firmenkunde AS fk
+                    ON k.FKundenID = fk.FKundenID
                     JOIN zahlungsinformationen AS zi
-                    ON fk.FKundenID = zi.KundenID
+                    ON fk.ZahlungsID = zi.ZahlungsID
                     JOIN user 
-                    ON user.KundenID = fk.FKundenID
+                    ON user.KundenID = k.KundenID
                     JOIN firma
-                    ON fk.FKundenID = firma.KundenID
-                    WHERE fk.FKundenID = ?";
+                    ON fk.FirmenID = firma.FirmenID
+                    JOIN kontaktdaten AS kd
+                    ON firma.KontaktID = kd.KontaktID
+                    JOIN kundenauswertung AS ka
+                    ON ka.KundenID = k.KundenID
+                    WHERE k.KundenID = ?";
 
                 } else if ($kundentyp == 'P') {
 
                     $sql = "SELECT * 
-                    FROM privatkunde AS pk
+                    FROM kunden AS k
+                    JOIN privatkunde AS pk
+                    ON pk.PKundenID = k.PKundenID
                     JOIN kontaktdaten AS kd
-                    ON pk.PKundenID = kd.PKundenID
+                    ON pk.KontaktID = kd.KontaktID
                     JOIN zahlungsinformationen AS zi
-                    ON pk.PKundenID = zi.KundenID
+                    ON pk.ZahlungsID = zi.ZahlungsID
                     JOIN user 
-                    ON user.KundenID = pk.PKundenID
-                    WHERE pk.PKundenID = ?";
+                    ON user.KundenID = k.KundenID
+                    JOIN kundenauswertung AS ka
+                    ON ka.KundenID = k.KundenID
+                    WHERE k.KundenID = ?";
                 }
 
                 // SQL-Abfrage
@@ -393,17 +401,19 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                 document.getElementById('institut').value = data.data.Institut || '';
                 document.getElementById('iban').value = data.data.IBAN || '';
                 document.getElementById('inhaber').value = data.data.Inhaber || '';
+                document.getElementById('bonitaetsklasse').value = data.data.Bonitätsklasse || '';
+                document.getElementById('abc_klassifikation').value = data.data.ABC_Klasse || '';
 
                 if (data.data.Firmenname != null) {
                     document.getElementById('firma').value = data.data.Firmenname || '';
-                    document.getElementById('kundenIdDiv').innerHTML = "<b>Kunden-ID: " + data.data.FKundenID + "</b>" || '';
-                    document.getElementsByName('kundenId')[0].value = data.data.FKundenID || '';
+                    document.getElementById('kundenIdDiv').innerHTML = "<b>Kunden-ID: " + data.data.KundenID + "</b>" || '';
+                    document.getElementsByName('kundenId')[0].value = data.data.KundenID || '';
                     document.getElementsByName('kundentyp')[1].checked = true;
                     //document.getElementsByName('kundentyp')[3].checked = true;
                 }
                 else {
-                    document.getElementById('kundenIdDiv').innerHTML = "<b>Kunden-ID: " + data.data.PKundenID + "</b>" || '';
-                    document.getElementsByName('kundenId')[0].value = data.data.PKundenID || '';
+                    document.getElementById('kundenIdDiv').innerHTML = "<b>Kunden-ID: " + data.data.KundenID + "</b>" || '';
+                    document.getElementsByName('kundenId')[0].value = data.data.KundenID || '';
                     document.getElementsByName('kundentyp')[0].checked = true;
                     //document.getElementsByName('kundentyp')[2].checked = true;
                     document.getElementById('firmaContainer').style.display = 'none';

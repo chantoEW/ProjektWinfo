@@ -7,142 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="styleCRM.css" rel="stylesheet">
     <title>Kunde suchen</title>
-    <!--<style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url('hintergrundbild.jpg');
-            /* Hintergrundbild einfügen */
-            background-size: cover;
-            /* Bildgröße anpassen */
-            background-repeat: no-repeat;
-            /* Wiederholung des Bildes verhindern */
-            background-attachment: fixed;
-            /* Hintergrundbild fixieren */
-            background-color: rgba(255, 255, 255, 0.8);
-            /* Transparente Hintergrundfarbe */
-            color: #000;
-            /* Schriftfarbe schwarz */
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
 
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-
-        nav {
-            background-color: #555;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav .link-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-        }
-
-        nav a:hover {
-            background-color: #777;
-        }
-
-        .container {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            width: 80%;
-            /* Set the width to 80% */
-            max-width: 900px;
-            /* Reduce the max-width */
-            margin: 20px auto;
-            /* Center the container */
-            background-color: rgba(255, 255, 255, 0.9);
-            /* Weißer transparenter Hintergrund */
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            /* Reduced gap between input fields */
-            margin-bottom: 15px;
-            /* Added margin-bottom for better spacing */
-        }
-
-        .form-group label {
-            flex: 1 1 100%;
-            font-weight: bold;
-            margin-bottom: 5px;
-            /* Reduced bottom margin for labels */
-        }
-
-        .input-field {
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            flex: 1 1 calc(50% - 22px);
-            /* Adjusted width for better spacing */
-            box-sizing: border-box;
-            background-color: #fff;
-            /* Hintergrundfarbe der Eingabefelder weiß */
-            color: #000;
-            /* Schriftfarbe der Eingabefelder schwarz */
-        }
-
-        .input-title {
-            font-weight: bold;
-            margin-bottom: 20px;
-            font-size: 1.2em;
-            /* Increased font size for emphasis */
-            text-align: center;
-            width: 100%;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            position: relative;
-        }
-
-        button {
-            padding: 10px 20px;
-            margin-top: 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #333;
-            color: #fff;
-            cursor: pointer;
-            display: block;
-            width: 100%;
-            max-width: 200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        button:hover {
-            background-color: #ffffff;
-            color: #333;
-        }
-    </style>-->
 </head>
 
 <body>
@@ -188,12 +53,12 @@
                 if ($kundentyp == 'privatkunde') {
 
                     // SQL-Abfrage
-                    $sql = "SELECT pk.PKundenID, pk.Name, pk.Vorname, pk.GebDatum, kd.Strasse, kd.Ort, kd.PLZ FROM privatkunde AS pk JOIN kontaktdaten AS kd ON kd.PKundenID = pk.PKundenID WHERE 1=1";
+                    $sql = "SELECT k.KundenID, pk.Name, pk.Vorname, pk.GebDatum, kd.Strasse, kd.Ort, kd.PLZ FROM kunden AS k JOIN privatkunde AS pk ON k.PKundenID = pk.PKundenID JOIN kontaktdaten AS kd ON kd.PKundenID = pk.PKundenID WHERE 1=1";
                     //echo  $_POST['kundenId'];
                     // Filter hinzufügen
                     if (!empty($_POST['kundenId'])) {
                         $kundenId = $conn->real_escape_string($_POST['kundenId']);
-                        $sql .= " AND pk.PKundenID = '$kundenId'";
+                        $sql .= " AND k.KundenID = '$kundenId'";
                     }
 
                     if (!empty($_POST['name'])) {
@@ -261,8 +126,8 @@
               </tr>";
 
                         while ($row = $result->fetch_assoc()) {
-                            echo "<tr onclick=\"speichereID(" . $row["PKundenID"] . ")\">";
-                            echo "<td>" . $row["PKundenID"] . "</td>";
+                            echo "<tr onclick=\"speichereID(" . $row["KundenID"] . ")\">";
+                            echo "<td>" . $row["KundenID"] . "</td>";
                             echo "<td>" . $row["Name"] . "</td>";
                             echo "<td>" . $row["Vorname"] . "</td>";
                             echo "<td>" . $row["GebDatum"] . "</td>";
@@ -279,12 +144,12 @@
 
                 } elseif ($kundentyp == 'geschaeftskunde') {
                     // SQL-Abfrage
-                    $sql = "SELECT fk.FKundenID, fk.Name, fk.Vorname, fk.GebDatum, kd.Strasse, kd.Ort, kd.PLZ FROM firmenkunde AS fk JOIN kontaktdaten AS kd ON kd.FKundenID = fk.FKundenID WHERE 1=1";
+                    $sql = "SELECT k.KundenID, fk.Name, fk.Vorname, fk.GebDatum, kd.Strasse, kd.Ort, kd.PLZ FROM kunden AS k JOIN firmenkunde AS fk ON fk.FKundenID = k.FKundenID JOIN firma ON firma.FirmenID = fk.FirmenID JOIN kontaktdaten AS kd ON kd.KontaktID = firma.KontaktID WHERE 1=1";
 
                     // Filter hinzufügen
                     if (!empty($_POST['kundenId'])) {
                         $kundenId = $conn->real_escape_string($_POST['kundenId']);
-                        $sql .= " AND fk.FKundenID = '$kundenId'";
+                        $sql .= " AND k.KundenID = '$kundenId'";
                     }
 
                     if (!empty($_POST['name'])) {
@@ -352,8 +217,8 @@
               </tr>";
 
                         while ($row = $result->fetch_assoc()) {
-                            echo "<tr onclick=\"speichereID(" . $row["FKundenID"] . ")\">";
-                            echo "<td>" . $row["FKundenID"] . "</td>";
+                            echo "<tr onclick=\"speichereID(" . $row["KundenID"] . ")\">";
+                            echo "<td>" . $row["KundenID"] . "</td>";
                             echo "<td>" . $row["Name"] . "</td>";
                             echo "<td>" . $row["Vorname"] . "</td>";
                             echo "<td>" . $row["GebDatum"] . "</td>";
