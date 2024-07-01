@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $passwort = $_POST['passwort']; // umbenannt in $passwort
 
     // Überprüfen, ob der Benutzer in der Datenbank existiert
-    $sql = "SELECT Benutzername, Passwort FROM mitarbeiteruser WHERE Benutzername = '$benutzername'";
+    $sql = "SELECT Benutzername, Passwort, Berechtigungen FROM mitarbeiteruser as a, rollen as b WHERE Benutzername = '$benutzername' AND a.RolleniD = b.RollenID";
     $result = mysqli_query($conn, $sql);
 
     if ($result->num_rows == 1) {
@@ -27,10 +27,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($passwort, $row['Passwort'])) { // Überprüfung auf "Passwort" statt "password"
             // Passwort stimmt überein, Benutzer ist erfolgreich angemeldet
             $_SESSION['benutzername'] = $benutzername;
-            echo "Benutzer erfolgreich angemeldet";
-            // Weiterleitung zur Dashboard-Seite
-            header("Location: http://localhost:3000/d/ddptnazf4qfb4f/marketingauswertung?orgId=1&from=1719292876793&to=1719314476793&kiosk");
-            exit();
+
+            if($row['Berechtigungen'] == 'Marketing') {
+                header("Location: zugangAbteilungMarketing.html");
+            }
+            if($row['Berechtigungen'] == 'Verwaltung')
+            {
+                header("Location: verwaltungStartseite.html");
+            }
         } else {
             // Passwort stimmt nicht überein
             echo "Falsches Passwort";
