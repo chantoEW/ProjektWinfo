@@ -1,6 +1,6 @@
 <?php
 // Include the logging functions
-include 'path/to/log_functions.php'; // Adjust this path to where log_functions.php is located
+//include 'path/to/log_functions.php'; // Adjust this path to where log_functions.php is located
 
 // Set the content type to application/json
 header('Content-Type: application/json');
@@ -13,14 +13,17 @@ $data = json_decode($input, true);
 if (isset($data['log']) && isset($data['type'])) {
     $logMessage = $data['log'];
     $logType = $data['type'];
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$logType] - $logMessage" . PHP_EOL;
 
     // Log the message using the function
-    logMessage($logMessage, $logType);
+    //logMessage($logMessage, $logType);
+    file_put_contents('logfile.json', $formattedMessage, FILE_APPEND);
 
     // Return a success response
-    echo json_encode(['status' => 'success', 'message' => 'Log message recorded.']);
+    echo json_encode(['status' => 'success']);
 } else {
     // Return an error response
-    echo json_encode(['status' => 'error', 'message' => 'Log message or type not provided.']);
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
 }
 ?>

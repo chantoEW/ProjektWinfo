@@ -1,14 +1,19 @@
 function logMessage(message, type = 'INFO') {
+    // Überprüfen, ob der Typ gültig ist
     if (!['ERROR', 'INFO', 'WARNING'].includes(type)) {
         console.error(`[ERROR] Invalid log type: ${type}`);
         return;
     }
-    console.log(`[${type}] ${message}`); // Log to the console
+
+    // Log-Nachricht in der Konsole anzeigen
+    console.log(`[${type}] ${message}`);
+
+    // Log-Nachricht an den Server senden
     sendLogToServer(message, type);
 }
 
 function sendLogToServer(message, type) {
-    // Adjust the path to the PHP file
+    // Pfad zur PHP-Datei im übergeordneten Verzeichnis
     fetch('../logic_logging.php', {
         method: 'POST',
         headers: {
@@ -16,7 +21,12 @@ function sendLogToServer(message, type) {
         },
         body: JSON.stringify({ log: message, type: type })
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => console.log('Server response:', data))
         .catch(error => console.error('Error:', error));
 }
