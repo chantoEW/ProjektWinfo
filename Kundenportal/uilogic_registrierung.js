@@ -98,19 +98,20 @@ function validiereFormularBenutzer() {
     var passwortWiederholen = document.getElementById('passwort_wiederholen').value;
     var firmaContainer = document.getElementById('firmaContainer');
     var benutzername = document.getElementById('benutzername').value;
+
     const inputs = benutzerdaten.querySelectorAll('input');
     let valid = true;
 
     var error = false;
 
-    inputs.forEach(input => {
+/*    inputs.forEach(input => {
         if (!input.checkValidity()) {
             valid = false;
             input.reportValidity();
         }
-    });
+    });*/
 
-   checkUsername();
+   //checkUsername();
 
         // Validierung nur ausführen, wenn keine Fehler aufgetreten sind
         if (!error) {
@@ -139,7 +140,7 @@ function validiereFormularBenutzer() {
                 error = true;
                 logMessage('Firmenname wurde nicht eingegeben', 'ERROR');
             }
-
+        }
             // Markiere alle leeren Pflichtfelder
             markiereFehlendeFelder('benutzerdaten');
 
@@ -151,9 +152,8 @@ function validiereFormularBenutzer() {
             else {
                 logMessage('Benutzerdaten wurden nicht korrekt ausgefüllt', 'ERROR');
             }
-        }
-    });
-}
+    };
+
 
 function checkUsername(){
     const benutzername = document.getElementById('benutzername').value;
@@ -238,7 +238,7 @@ function validiereFormularZahlung() {
             if (kundentyp === "Geschäftskunde" && firmaContainer.style.display === "none") {
                 alert('Bitte geben Sie den Firmennamen ein.');
                 error = true;
-            }
+            } */
 
             // Markiere alle leeren Pflichtfelder
             markiereFehlendeFelder('zahlungsdaten');
@@ -249,7 +249,7 @@ function validiereFormularZahlung() {
                 openSuccessMessageModal();
                 logMessage('Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen');
             }
-        }
+       /* }
     });*/
 }
 
