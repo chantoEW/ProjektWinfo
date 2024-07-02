@@ -114,7 +114,7 @@
             <input name="ort" type="text" class="input-field" id="ort" required><br>
 
             <label for="postleitzahl">Postleitzahl:</label><br>
-            <input name="postleitzahl" type="text" class="input-field" id="postleitzahl" required><br>
+            <input name="postleitzahl" type="text" class="input-field" id="postleitzahl" pattern="\d{5}" required><br>
 
             <label for="telefonnummer">Telefonnummer:</label><br>
             <input name="telefonnummer" type="text" class="input-field" id="telefonnummer" required><br>
@@ -130,13 +130,13 @@
             <div class="input-title">Zahlungsdaten</div>
 
             <label for="blz">BLZ:</label><br>
-            <input name="blz" type="text" class="input-field" id="blz" required><br>
+            <input name="blz" type="text" class="input-field" id="blz" pattern="\d{8}" required><br>
 
             <label for="institut">Institut:</label><br>
             <input name="institut" type="text" class="input-field" id="institut" required><br>
 
             <label for="iban">IBAN:</label><br>
-            <input name="iban" type="text" class="input-field" id="iban" required><br>
+            <input name="iban" type="text" class="input-field" id="iban" pattern="DE\d{20}" placeholder="DE12345678901234567890" required><br>
 
             <label for="inhaber">Inhaber:</label><br>
             <input name="inhaber" type="text" class="input-field" id="inhaber" required><br>
