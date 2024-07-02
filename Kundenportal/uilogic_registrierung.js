@@ -31,7 +31,7 @@ function sendLogToServer(message, type) {
         .catch(error => console.error('Error:', error));
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+/*document.addEventListener("DOMContentLoaded", function() {
     // Rufe die toggleFirmaFeld Funktion auf, um den Initialzustand des Formulars festzulegen
     toggleFirmaFeld();
 
@@ -91,27 +91,26 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Weitere Funktionen hier unten ...
-});
+});*/
 
 function validiereFormularBenutzer() {
     var passwort = document.getElementById('passwort').value;
     var passwortWiederholen = document.getElementById('passwort_wiederholen').value;
     var firmaContainer = document.getElementById('firmaContainer');
     var benutzername = document.getElementById('benutzername').value;
+    const inputs = benutzerdaten.querySelectorAll('input');
+    let valid = true;
 
     var error = false;
 
-    // Simulierte Validierung des Benutzernamens ohne AJAX
-    // Annahme: checkUsername() ist eine Funktion, die asynchron den Benutzernamen prüft
-    checkUsername(benutzername, function(exists) {
-        if (exists) {
-            document.getElementById('username_error').style.display = 'inline';
-            error = true; // Setzt den Fehlerstatus auf true, wenn der Benutzername existiert
-            logMessage('Der Benutzername existiert bereits', 'ERROR');
-        } else {
-            document.getElementById('username_error').style.display = 'none';
-            error = false; // Setzt den Fehlerstatus auf false, wenn der Benutzername nicht existiert
+    inputs.forEach(input => {
+        if (!input.checkValidity()) {
+            valid = false;
+            input.reportValidity();
         }
+    });
+
+   checkUsername();
 
         // Validierung nur ausführen, wenn keine Fehler aufgetreten sind
         if (!error) {
@@ -156,6 +155,33 @@ function validiereFormularBenutzer() {
     });
 }
 
+function checkUsername(){
+    const benutzername = document.getElementById('benutzername').value;
+    const filePath = 'logic_check_username.php';
+    console.log("Check username wird gestartet");
+
+    fetch(filePath + '?benutzername=' + encodeURIComponent(benutzername))
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            if (data.trim() === 'exists') {
+                document.getElementById('username_error').style.display = 'inline';
+                console.log("Benutzername existiert bereits");
+            } else {
+                document.getElementById('username_error').style.display = 'none';
+                console.log("Benutzername existiert nicht");
+                switchTab('kontaktdaten');
+            }
+        })
+        .catch(function(error) {
+            console.error("Fehler bei der Überprüfung des Benutzernamens:", error);
+        })
+        .finally(function() {
+            console.log("Check username beendet");
+        });
+}
+
 function validiereFormularKontakt() {
     var email = document.getElementById('login.email').value;
     var error = false;
@@ -186,7 +212,7 @@ function validiereFormularZahlung() {
 
     // Simulierte Validierung des Benutzernamens ohne AJAX
     // Annahme: checkUsername() ist eine Funktion, die asynchron den Benutzernamen prüft
-    checkUsername(benutzername, function(exists) {
+    /*checkUsername(benutzername, function (exists) {
         if (exists) {
             document.getElementById('username_error').style.display = 'inline';
             error = true; // Setzt den Fehlerstatus auf true, wenn der Benutzername existiert
@@ -224,14 +250,7 @@ function validiereFormularZahlung() {
                 logMessage('Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen');
             }
         }
-    });
-}
-
-// Simulierte Funktion für die Überprüfung des Benutzernamens
-function checkUsername(username, callback) {
-    // Hier könnte eine asynchrone Überprüfung des Benutzernamens erfolgen
-    // Beispiel: Hier wird der Benutzername "testuser" als existierend angenommen
-    callback(exists);
+    });*/
 }
 
 // Funktion zum Öffnen des Popup-Fensters für die Erfolgsmeldung
