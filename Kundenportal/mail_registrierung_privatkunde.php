@@ -56,6 +56,9 @@ try {
             </html>";
 
     $mail->send();
+
+    logmessage("Registrierungsmail versendet an: " . $vorname . " " . $nachname . ", Benutzername: " . $benutzername);
+    
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
