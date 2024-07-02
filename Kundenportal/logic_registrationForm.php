@@ -71,24 +71,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sql = "INSERT INTO privatkunde (Name, Vorname, GebDatum, Eintrittsdatum) VALUES ('$nachname', '$vorname', '$geburtsdatum', '$eintrittsdatum')";
             if (mysqli_query($conn, $sql)) {
                 $PKundenID = mysqli_insert_id($conn);
-                echo "$PKundenID";
+                //echo "$PKundenID";
                 $sql = "INSERT INTO kunden (PKundenID, FKunde_PKunde) VALUES ('$PKundenID', 'p')";
                 if (mysqli_query($conn, $sql)) {
                     $KundenID = mysqli_insert_id($conn);
-                    echo "$KundenID";
+                    //echo "$KundenID";
                     $sql = "INSERT INTO kontaktdaten (Strasse, Ort, PLZ, Telefonnummer, Mail, PKundenID, FKunde_PKunde) VALUES ('$strasse', '$ort', '$plz', '$telefonnummer', '$email', '$PKundenID', 'p')";
                     if (mysqli_query($conn, $sql)) {
                         $KontaktID = mysqli_insert_id($conn);
-                        echo "$KontaktID";
+                        //echo "$KontaktID";
                         $sql = "INSERT INTO zahlungsinformationen (BLZ, Institut, IBAN, Inhaber, KundenID) VALUES ('$blz', '$institut', '$iban', '$inhaber', '$KundenID')";
                         if (mysqli_query($conn, $sql)) {
                             $ZahlungsID = mysqli_insert_id($conn);
-                            echo "$ZahlungsID";
+                            //echo "$ZahlungsID";
                             $sql = "UPDATE privatkunde SET KontaktID='$KontaktID', ZahlungsID='$ZahlungsID', KundenID='$KundenID' WHERE PKundenID='$PKundenID'";
                             if (mysqli_query($conn, $sql)) {
                                 $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
                                 if (mysqli_query($conn, $sql)) {
-                                    echo "Daten erfolgreich in die Datenbank eingefügt.";
+                                    //echo "Daten erfolgreich in die Datenbank eingefügt.";
                                     include 'mail_registrierung_privatkunde.php';
                                 } else {
                                     logmessage("Fehler beim Einfügen der Log-In-Daten: " . mysqli_error($conn));
@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 if (mysqli_query($conn, $sql)) {
                                     $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
                                     if (mysqli_query($conn, $sql)) {
-                                        echo "Daten erfolgreich in die Datenbank eingefügt.";
+                                        //echo "Daten erfolgreich in die Datenbank eingefügt.";
                                         include 'mail_registrierung_firmenkunde.php';
                                     } else {
                                         logmessage("Fehler beim Einfügen in die Tabelle user: " . mysqli_error($conn));}
@@ -156,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             logmessage(("Kundentyp ist ungültig"));}
     } else {
-        logmessage((("Kundentyp nicht ausgewählt"));}
+        logmessage(("Kundentyp nicht ausgewählt"));}
 
     logMessage("Alle SQL-Abfragen wurden durchgeführt");
 

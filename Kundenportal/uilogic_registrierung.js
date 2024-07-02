@@ -99,17 +99,20 @@ function validiereFormularBenutzer() {
     var firmaContainer = document.getElementById('firmaContainer');
     var benutzername = document.getElementById('benutzername').value;
 
+    const benutzerdaten = document.getElementById('benutzerdaten');
     const inputs = benutzerdaten.querySelectorAll('input');
     let valid = true;
 
     var error = false;
 
-/*    inputs.forEach(input => {
+    logMessage('Benutzerdaten werden validiert');
+    inputs.forEach(input => {
         if (!input.checkValidity()) {
             valid = false;
             input.reportValidity();
         }
-    });*/
+    });
+    logMessage('Validierung abgeschlossen');
 
    //checkUsername();
 
@@ -145,7 +148,7 @@ function validiereFormularBenutzer() {
             markiereFehlendeFelder('benutzerdaten');
 
             // Wenn keine Fehler vorhanden sind, öffne das Erfolgspopup
-            if (!error) {
+            if (!error && valid) {
                 switchTab('kontaktdaten');
                 logMessage('Alle Benutzerdaten wurden korrekt ausgefüllt');
             }
@@ -184,7 +187,22 @@ function checkUsername(){
 
 function validiereFormularKontakt() {
     var email = document.getElementById('login.email').value;
+
+    const kontaktdaten = document.getElementById('kontaktdaten');
+    const inputs = kontaktdaten.querySelectorAll('input');
+    let valid = true;
+
     var error = false;
+
+    logMessage('Kontaktdaten werden validiert');
+    inputs.forEach(input => {
+        if (!input.checkValidity()) {
+            valid = false;
+            input.reportValidity();
+            console.log(input.id + " ist ungültig");
+        }
+    });
+    logMessage('Validierung abgeschlossen');
 
     var emailRegex = /^[^\s@]+@[^\s@]+\.(?:com|de)$/; // Beispielhaftes Regex-Muster
     if (!emailRegex.test(email)) {
@@ -194,7 +212,7 @@ function validiereFormularKontakt() {
 
     markiereFehlendeFelder('kontaktdaten'); // Markiert alle leeren Pflichtfelder
 
-    if (!error) {
+    if (!error && valid) {
         switchTab('zahlungsdaten');
         logMessage('Alle Kontaktdaten wurden angegeben');
     } else {
