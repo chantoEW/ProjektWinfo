@@ -32,8 +32,8 @@
         <?php
         // Verbindungsdaten
         $servername = "localhost";
-        $username = "projektwinfo";
-        $password = "Ocm394Ldmc";
+        $username = "Chantal";
+        $password = "";
         $dbname = "portal";
 
         // Verbindung herstellen
