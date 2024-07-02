@@ -16,8 +16,8 @@
             background-attachment: fixed; /* Hintergrundbild fixieren */
             background-color: rgba(244, 244, 244, 0.2); /* Transparente Hintergrundfarbe */
             color: #333;
-
         }
+
         header {
             background-color: #333;
             color: #fff;
@@ -50,7 +50,45 @@
         }
 
         section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
             padding: 20px;
+        }
+
+        .content {
+            flex: 1;
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em; /* Increased font size for emphasis */
+        }
+
+        .form-inline {
+            display: flex;
+            gap: 10px; /* Abstand zwischen den Buttons */
+        }
+
+        .form-inline form {
+            margin: 0;
+        }
+
+        .button {
+            margin: 3px; /* Einheitlicher Abstand um alle Buttons */
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px; /* Einheitlicher Abstand zwischen den Buttons */
+            flex-wrap: wrap; /* Buttons umbrechen, wenn der Platz nicht ausreicht */
         }
 
         footer {
@@ -73,71 +111,6 @@
         .link:hover {
             background-color: #777;
         }
-
-        .input-field {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: calc(100% - 22px); /* Adjusted width for better spacing */
-            box-sizing: border-box;
-        }
-
-        .input-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.1em; /* Increased font size for emphasis */
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            border-radius: 5px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .content {
-            padding: 20px;
-            border-bottom: 1px solid #ccc;
-        }
     </style>
 </head>
 
@@ -158,18 +131,46 @@
     </div>
 </nav>
 
-<section id="mainContent" class="container">
-    <!-- Hier füge die neuen Optionen ein -->
+<section id="mainContent">
+    <!-- Marketingaktionen -->
     <div id="marketingaktionen" class="content">
-        <div class="input-title">Marketingaktion durchführen</div>
-        <button onclick="startUmsatzaktion()">Umsatzaktion</button>
-        <button onclick="startABCAktion()">ABC Aktion</button>
+        <div class="input-title">Marketingaktion erstellen</div>
+        <div class="button-container">
+            <button class="button" onclick="startUmsatzaktion()">Umsatzaktion</button>
+            <button class="button" onclick="startABCAktion()">ABC Aktion</button>
+        </div>
     </div>
+
+    <!-- Automatisierte Marketingaktion -->
+    <div id="automatisierteCodes" class="content">
+        <div class="input-title">Automatisierte Marketingaktion durchführen</div>
+        <div class="form-inline">
+            <form action="mail_geburtstagCodesVersenden.php" method="post">
+                <button type="submit" class="button">Geburtstag</button>
+            </form>
+            <form action="mail_treueJubilaeum.php" method="post">
+                <button type="submit" class="button">Treue-Jubiläum</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Erinnerungen versenden -->
+    <div id="erinnerungVersenden" class="content">
+        <div class="input-title">Erinnerungen versenden</div>
+        <div class="form-inline">
+            <form action="mail_nachfassen.php" method="post">
+                <button type="submit" class="button">E-Mails versenden</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Auswertungen -->
     <div id="auswertungen" class="content">
         <div class="input-title">Auswertungen</div>
-        <button onclick="window.location.href='http://localhost:3000/d/ddptnazf4qfb4f/marketingauswertung-rabattcodes?orgId=1&from=1719830895671&to=17198524956716&kiosk'">Rabattcodes auswerten</button>
-        <button onclick="window.location.href='http://localhost:3000/d/fdq1g0tmlgs8wc/kundenauswertung?orgId=1&from=1719831068935&to=1719852668935&kiosk'">Kundenauswertung</button>
+        <div class="button-container">
+            <button class="button" onclick="window.open('http://localhost:3000/d/ddptnazf4qfb4f/marketingauswertung-rabattcodes?orgId=1&from=1719830895671&to=17198524956716&kiosk', '_blank')">Rabattcodes auswerten</button>
+            <button class="button" onclick="window.open('http://localhost:3000/d/fdq1g0tmlgs8wc/kundenauswertung?orgId=1&from=1719831068935&to=1719852668935&kiosk', '_blank')">Kundenauswertung</button>
+        </div>
     </div>
 </section>
 
