@@ -2,6 +2,12 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+function logMessage($message) {
+    $logFile = 'logfile.json';
+    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
+}
+
 require 'C:/xampp/php/vendor/autoload.php';
 
 // E-Mail-Instanz erstellen
@@ -57,7 +63,9 @@ try {
             </html>";
 
     $mail->send();
+    logmessage("Registrierungsmail versendet an: " . $vorname . " " . $nachname . ", Benutzername: " . $benutzername . ", Firma: " . $firmenname);
+    
 } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    logmessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
 }
 ?>

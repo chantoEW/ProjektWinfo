@@ -27,10 +27,8 @@ $dbname = "portal";
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Verbindung überprüfen
 if ($conn->connect_error) {
-    die("Verbindung fehlgeschlagen: " . $conn->connect_error);
-    logMessage("Verbindung zur Datenbank kann nicht hergestellt werden");
+    logMessage("Verbindung zur Datenbank kann nicht hergestellt werden"  . $conn->connect_error);
 } else {
-    echo("Verbindung zur DB wurde hergestellt");
     logMessage("Verbindung zur Datenbank wurde hergestellt und überprüft");
 }
 
@@ -50,13 +48,12 @@ $RabattCode = generateRandomCode();
 if ($result_PKunden) {
     while($row = $result_PKunden->fetch_assoc()){
         $KundenID = $row['KundenID'];
-        echo $RabattCode, $heutigesDatum_komplett, $ablaufDatum, $RabattProzentsatz, $KundenID, $heutigesDatum_ohneJahr;
         $sql = "INSERT INTO RabattLog (Rabattcode, Datum_Erzeugung, Datum_FristEnde, Eingeloest, Prozentsatz, Rabattart, KundenID) VALUES ('$RabattCode', '$heutigesDatum_komplett', '$ablaufDatum', false, $RabattProzentsatz, 'Geburstag', $KundenID)";
         if ($conn->query($sql) === TRUE) {
-            logMessage("GeburtstagsMail versendet an: ". $row['Vorname'] . " ". $row['Name'] . " mit der Email-Adresse ". $row['Mail']);
+            logMessage("GeburtstagsMail versendet an: ". $row['Vorname'] . " ". $row['Name'] . " (KundenID: " . $KundenID . ") mit der Email-Adresse ". $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz);
         }
         else{
-            logMessage("GeburtstagsMail konnte nicht an: ". $row['Vorname'] . " ". $row['Name'] . " mit der Email-Adresse ". $row['Mail'] . " versendet werden!");
+            logMessage("GeburtstagsMail konnte nicht an: ". $row['Vorname'] . " ". $row['Name'] . " (KundenID: " . $KundenID . ") mit der Email-Adresse ". $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz . " versendet werden!");
         }
         $RabattCode = generateRandomCode();
     }
@@ -149,23 +146,19 @@ if ($result_PKunden) {
 
     // E-Mail senden
     $mail->send();
-    echo 'Email sent successfully.';
-} catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-}
+
 
 $sql = "SELECT DISTINCT a.Mail, b.KundenID, b.Vorname, b.Name as Nachname, c.Name as Firmenname FROM firma as c, kontaktdaten AS a INNER JOIN firmenkunde AS b ON a.FKundenID = b.FKundenID WHERE (a.FKundenID IS NOT NULL) AND (DATE_FORMAT(b.GebDatum, '%m-%d') = '$heutigesDatum_ohneJahr') AND (b.FirmenID = c.FirmenID)";
 $result_FKunden = mysqli_query($conn, $sql);
 if ($result_FKunden) {
     while($row = $result_FKunden->fetch_assoc()){
         $KundenID = $row['KundenID'];
-        echo $RabattCode, $heutigesDatum_komplett, $ablaufDatum, $RabattProzentsatz, $KundenID, $heutigesDatum_ohneJahr;
         $sql = "INSERT INTO RabattLog (Rabattcode, Datum_Erzeugung, Datum_FristEnde, Eingeloest, Prozentsatz, Rabattart, KundenID) VALUES ('$RabattCode', '$heutigesDatum_komplett', '$ablaufDatum', false, $RabattProzentsatz, 'Geburstag', $KundenID)";
         if ($conn->query($sql) === TRUE) {
-            logMessage("GeburtstagsMail versendet an: ". $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " mit der Email-Adresse ". $row['Mail']);
+            logMessage("GeburtstagsMail versendet an: ". $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " mit der Email-Adresse ". $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz););
         }
         else{
-            logMessage("GeburtstagsMail konnte nicht an: ". $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " mit der Email-Adresse ". $row['Mail'] . " versendet werden!");
+            logMessage("GeburtstagsMail konnte nicht an: ". $row['Vorname'] . " ". $row['Name'] . " der Firma " . $row['Firmenname'] . " (KundenID: " . $KundenID . ") mit der Email-Adresse ". $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz . " versendet werden!");
         }
         $RabattCode = generateRandomCode();
     }
@@ -245,5 +238,7 @@ $mail->Body = "
 
 // E-Mail senden
 $mail->send();
-
+} catch (Exception $e) {
+    logmessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+}
 ?>

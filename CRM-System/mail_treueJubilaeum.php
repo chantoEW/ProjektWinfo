@@ -27,11 +27,9 @@ $dbname = "portal";
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Verbindung überprüfen
 if ($conn->connect_error) {
-    die("Verbindung fehlgeschlagen: " . $conn->connect_error);
-    logMessage("Verbindung zur Datenbank kann nicht hergestellt werden");
+    logMessage("Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error);
 } else {
-    echo("Verbindung zur DB wurde hergestellt");
-    logMessage("Verbindung zur Datenbank wurde hergestellt und überprüft");
+    logMessage("Verbindung zur Datenbank wurde hergestellt und überprüft" . $conn->connect_error);
 }
 
 $heutigesDatum = date('Y-m-d');
@@ -72,9 +70,6 @@ try {
                     break;
             }
         }
-    } else {
-        // Fehlerbehandlung, wenn die Abfrage fehlschlägt
-        echo "Fehler bei der Abfrage: " . mysqli_error($conn);
     }
 
 
@@ -108,10 +103,10 @@ try {
                     break;
             }
             if ($conn->query($sql) === TRUE) {
-                logMessage("TreueMail versendet an: " . $row['Vorname'] . " " . $row['Name'] . " mit der Email-Adresse " . $row['Mail'] . " (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
+                logMessage("TreueMail versendet an: " . $row['Vorname'] . " " . $row['Name'] . " (KundenID: " . $kundenID . ") mit der Email-Adresse " . $row['Mail'] . " (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
             }
             else{
-                logMessage("TreueMail konnte nicht versendet an: " . $row['Vorname'] . " " . $row['Name'] . " mit der Email-Adresse " . $row['Mail'] . " werden! (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
+                logMessage("TreueMail konnte nicht versendet an: " . $row['Vorname'] . " " . $row['Name'] . " (KundenID: " . $kundenID . ") mit der Email-Adresse " . $row['Mail'] . " werden! (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
 
             }
             $rabattCode = generateRandomCode();
@@ -205,7 +200,6 @@ try {
 
     // E-Mail senden
     $mail->send();
-    echo 'Email sent successfully.';
 
     // Noch mal für Firmenkunden
     $sql = "SELECT DISTINCT a.Mail, b.KundenID, b.Vorname, b.Name as Nachname, c.Name as Firmenname, b.Eintrittsdatum FROM firma as c, kontaktdaten AS a INNER JOIN firmenkunde AS b ON a.FKundenID = b.FKundenID WHERE (a.FKundenID IS NOT NULL) AND ((b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 2 YEAR) OR (b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 5 YEAR) OR (b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 10 YEAR))";
@@ -234,10 +228,10 @@ try {
                     break;
             }
             if ($conn->query($sql) === TRUE) {
-                logMessage("TreueMail versendet an: " . $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " mit der Email-Adresse " . $row['Mail'] . " (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
+                logMessage("TreueMail versendet an: " . $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " (KundenID: " . $kundenID . ") mit der Email-Adresse " . $row['Mail'] . " (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
             }
             else{
-                logMessage("TreueMail konnte nicht versendet an: " . $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " mit der Email-Adresse " . $row['Mail'] . " werden! (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
+                logMessage("TreueMail konnte nicht versendet an: " . $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " (KundenID: " . $kundenID . ") mit der Email-Adresse " . $row['Mail'] . " werden! (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
 
             }
             $rabattCode = generateRandomCode();
@@ -331,11 +325,9 @@ try {
 
     // E-Mail senden
     $mail->send();
-    echo 'Email sent successfully.';
-
 
 } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    logmessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
 }
 
 ?>

@@ -8,7 +8,7 @@ require 'C:/xampp/php/vendor/autoload.php';
 $mail = new PHPMailer(true);
 
 function logMessage($message) {
-    $logFile = '../logfile.json';
+    $logFile = 'logfile.json';
     $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
     file_put_contents($logFile, $formattedMessage, FILE_APPEND);
 }
@@ -138,7 +138,6 @@ try {
 
             // Privatkunden-E-Mail senden
             $mail->send();
-            echo 'Email sent successfully.';
         }
     }
 
@@ -231,12 +230,11 @@ try {
                     ";
             // Firmenkunden-E-Mail senden
             $mail->send();
-            echo 'Email sent successfully.';
         }
     }
 
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        logmessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
 }
 
 ?>

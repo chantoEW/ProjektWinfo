@@ -67,14 +67,14 @@
 
 <body>
 <header>
-    <h1 id="pageTitle">Willkommen im Kundenportal</h1>
+    <h1 id="pageTitle">Autovermietung jomaface</h1>
 </header>
 <nav>
 </nav>
 <section id="mainContent" class="container">
     <div class="content">
-        <h2>Herzlich Willkommen bei der Autovermietung!</h2>
-        <p>Hier können Sie Fahrzeuge buchen, Ihre aktuellen Buchungen einsehen und Ihr Profil verwalten.</p>
+        <h2>Herzlich Willkommen im Kundenportal!</h2>
+        <p>Hier können Sie Ihre Daten einsehen, ändern oder löschen.</p>
 
         <form id="loginForm" action="logic_login.php" method="POST">
             <input type="text" name="benutzername" class="input-field" placeholder="Benutzername" required>
@@ -98,7 +98,7 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Passwort vergessen</h2>
-        <form id="forgotPasswordForm" action="javascript:void(0);" method="POST" onsubmit="sendPasswordEmail()">
+        <form id="forgotPasswordForm" action="javascript:void(0);" method="POST" onsubmit="pruefeBenutzername()">
             <input type="text" id="forgotPasswordUsername" name="benutzername" class="input-field" placeholder="Benutzername" required>
             <br>
             <button type="submit" class="button">E-Mail versenden</button>
@@ -177,27 +177,22 @@
         }
     }
 
-    function sendPasswordEmail() {
+    function pruefeBenutzername() {
         var username = document.getElementById("forgotPasswordUsername").value;
-
-        fetch('logic_passwortMail.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ benutzername: username })
-        })
-            .then(response => response.json())
-            .then(data => {
-                openSuccessMessage(); // Popup-Fenster für Erfolgsmeldung öffnen
-                logMessage('Die Mail zum Passwort vergessen, wurde erfolgreich versendet.');
-            })
-            .catch(error => {
-                alert('Fehler beim Senden der E-Mail.');
-                console.error('Error:', error);
-                logMessage('Fehler beim Senden der Passwort vergessen Mail', 'ERROR');
-            });
+        alert("test");
+        checkUsername(benutzername, function(exists) {
+            if (exists) {
+                document.getElementById('username_error').style.display = 'inline';
+                error = true; // Setzt den Fehlerstatus auf true, wenn der Benutzername existiert
+                logMessage('Der Benutzername existiert bereits', 'ERROR');
+            } else {
+                document.getElementById('username_error').style.display = 'none';
+                error = false; // Setzt den Fehlerstatus auf false, wenn der Benutzername nicht existiert
+            }
     }
+
+
+
 </script>
 
 </body>

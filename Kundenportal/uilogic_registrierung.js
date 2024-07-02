@@ -231,7 +231,6 @@ function validiereFormularZahlung() {
 function checkUsername(username, callback) {
     // Hier könnte eine asynchrone Überprüfung des Benutzernamens erfolgen
     // Beispiel: Hier wird der Benutzername "testuser" als existierend angenommen
-    var exists = (username === "testuser");
     callback(exists);
 }
 
