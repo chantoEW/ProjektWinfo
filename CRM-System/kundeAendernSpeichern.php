@@ -233,12 +233,19 @@ if (
             $stmt = $conn->prepare($sql);
             // Parametertypen und -werte binden
             $stmt->bind_param($types, ...$params);
+            $changes = "";
             if ($stmt->execute()) {
                 echo "Die Daten wurden erfolgreich aktualisiert.";
-                logMessage("Die Daten für Kunde mit der ID $kundenId wurden aktualisiert.");
-            } else {
+                for( $i = 0; $i < count($updates); $i++ ) {
+                    
+                    $changes = $changes . explode(' ', $updates[$i])[0] . ', ';
+                }
+                $changes = rtrim($changes, ', ');
+                logMessage("Folgende Daten für Kunde mit der ID $kundenId wurden aktualisiert: $changes");
+            }
+            else {
                 echo "Fehler beim Aktualisieren der Daten: " . $stmt->error;
-                logMessage("Fehler beim Aktualisieren für Kunde mit der ID $kundenId.");
+                logMessage("Fehler beim Aktualisieren für Kunde mit der ID $kundenId: " . $stmt->error);
             }
         } else {
             echo "Keine Änderungen gefunden.";
