@@ -53,7 +53,7 @@
                 if ($kundentyp == 'privatkunde') {
 
                     // SQL-Abfrage
-                    $sql = "SELECT k.KundenID, pk.Name, pk.Vorname, pk.GebDatum, kd.Strasse, kd.Ort, kd.PLZ FROM kunden AS k JOIN privatkunde AS pk ON k.PKundenID = pk.PKundenID JOIN kontaktdaten AS kd ON kd.PKundenID = pk.PKundenID WHERE 1=1";
+                    $sql = "SELECT k.KundenID, pk.Name, pk.Vorname, pk.GebDatum, kd.Strasse, kd.Ort, kd.PLZ FROM kunden AS k JOIN privatkunde AS pk ON k.PKundenID = pk.PKundenID JOIN kontaktdaten AS kd ON kd.KontaktID = pk.KontaktID WHERE 1=1";
                     //echo  $_POST['kundenId'];
                     // Filter hinzufügen
                     if (!empty($_POST['kundenId'])) {

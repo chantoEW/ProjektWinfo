@@ -7,7 +7,12 @@ $dbname = "portal";
 
 // Verbindung erstellen
 $conn = new mysqli($servername, $username, $password, $dbname);
-
+function logMessage($message)
+{
+    $logFile = 'logfile.json';
+    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
+}
 // Verbindung überprüfen
 if ($conn->connect_error) {
     die("Verbindung fehlgeschlagen: " . $conn->connect_error);
@@ -228,16 +233,27 @@ if (
             $stmt = $conn->prepare($sql);
             // Parametertypen und -werte binden
             $stmt->bind_param($types, ...$params);
+            $changes = "";
             if ($stmt->execute()) {
                 echo "Die Daten wurden erfolgreich aktualisiert.";
-            } else {
+                for( $i = 0; $i < count($updates); $i++ ) {
+                    
+                    $changes = $changes . explode(' ', $updates[$i])[0] . ', ';
+                }
+                $changes = rtrim($changes, ', ');
+                logMessage("Folgende Daten für Kunde mit der ID $kundenId wurden aktualisiert: $changes");
+            }
+            else {
                 echo "Fehler beim Aktualisieren der Daten: " . $stmt->error;
+                logMessage("Fehler beim Aktualisieren für Kunde mit der ID $kundenId: " . $stmt->error);
             }
         } else {
             echo "Keine Änderungen gefunden.";
+            logMessage("Keine Änderungen der Kundendaten gefunden.");
         }
     } else {
         echo "Kunde nicht gefunden.";
+        logMessage("Der Kunde mit der ID $kundenId wurde nicht gefunden.");
     }
 }
 // Verbindung schließen
