@@ -1,21 +1,9 @@
 <?php
 session_start();
 
-function logMessage($logMessage, $logType = 'INFO') {
-    $directory = dirname(__FILE__) . '/..'; // Absolute path to one level higher directory
-    // $directory = '../logic_logging.php'; // Absolute path to the target directory
-    $fileName = 'logfile.json';
-    $logFile = $directory . DIRECTORY_SEPARATOR . $fileName;
-
-    // Format the log message with a timestamp and type
-    $formattedMessage = date('Y-m-d H:i:s') . " [$logType] - " . $logMessage . PHP_EOL;
-
-    // Ensure the directory exists
-    if (!is_dir($directory)) {
-        mkdir($directory, 0755, true);
-    }
-
-    // Write the log message to the file
+function logMessage($message) {
+    $logFile = 'logfile.json';
+    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
     file_put_contents($logFile, $formattedMessage, FILE_APPEND);
 }
 
