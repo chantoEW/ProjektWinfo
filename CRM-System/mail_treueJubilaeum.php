@@ -78,6 +78,9 @@ try {
     $result_PKunden = mysqli_query($conn, $sql);
     $rabattCode = generateRandomCode();
     if ($result_PKunden) {
+        echo 'Privatkunden:';
+        echo '<table border="1">';
+        echo '<tr><th>Vorname</th><th>Nachname</th><th>KundenID</th><th>E-Mail</th><th>RabattCode</th><th>Prozentsatz</th></tr>';
         while($row = $result_PKunden->fetch_assoc()) {
             $kundenID = $row['KundenID'];
             $eintrittsdatum = $row['Eintrittsdatum'];
@@ -104,13 +107,23 @@ try {
             }
             if ($conn->query($sql) === TRUE) {
                 logMessage("TreueMail versendet an: " . $row['Vorname'] . " " . $row['Name'] . " (KundenID: " . $kundenID . ") mit der Email-Adresse " . $row['Mail'] . " (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
+                echo '<tr>';
+                echo '<td>' . $row['Vorname'] . '</td>';
+                echo '<td>' . $row['Name'] . '</td>';
+                echo '<td>' . $kundenID . '</td>';
+                echo '<td>' . $row['Mail'] . '</td>';
+                echo '<td>' . $rabattCode . '</td>';
+                echo '<td>' . $prozentsatz*100 . '%</td>';
+                echo '</tr>';
             }
             else{
                 logMessage("TreueMail konnte nicht versendet an: " . $row['Vorname'] . " " . $row['Name'] . " (KundenID: " . $kundenID . ") mit der Email-Adresse " . $row['Mail'] . " werden! (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
 
             }
             $rabattCode = generateRandomCode();
+
         }
+        echo '</table>';
     }
 
     // Servereinstellungen konfigurieren
@@ -181,7 +194,7 @@ try {
         <div class='content'>
             <p>Sehr geehrte(r) Frau/Herr Schlaghecken,</p>
             <p>zu Ihrem besonderen Jubiläum möchten wir Ihnen unsere herzlichsten Glückwünsche übermitteln. Wir freuen uns sehr, dass Sie uns bereits seit <strong>" .htmlspecialchars($treueJahre_5) . " Jahren</strong> die Treue halten.</p>
-            <p>Um dieses besondere Ereignis gebührend zu feiern, möchten wir Ihnen als treuer Kunde der <strong>Autovermietung jomaface</strong> ein kleines Geschenk machen. Zu Ihrem Jubiläum erhalten Sie von uns einen exklusiven Rabatt von <strong>" .htmlspecialchars($treueProzentsatz_5) . "</strong> auf Ihre nächste Fahrzeuganmietung.</p>
+            <p>Um dieses besondere Ereignis gebührend zu feiern, möchten wir Ihnen als treuer Kunde der <strong>Autovermietung jomaface</strong> ein kleines Geschenk machen. Zu Ihrem Jubiläum erhalten Sie von uns einen exklusiven Rabatt von <strong>" .htmlspecialchars($treueProzentsatz_5)*100 . "%</strong> auf Ihre nächste Fahrzeuganmietung.</p>
             <p>Verwenden Sie einfach den folgenden Rabattcode bei Ihrer nächsten Buchung:</p>
             <p><strong>" . htmlspecialchars($rabattCode) . "</strong></p>
             <p>Der Rabattcode ist bis zum <strong>" . htmlspecialchars($ablaufDatum) . "</strong> gültig und kann auf alle verfügbaren Fahrzeugkategorien angewendet werden. Besuchen Sie unser Kundenportal <a href='https://www.autovermietung-jomaface.de'>www.autovermietung-jomaface.de</a> oder kontaktieren Sie unser Serviceteam, um Ihre nächste Reise zu planen.</p>
@@ -202,10 +215,13 @@ try {
     $mail->send();
 
     // Noch mal für Firmenkunden
-    $sql = "SELECT DISTINCT a.Mail, b.KundenID, b.Vorname, b.Name as Nachname, c.Name as Firmenname, b.Eintrittsdatum FROM firma as c, kontaktdaten AS a INNER JOIN firmenkunde AS b ON a.FKundenID = b.FKundenID WHERE (a.FKundenID IS NOT NULL) AND ((b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 2 YEAR) OR (b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 5 YEAR) OR (b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 10 YEAR))";
+    $sql = "SELECT DISTINCT a.Mail, b.KundenID, b.Vorname, b.Name as Nachname, c.Firmenname as Firmenname, b.Eintrittsdatum FROM firma as c, kontaktdaten AS a INNER JOIN firmenkunde AS b ON a.FKundenID = b.FKundenID WHERE (a.FKundenID IS NOT NULL) AND ((b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 2 YEAR) OR (b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 5 YEAR) OR (b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 10 YEAR))";
     $rabattCode = generateRandomCode();
     $result_FKunden = mysqli_query($conn, $sql);
     if ($result_FKunden) {
+        echo 'Firmenkunden:';
+        echo '<table border="1">';
+        echo '<tr><th>Vorname</th><th>Nachname</th><th>Firma</th><th>KundenID</th><th>E-Mail</th><th>RabattCode</th><th>Prozentsatz</th></tr>';
         while($row = $result_FKunden->fetch_assoc()) {
             $kundenID = $row['KundenID'];
             $eintrittsdatum = $row['Eintrittsdatum'];
@@ -229,13 +245,24 @@ try {
             }
             if ($conn->query($sql) === TRUE) {
                 logMessage("TreueMail versendet an: " . $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " (KundenID: " . $kundenID . ") mit der Email-Adresse " . $row['Mail'] . " (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
+                echo '<tr>';
+                echo '<td>' . $row['Vorname'] . '</td>';
+                echo '<td>' . $row['Name'] . '</td>';
+                echo '<td>' . $row['Firmenname'] . '</td>';
+                echo '<td>' . $kundenID . '</td>';
+                echo '<td>' . $row['Mail'] . '</td>';
+                echo '<td>' . $rabattCode . '</td>';
+                echo '<td>' . $prozentsatz*100 . '%</td>';
+                echo '</tr>';
             }
             else{
                 logMessage("TreueMail konnte nicht versendet an: " . $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " (KundenID: " . $kundenID . ") mit der Email-Adresse " . $row['Mail'] . " werden! (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
 
             }
             $rabattCode = generateRandomCode();
+
         }
+        echo '</table>';
     }
 
     // Servereinstellungen konfigurieren
@@ -306,7 +333,7 @@ try {
         <div class='content'>
             <p>Sehr geehrte(r) Frau/Herr Schlaghecken der Firma netgo Gmbh,</p>
             <p>zu Ihrem besonderen Jubiläum möchten wir Ihnen unsere herzlichsten Glückwünsche übermitteln. Wir freuen uns sehr, dass Sie uns bereits seit <strong>" .htmlspecialchars($treueJahre_5) . " Jahren</strong> die Treue halten.</p>
-            <p>Um dieses besondere Ereignis gebührend zu feiern, möchten wir Ihnen als treuer Kunde der <strong>Autovermietung jomaface</strong> ein kleines Geschenk machen. Zu Ihrem Jubiläum erhalten Sie von uns einen exklusiven Rabatt von <strong>" .htmlspecialchars($treueProzentsatz_5) . "</strong> auf Ihre nächste Fahrzeuganmietung.</p>
+            <p>Um dieses besondere Ereignis gebührend zu feiern, möchten wir Ihnen als treuer Kunde der <strong>Autovermietung jomaface</strong> ein kleines Geschenk machen. Zu Ihrem Jubiläum erhalten Sie von uns einen exklusiven Rabatt von <strong>" .htmlspecialchars($treueProzentsatz_5)*100 . "%</strong> auf Ihre nächste Fahrzeuganmietung.</p>
             <p>Verwenden Sie einfach den folgenden Rabattcode bei Ihrer nächsten Buchung:</p>
             <p><strong>" . htmlspecialchars($rabattCode) . "</strong></p>
             <p>Der Rabattcode ist bis zum <strong>" . htmlspecialchars($ablaufDatum) . "</strong> gültig und kann auf alle verfügbaren Fahrzeugkategorien angewendet werden. Besuchen Sie unser Kundenportal <a href='https://www.autovermietung-jomaface.de'>www.autovermietung-jomaface.de</a> oder kontaktieren Sie unser Serviceteam, um Ihre nächste Reise zu planen.</p>
