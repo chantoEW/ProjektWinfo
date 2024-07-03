@@ -36,7 +36,7 @@ if (
     isset($_POST['bonitaetsklasse']) &&
     isset($_POST['abc_klassifikation'])
 ) {
-
+   
     // POST-Daten empfangen
     $kundentyp = $_POST['kundentyp'];
     $benutzername = $_POST['benutzername'];
@@ -57,6 +57,7 @@ if (
     $bonitaetsklasse = $_POST['bonitaetsklasse'];
     $abc_klassifikation = $_POST['abc_klassifikation'];
     $kundenId = $_POST['kundenId'];
+    
     // Vorherige Daten aus der Datenbank abrufen
     $sql = '';
     if ($kundentyp == 'geschaeft') {
@@ -97,6 +98,7 @@ if (
     $stmt->bind_param("i", $kundenId);
     $stmt->execute();
     $result = $stmt->get_result();
+
     $existingData = $result->fetch_assoc();
 
     if ($existingData) {
@@ -104,7 +106,7 @@ if (
         $updates = [];
         $params = [];
         $types = "";
-
+        
         if ($existingData["Benutzername"] != $benutzername) {
             $updates[] = "Benutzername = ?";
             $params[] = $benutzername;
@@ -132,12 +134,15 @@ if (
         }
 
         if ($kundentyp == 'geschaeft') {
+
             if ($existingData['Firmenname'] != $firma) {
                 $updates[] = "Firmenname = ?";
                 $params[] = $firma;
                 $types .= "s";
+
             }
         }
+
         if ($existingData['Strasse'] != $strasse) {
             $updates[] = "Strasse = ?";
             $params[] = $strasse;
@@ -194,27 +199,27 @@ if (
             $types .= "s";
         }
 
-      
+
 
         if (count($updates) > 0) {
             $params[] = $kundenId;
             $types .= "i";
             if ($kundentyp == 'geschaeft') {
                 $sql = "UPDATE kunden AS k
-        JOIN firmenkunde AS fk
-        ON k.FKundenID = fk.FKundenID
-        JOIN zahlungsinformationen AS zi
-        ON fk.ZahlungsID = zi.ZahlungsID
-        JOIN user 
-        ON user.KundenID = k.KundenID
-        JOIN firma
-        ON fk.FirmenID = firma.FirmenID
-        JOIN kontaktdaten AS kd
-        ON firma.KontaktID = kd.KontaktID
-        JOIN kundenauswertung AS ka
-        ON ka.KundenID = k.KundenID
+                    JOIN firmenkunde AS fk
+                    ON k.FKundenID = fk.FKundenID
+                    JOIN firma
+                    ON fk.FirmenID = firma.FirmenID
+                    JOIN kontaktdaten AS kd
+                    ON firma.KontaktID = kd.KontaktID
+                    JOIN zahlungsinformationen AS zi
+                    ON fk.ZahlungsID = zi.ZahlungsID
+                    JOIN user 
+                    ON user.KundenID = k.KundenID
+                    JOIN kundenauswertung AS ka
+                    ON ka.KundenID = k.KundenID
             SET " . implode(", ", $updates) . " 
-            WHERE fk.FKundenID = ?";
+            WHERE k.KundenID = ?";
             } else if ($kundentyp == 'privat') {
                 $sql = "UPDATE kunden AS k
                     JOIN privatkunde AS pk
@@ -228,22 +233,23 @@ if (
                     JOIN kundenauswertung AS ka
                     ON ka.KundenID = k.KundenID
             SET " . implode(", ", $updates) . " 
-            WHERE pk.PKundenID = ?";
+            WHERE k.KundenID = ?";
             }
+
             $stmt = $conn->prepare($sql);
             // Parametertypen und -werte binden
             $stmt->bind_param($types, ...$params);
+            print_r($types);
             $changes = "";
             if ($stmt->execute()) {
                 echo "Die Daten wurden erfolgreich aktualisiert.";
-                for( $i = 0; $i < count($updates); $i++ ) {
-                    
+                for ($i = 0; $i < count($updates); $i++) {
+
                     $changes = $changes . explode(' ', $updates[$i])[0] . ', ';
                 }
                 $changes = rtrim($changes, ', ');
                 logMessage("Folgende Daten für Kunde mit der ID $kundenId wurden aktualisiert: $changes");
-            }
-            else {
+            } else {
                 echo "Fehler beim Aktualisieren der Daten: " . $stmt->error;
                 logMessage("Fehler beim Aktualisieren für Kunde mit der ID $kundenId: " . $stmt->error);
             }
