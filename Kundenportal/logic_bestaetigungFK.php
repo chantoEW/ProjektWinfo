@@ -39,36 +39,43 @@ if (isset($_GET['benutzername'])) {
             $FKundenID = $row_FKundenID['FKundenID'];
 
             // Bestätigungswert herausfinden
-            $sql = "SELECT Bestaetigung FROM kontaktdaten WHERE FKundenID = '$FKundenID'";
-            if (mysqli_query($conn, $sql)){
-                $result_Bestaetigung = mysqli_query($conn, $sql);
-                $row_Bestaetigung = mysqli_fetch_assoc($result_Bestaetigung);
-                if ($row_Bestaetigung['Bestaetigung'] == 1) {
+            $sql = "SELECT Bestaetigung, Mail FROM kontaktdaten WHERE PKundenID = '$PKundenID'";
+            $result = mysqli_query($conn, $sql);
+            if ($result){
+                $row = $result->fetch_assoc();
+                if ($row['Bestaetigung'] == 1) {
 
                     echo("E-Mail-Adresse wurde bereits bestätigt!");
+                    logMessage("E-Mail-Adresse " . $row['Mail'] . " wurde bereits bestätigt!");
                 }
                 else
                 {
                     $sql = "UPDATE Kontaktdaten SET Bestaetigung = '1' WHERE FKundenID = '$FKundenID'";
                     if (mysqli_query($conn, $sql)) {
+                        logMessage("E-Mail-Adresse " . $row['Mail'] . " für user " . $benutzername . " wurde bestätigt!");
                         echo("E-Mail-Adresse wurde erfolgreich bestätigt! Sie können sich nun einloggen.");
                     }else{
+                        logMessage("Fehler beim Bestätigen der E-Mail-Adresse " . $row['Mail'] . " für user " . $benutzername . " (Update für Tabelle Kontaktdaten nicht erfolgreich!)");
                         echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
                     }
                 }
             } else
             {
+                logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle kontaktdaten fehlerhaft)");
                 echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
             }
         } else
         {
+            logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle kunden fehlerhaft)");
             echo("Es wurde kein passendes Firmen-Kundenkonto gefunden! Bitte versuchen Sie es später erneut.");
         }
     } else
     {
+        logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle user fehlerhaft)");
         echo("Es wurde kein passendes Kundenkonto gefunden! Bitte versuchen Sie es später erneut.");
     }
 } else {
+    logMessage("Fehler beim Bestätigen der E-Mail-Adresse es wurde kein Token übergeben)");
     echo 'Kein Bestätigungstoken angegeben.';
 }
 

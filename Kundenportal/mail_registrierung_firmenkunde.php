@@ -2,12 +2,6 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-function logMessage($message) {
-    $logFile = 'logfile.json';
-    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
-    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
-}
-
 echo "test";
 
 require 'C:/xampp/php/vendor/autoload.php';

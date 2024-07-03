@@ -168,8 +168,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         logmessage(("Kundentyp nicht ausgewählt"));}
 
-    logMessage("Alle SQL-Abfragen wurden durchgeführt");
-
     // Verbindung schließen
     mysqli_close($conn);
     logMessage("Verbindung geschlossen");
