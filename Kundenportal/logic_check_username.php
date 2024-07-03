@@ -8,8 +8,6 @@ $dbname = "portal";
 // Verbindung herstellen
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-echo "logic_check_username wird aufgerufen";
-
 // Verbindung überprüfen
 if ($conn->connect_error) {
     die("Verbindung fehlgeschlagen: " . $conn->connect_error);

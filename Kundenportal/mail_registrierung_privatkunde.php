@@ -11,6 +11,8 @@ $vorname = $_SESSION['vorname'];
 $nachname = $_SESSION['nachname'];
 $benutzername = $_SESSION['benutzername'];
 
+echo "test";
+
 try {
     // Servereinstellungen konfigurieren
     $mail->isSMTP();
@@ -24,7 +26,7 @@ try {
     // Zeichencodierung setzen
     $mail->CharSet = 'UTF-8';
 
-    $confirmationLink = "http://localhost/projektWINFO/Kundenportal/logic_bestaetigungPK.php?benutzername=$benutzername";
+    $confirmationLink = "http://localhost:63342/projektWINFO/Kundenportal/logic_bestaetigungPK.php?benutzername=$benutzername";
 
     // Empfänger, Betreff und Nachricht einstellen
     $mail->setFrom('autovermietung.jomaface@outlook.de', 'Autovermietung jomaface');

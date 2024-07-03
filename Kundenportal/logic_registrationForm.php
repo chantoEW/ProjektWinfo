@@ -88,8 +88,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             if (mysqli_query($conn, $sql)) {
                                 $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
                                 if (mysqli_query($conn, $sql)) {
-                                    //echo "Daten erfolgreich in die Datenbank eingefügt.";
-                                    include 'mail_registrierung_privatkunde.php';
+                                    $sql = "INSERT INTO kundenauswertung (Bonitaetsklasse, ABC_Klasse, KundenID) VALUES ('BBB', 'C', '$KundenID')";
+                                    if (mysqli_query($conn, $sql)) {
+                                        logmessage("Datensatz für neuen Privatkunden mit der KundenID " . $KundenID . " erfolgreich erzeugt.");
+                                        echo "testvorAufruf";
+                                        include 'mail_registrierung_privatkunde.php';
+                                    } else {
+                                        logmessage("Fehler beim Einfügen in die Tabelle kundenauswertung: " . mysqli_error($conn));}
                                 } else {
                                     logmessage("Fehler beim Einfügen der Log-In-Daten: " . mysqli_error($conn));
                                 }
@@ -128,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         if (mysqli_query($conn, $sql)) {
                             $ZahlungsID = mysqli_insert_id($conn);
 
-                            $sql = "INSERT INTO firma (KontaktID, KundenID, Name) VALUES ('$KontaktID', '$KundenID', '$firmenname')";
+                            $sql = "INSERT INTO firma (KontaktID, KundenID, Firmenname) VALUES ('$KontaktID', '$KundenID', '$firmenname')";
                             mysqli_query($conn, $sql);
                             $FirmenID = mysqli_insert_id($conn);
 
@@ -137,8 +142,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 if (mysqli_query($conn, $sql)) {
                                     $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
                                     if (mysqli_query($conn, $sql)) {
-                                        //echo "Daten erfolgreich in die Datenbank eingefügt.";
-                                        include 'mail_registrierung_firmenkunde.php';
+                                        $sql = "INSERT INTO kundenauswertung (Bonitaetsklasse, ABC_Klasse, KundenID) VALUES ('BBB', 'C', '$KundenID')";
+                                        if (mysqli_query($conn, $sql)) {
+                                            logmessage("Datensatz für neuen Firmekunden mi der KundenID " . $KundenID . " erfolgreich erzeugt.");
+                                            echo "testvorAufruf";
+                                            include 'mail_registrierung_firmenkunde.php';
+                                        } else {
+                                            logmessage("Fehler beim Einfügen in die Tabelle kundenauswertung: " . mysqli_error($conn));}
                                     } else {
                                         logmessage("Fehler beim Einfügen in die Tabelle user: " . mysqli_error($conn));}
                                 } else {

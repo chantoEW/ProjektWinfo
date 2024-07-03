@@ -102,8 +102,7 @@ function validiereFormularBenutzer() {
     const benutzerdaten = document.getElementById('benutzerdaten');
     const inputs = benutzerdaten.querySelectorAll('input');
     let valid = true;
-
-    var error = false;
+    let error = false;
 
     logMessage('Benutzerdaten werden validiert');
     inputs.forEach(input => {
@@ -113,10 +112,20 @@ function validiereFormularBenutzer() {
         }
     });
     logMessage('Validierung abgeschlossen');
+/*
+    try {
+        const response = await fetch('logic_check_username.php?benutzername=' + encodeURIComponent(benutzername));
+        const data = await response.text();
 
-   //checkUsername();
-
-        // Validierung nur ausführen, wenn keine Fehler aufgetreten sind
+        // Antwort verarbeiten
+        if (data.trim() === 'exists') {
+            document.getElementById('username_error').style.display = 'inline';
+            error = true; // Setze den Fehlerstatus auf true, wenn der Benutzername existiert
+        } else {
+            document.getElementById('username_error').style.display = 'none';
+            error = false; // Setze den Fehlerstatus auf false, wenn der Benutzername nicht existiert
+        }
+*/
         if (!error) {
             // Validierung der Passwörter
             if (passwort.length < 8) { // Überprüfung auf Mindestlänge von 8 Zeichen
@@ -144,18 +153,22 @@ function validiereFormularBenutzer() {
                 logMessage('Firmenname wurde nicht eingegeben', 'ERROR');
             }
         }
-            // Markiere alle leeren Pflichtfelder
-            markiereFehlendeFelder('benutzerdaten');
 
-            // Wenn keine Fehler vorhanden sind, öffne das Erfolgspopup
-            if (!error && valid) {
-                switchTab('kontaktdaten');
-                logMessage('Alle Benutzerdaten wurden korrekt ausgefüllt');
-            }
-            else {
-                logMessage('Benutzerdaten wurden nicht korrekt ausgefüllt', 'ERROR');
-            }
-    };
+        // Markiere alle leeren Pflichtfelder
+        markiereFehlendeFelder('benutzerdaten');
+
+        // Wenn keine Fehler vorhanden sind, öffne das Erfolgspopup
+        if (!error && valid) {
+            switchTab('kontaktdaten');
+            logMessage('Alle Benutzerdaten wurden korrekt ausgefüllt');
+        } else {
+            logMessage('Benutzerdaten wurden nicht korrekt ausgefüllt', 'ERROR');
+        }/*
+    } catch (err) {
+        console.error('Fehler beim Senden der AJAX-Anfrage:', err);
+    }*/
+};
+
 
 
 function checkUsername(){

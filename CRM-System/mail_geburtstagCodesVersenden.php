@@ -148,14 +148,14 @@ if ($result_PKunden) {
     $mail->send();
 
 
-$sql = "SELECT DISTINCT a.Mail, b.KundenID, b.Vorname, b.Name as Nachname, c.Name as Firmenname FROM firma as c, kontaktdaten AS a INNER JOIN firmenkunde AS b ON a.FKundenID = b.FKundenID WHERE (a.FKundenID IS NOT NULL) AND (DATE_FORMAT(b.GebDatum, '%m-%d') = '$heutigesDatum_ohneJahr') AND (b.FirmenID = c.FirmenID)";
+$sql = "SELECT DISTINCT a.Mail, b.KundenID, b.Vorname, b.Name as Nachname, c.Firmenname as Firmenname FROM firma as c, kontaktdaten AS a INNER JOIN firmenkunde AS b ON a.FKundenID = b.FKundenID WHERE (a.FKundenID IS NOT NULL) AND (DATE_FORMAT(b.GebDatum, '%m-%d') = '$heutigesDatum_ohneJahr') AND (b.FirmenID = c.FirmenID)";
 $result_FKunden = mysqli_query($conn, $sql);
 if ($result_FKunden) {
     while($row = $result_FKunden->fetch_assoc()){
         $KundenID = $row['KundenID'];
         $sql = "INSERT INTO RabattLog (Rabattcode, Datum_Erzeugung, Datum_FristEnde, Eingeloest, Prozentsatz, Rabattart, KundenID) VALUES ('$RabattCode', '$heutigesDatum_komplett', '$ablaufDatum', false, $RabattProzentsatz, 'Geburstag', $KundenID)";
         if ($conn->query($sql) === TRUE) {
-            logMessage("GeburtstagsMail versendet an: ". $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " mit der Email-Adresse ". $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz););
+            logMessage("GeburtstagsMail versendet an: ". $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " mit der Email-Adresse ". $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz);
         }
         else{
             logMessage("GeburtstagsMail konnte nicht an: ". $row['Vorname'] . " ". $row['Name'] . " der Firma " . $row['Firmenname'] . " (KundenID: " . $KundenID . ") mit der Email-Adresse ". $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz . " versendet werden!");

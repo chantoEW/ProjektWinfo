@@ -8,6 +8,8 @@ function logMessage($message) {
     file_put_contents($logFile, $formattedMessage, FILE_APPEND);
 }
 
+echo "test";
+
 require 'C:/xampp/php/vendor/autoload.php';
 
 // E-Mail-Instanz erstellen
@@ -31,7 +33,7 @@ try {
     // Zeichencodierung setzen
     $mail->CharSet = 'UTF-8';
 
-    $confirmationLink = "http://localhost/projektWINFO/Kundenportal/logic_bestaetigungFK.php?benutzername=$benutzername";
+    $confirmationLink = "http://localhost:63342//projektWINFO/Kundenportal/logic_bestaetigungFK.php?benutzername=$benutzername";
 
     // Empfänger, Betreff und Nachricht einstellen
     $mail->setFrom('autovermietung.jomaface@outlook.de', 'Autovermietung jomaface');
