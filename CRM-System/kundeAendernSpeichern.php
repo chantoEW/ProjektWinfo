@@ -346,7 +346,7 @@ if (
                 logMessage("Folgende Daten für Kunde mit der ID $kundenId wurden aktualisiert: $changes");
 
                 //Versenden der Mail an den Kunden zur Information der Datenänderung
-                sendCustomerUpdateEmail($kundenId, $kundentyp, $changedDataForMail);
+                sendCustomerUpdateEmail($kundenId, $kundentyp, $changedDataForMail);        
             } else {
                 echo "Fehler beim Aktualisieren der Daten: " . $stmt->error;
                 logMessage("Fehler beim Aktualisieren für Kunde mit der ID $kundenId: " . $stmt->error);
