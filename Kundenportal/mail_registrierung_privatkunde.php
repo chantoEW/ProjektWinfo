@@ -24,11 +24,11 @@ try {
     // Zeichencodierung setzen
     $mail->CharSet = 'UTF-8';
 
-    $confirmationLink = "http://192.168.233.1/ProjektWinfo/Kundenportal/logic_bestaetigungPK.php?benutzername=" . urlencode($benutzername);
+    $confirmationLink = "http://192.168.164.1/ProjektWinfoGithubNeu/ProjektWinfo/Kundenportal/logic_bestaetigungPK.php?benutzername=" . urlencode($benutzername);
 
     // Empfänger, Betreff und Nachricht einstellen
     $mail->setFrom('autovermietung.jomaface@outlook.de', 'Autovermietung jomaface');
-    $mail->addAddress('fschlaghecken@gmx.de', 'Fabian Schlaghecken');
+    $mail->addAddress('maxiwehning@gmail.com', 'Maximilian Wehning');
 
     // Inhalt
     $mail->isHTML(true);                          // Set email format to HTML
