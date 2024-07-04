@@ -38,20 +38,20 @@ if (isset($_SESSION['benutzername'])) {
         echo "<h1>Herzlich willkommen $vorname $nachname!</h1>";
         echo "</header>";
     }
-    elseif ($result_kunde["Fkunde_PKunde"] == 'f')
+    elseif ($result_kunde["FKunde_PKunde"] == 'f')
     {
         $sql = "SELECT Vorname, Name, FirmenID FROM firmenkunde WHERE FKundenID = '" . $result_kunde["FKundenID"] . "'";
         $result = mysqli_query($conn, $sql);
-        $result_privatkunde = mysqli_fetch_assoc($result);
-        $vorname = $result_privatkunde["Vorname"];
-        $nachname = $result_privatkunde["Name"];
-        $sql = "SELECT Name FROM firma WHERE FKundenID = '" . $result_kunde["FirmenID"] . "'";
+        $result_firmenkunde = mysqli_fetch_assoc($result);
+        $vorname = $result_firmenkunde["Vorname"];
+        $nachname = $result_firmenkunde["Name"];
+        $sql = "SELECT Firmenname FROM firma WHERE FirmenID = '" . $result_firmenkunde["FirmenID"] . "'";
         $result = mysqli_query($conn, $sql);
         $result_firma = mysqli_fetch_assoc($result);
 
         // Kundenname im Header anzeigen
         echo "<header>";
-        echo "<h1>Herzlich willkommen $vorname $nachname (" . $result_firma["Name"] . ")!</h1>";
+        echo "<h1>Herzlich willkommen $vorname $nachname (Firma " . $result_firma["Firmenname"] . ")!</h1>";
         echo "</header>";
     }
 

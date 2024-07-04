@@ -11,8 +11,6 @@ $vorname = $_SESSION['vorname'];
 $nachname = $_SESSION['nachname'];
 $benutzername = $_SESSION['benutzername'];
 
-echo "test";
-
 try {
     // Servereinstellungen konfigurieren
     $mail->isSMTP();
@@ -26,7 +24,7 @@ try {
     // Zeichencodierung setzen
     $mail->CharSet = 'UTF-8';
 
-    $confirmationLink = "http://localhost:63342/projektWINFO/Kundenportal/logic_bestaetigungPK.php?benutzername=$benutzername";
+    $confirmationLink = "http://192.168.233.1/ProjektWinfo/Kundenportal/logic_bestaetigungPK.php?benutzername=" . urlencode($benutzername);
 
     // Empfänger, Betreff und Nachricht einstellen
     $mail->setFrom('autovermietung.jomaface@outlook.de', 'Autovermietung jomaface');
@@ -60,7 +58,9 @@ try {
     $mail->send();
 
     logmessage("Registrierungsmail versendet an: " . $vorname . " " . $nachname . ", Benutzername: " . $benutzername);
-    
+
+    echo "<script>alert('Die Daten wurden erfolgreich übermittelt. Wir informieren Sie per E-mail, sobald die Plausibilätsprüfung abgeschlossen ist.'); window.location.href='login.html';</script>";
+    exit();
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }

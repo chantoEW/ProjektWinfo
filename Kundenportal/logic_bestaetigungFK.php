@@ -39,7 +39,7 @@ if (isset($_GET['benutzername'])) {
             $FKundenID = $row_FKundenID['FKundenID'];
 
             // Bestätigungswert herausfinden
-            $sql = "SELECT Bestaetigung, Mail FROM kontaktdaten WHERE PKundenID = '$PKundenID'";
+            $sql = "SELECT Bestaetigung, Mail FROM kontaktdaten WHERE FKundenID = '$FKundenID'";
             $result = mysqli_query($conn, $sql);
             if ($result){
                 $row = $result->fetch_assoc();
@@ -48,16 +48,21 @@ if (isset($_GET['benutzername'])) {
                     echo("E-Mail-Adresse wurde bereits bestätigt!");
                     logMessage("E-Mail-Adresse " . $row['Mail'] . " wurde bereits bestätigt!");
                 }
-                else
+                else if ($row['Bestaetigung'] == 0)
                 {
                     $sql = "UPDATE Kontaktdaten SET Bestaetigung = '1' WHERE FKundenID = '$FKundenID'";
                     if (mysqli_query($conn, $sql)) {
                         logMessage("E-Mail-Adresse " . $row['Mail'] . " für user " . $benutzername . " wurde bestätigt!");
-                        echo("E-Mail-Adresse wurde erfolgreich bestätigt! Sie können sich nun einloggen.");
+                        echo "<script>alert('E-Mail-Adresse wurde erfolgreich bestätigt! Sie können sich nun einloggen.'); window.location.href='login.html';</script>";
+                        exit();
                     }else{
                         logMessage("Fehler beim Bestätigen der E-Mail-Adresse " . $row['Mail'] . " für user " . $benutzername . " (Update für Tabelle Kontaktdaten nicht erfolgreich!)");
                         echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
                     }
+                }
+                else {
+                    logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Keinen korrekten Datensatz in der Datenbank gefunden!)");
+                    echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
                 }
             } else
             {

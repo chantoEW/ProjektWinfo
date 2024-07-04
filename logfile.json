@@ -10,6 +10,31 @@
 2024-07-02 09:35:29 - [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
 2024-07-02 09:35:35 - [INFO] - Alle Kontaktdaten wurden angegeben
 2024-07-02 09:35:45 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-07-02 09:43:17 - [INFO] - Die Mail zum Passwort vergessen, wurde erfolgreich versendet.
+2024-07-02 09:51:05 - [ERROR] - Fehler beim Senden der Passwort vergessen Mail
+2024-07-02 09:53:24 - [ERROR] - Fehler beim Senden der Passwort vergessen Mail
+2024-07-02 09:55:45 - [ERROR] - Fehler beim Senden der Passwort vergessen Mail
+2024-07-02 09:55:50 - [ERROR] - Fehler beim Senden der Passwort vergessen Mail
+2024-07-02 10:25:21 - [ERROR] - Das Passwort ist nicht lang genug
+2024-07-02 10:25:21 - [ERROR] - Benutzerdaten wurden nicht korrekt ausgefüllt
+2024-07-02 10:25:21 - [ERROR] - Nicht alle Felder wurden ausgefüllt
+2024-07-02 10:25:21 - [ERROR] - Nicht alle Felder wurden ausgefüllt
+2024-07-02 10:25:21 - [ERROR] - Nicht alle Felder wurden ausgefüllt
+2024-07-02 10:25:21 - [ERROR] - Nicht alle Felder wurden ausgefüllt
+2024-07-02 10:25:21 - [ERROR] - Nicht alle Felder wurden ausgefüllt
+2024-07-02 10:25:32 - [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
+2024-07-02 10:25:36 - [INFO] - Alle Kontaktdaten wurden angegeben
+2024-07-02 10:25:39 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-07-02 11:48:23 [INFO] - DB Verbindung hergestellt
+2024-07-02 11:48:23 [ERROR] - Falsches Passwort
+2024-07-02 11:48:33 [INFO] - DB Verbindung hergestellt
+2024-07-02 11:48:33 [ERROR] - Falsches Passwort
+2024-07-02 11:48:40 [INFO] - DB Verbindung hergestellt
+2024-07-02 11:48:40 [ERROR] - Falsches Passwort
+2024-07-02 11:53:04 [INFO] - DB Verbindung hergestellt
+2024-07-02 11:53:04 [ERROR] - Falsches Passwort
+2024-07-02 12:07:40 [INFO] - DB Verbindung hergestellt
+2024-07-02 12:07:40 [ERROR] - Benutzer nicht gefunden
 2024-07-02 09:47:00 - [ERROR] - Das Passwort ist nicht lang genug
 2024-07-02 09:47:00 - [ERROR] - Nicht alle Felder wurden ausgefüllt
 2024-07-02 09:47:00 - [ERROR] - Nicht alle Felder wurden ausgefüllt
@@ -89,3 +114,57 @@
 2024-07-02 18:27:26 - [INFO] - Validierung abgeschlossen
 2024-07-02 18:27:26 - [ERROR] - Das Kontaktformular ist nicht vollständig
 2024-07-02 18:27:40 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-07-04 08:49:13 - [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
+2024-07-04 08:49:13 - [INFO] - Benutzerdaten werden validiert
+2024-07-04 08:49:13 - [INFO] - Validierung abgeschlossen
+2024-07-04 08:49:16 - [INFO] - Alle Kontaktdaten wurden angegeben
+2024-07-04 08:49:16 - [INFO] - Kontaktdaten werden validiert
+2024-07-04 08:49:16 - [INFO] - Validierung abgeschlossen
+2024-07-04 08:49:23 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-07-04 08:54:46 - [INFO] - Validierung abgeschlossen
+2024-07-04 08:54:46 - [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
+2024-07-04 08:54:46 - [INFO] - Benutzerdaten werden validiert
+2024-07-04 08:54:49 - [INFO] - Kontaktdaten werden validiert
+2024-07-04 08:54:49 - [INFO] - Validierung abgeschlossen
+2024-07-04 08:54:50 - [INFO] - Alle Kontaktdaten wurden angegeben
+2024-07-04 08:54:53 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-07-04 09:02:30 - [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
+2024-07-04 09:02:30 - [INFO] - Validierung abgeschlossen
+2024-07-04 09:02:30 - [INFO] - Benutzerdaten werden validiert
+2024-07-04 09:02:32 - [INFO] - Alle Kontaktdaten wurden angegeben
+2024-07-04 09:02:32 - [INFO] - Kontaktdaten werden validiert
+2024-07-04 09:02:32 - [INFO] - Validierung abgeschlossen
+2024-07-04 09:02:34 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-07-04 09:03:23 - [INFO] - Validierung abgeschlossen
+2024-07-04 09:03:23 - [INFO] - Benutzerdaten werden validiert
+2024-07-04 09:03:23 - [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
+2024-07-04 09:03:25 - [INFO] - Kontaktdaten werden validiert
+2024-07-04 09:03:25 - [INFO] - Validierung abgeschlossen
+2024-07-04 09:03:26 - [INFO] - Alle Kontaktdaten wurden angegeben
+2024-07-04 09:03:27 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-07-04 09:11:44 - [INFO] - Validierung abgeschlossen
+2024-07-04 09:11:44 - [INFO] - Benutzerdaten werden validiert
+2024-07-04 09:11:44 - [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
+2024-07-04 09:11:45 - [INFO] - Kontaktdaten werden validiert
+2024-07-04 09:11:45 - [INFO] - Alle Kontaktdaten wurden angegeben
+2024-07-04 09:11:45 - [INFO] - Validierung abgeschlossen
+2024-07-04 09:11:47 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-07-04 09:29:07 - [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
+2024-07-04 09:29:07 - [INFO] - Benutzerdaten werden validiert
+2024-07-04 09:29:07 - [INFO] - Validierung abgeschlossen
+2024-07-04 09:29:10 - [INFO] - Alle Kontaktdaten wurden angegeben
+2024-07-04 09:29:10 - [INFO] - Kontaktdaten werden validiert
+2024-07-04 09:29:10 - [INFO] - Validierung abgeschlossen
+2024-07-04 09:29:12 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-07-04 09:37:21 - [INFO] - Benutzerdaten werden validiert
+2024-07-04 09:37:21 - [INFO] - Validierung abgeschlossen
+2024-07-04 09:37:21 - [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
+2024-07-04 09:37:26 - [INFO] - Kontaktdaten werden validiert
+2024-07-04 09:37:26 - [INFO] - Alle Kontaktdaten wurden angegeben
+2024-07-04 09:37:37 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
+2024-07-04 09:45:07 - [INFO] - Validierung abgeschlossen
+2024-07-04 09:45:07 - [INFO] - Alle Benutzerdaten wurden korrekt ausgefüllt
+2024-07-04 09:45:07 - [INFO] - Benutzerdaten werden validiert
+2024-07-04 09:45:10 - [INFO] - Kontaktdaten werden validiert
+2024-07-04 09:45:10 - [INFO] - Alle Kontaktdaten wurden angegeben
+2024-07-04 09:45:14 - [INFO] - Alle Daten wurden korrekt ausgefüllt. Die Registrierung ist abgeschlossen
