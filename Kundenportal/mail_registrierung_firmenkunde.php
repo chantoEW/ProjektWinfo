@@ -57,12 +57,12 @@ try {
             </html>";
 
     $mail->send();
-    logmessage("Registrierungsmail versendet an: " . $vorname . " " . $nachname . ", Benutzername: " . $benutzername . ", Firma: " . $firmenname);
+    logmessage("[Registrierungs-Mail-FK] Mail versendet an: " . $vorname . " " . $nachname . ", Benutzername: " . $benutzername . ", Firma: " . $firmenname);
 
     echo "<script>alert('Der Benutzername existiert bereits. Bitte wählen Sie einen anderen Benutzernamen.'); window.location.href='registrierung.html';</script>";
     exit();
     
 } catch (Exception $e) {
-    logmessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}", "ERROR");
+    logmessage("[Registrierungs-Mail-FK] Message could not be sent. Mailer Error: {$mail->ErrorInfo}", "ERROR");
 }
 ?>

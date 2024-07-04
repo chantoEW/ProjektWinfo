@@ -16,9 +16,9 @@ $dbname = "portal";
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Verbindung überprüfen
 if ($conn->connect_error) {
-    logMessage("Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
+    logMessage("[Mail-Bestätigung PK] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
 } else {
-    logMessage("Verbindung zur Datenbank wurde hergestellt und überprüft");
+    logMessage("[Mail-Bestätigung PK] Verbindung zur Datenbank wurde hergestellt und überprüft");
 }
 
 if (isset($_GET['benutzername'])) {
@@ -46,41 +46,41 @@ if (isset($_GET['benutzername'])) {
                 if ($row['Bestaetigung'] == 1) {
 
                     echo("Ihre E-Mail-Adresse wurde bereits bestätigt!");
-                    logMessage("E-Mail-Adresse " . $row['Mail'] . " wurde bereits bestätigt!", "WARNUNG");
+                    logMessage("[Mail-Bestätigung PK] E-Mail-Adresse " . $row['Mail'] . " wurde bereits bestätigt!", "WARNUNG");
                 }
                 else if($row['Bestaetigung'] == 0)
                 {
                     $sql = "UPDATE Kontaktdaten SET Bestaetigung = '1' WHERE PKundenID = '$PKundenID'";
                     if (mysqli_query($conn, $sql)) {
-                        logMessage("E-Mail-Adresse " . $row['Mail'] . " für user " . $benutzername . " wurde bestätigt!");
+                        logMessage("[Mail-Bestätigung PK] E-Mail-Adresse " . $row['Mail'] . " für user " . $benutzername . " wurde bestätigt!");
                         echo "<script>alert('E-Mail-Adresse wurde erfolgreich bestätigt! Sie können sich nun einloggen.'); window.location.href='login.html';</script>";
                         exit();
                     }else{
-                        logMessage("Fehler beim Bestätigen der E-Mail-Adresse " . $row['Mail'] . " für user " . $benutzername . " (Update für Tabelle Kontaktdaten nicht erfolgreich!)", "ERROR");
+                        logMessage("[Mail-Bestätigung PK] Fehler beim Bestätigen der E-Mail-Adresse " . $row['Mail'] . " für user " . $benutzername . " (Update für Tabelle Kontaktdaten nicht erfolgreich!)", "ERROR");
                         echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
                     }
                 }
                 else{
-                        logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Keinen korrekten Datensatz in der Datenbank gefunden!)", "ERROR");
+                        logMessage("[Mail-Bestätigung PK] Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Keinen korrekten Datensatz in der Datenbank gefunden!)", "ERROR");
                         echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
                     }
             } else
             {
-                logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle kontaktdaten fehlerhaft)", "ERROR");
+                logMessage("[Mail-Bestätigung PK] Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle kontaktdaten fehlerhaft)", "ERROR");
                 echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
             }
         } else
         {
-            logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle kunden fehlerhaft)", "ERROR");
+            logMessage("[Mail-Bestätigung PK] Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle kunden fehlerhaft)", "ERROR");
             echo("Es wurde kein passendes Privat-Kundenkonto gefunden! Bitte versuchen Sie es später erneut.");
         }
     } else
     {
-        logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle user fehlerhaft)", "ERROR");
+        logMessage("[Mail-Bestätigung PK] Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle user fehlerhaft)", "ERROR");
         echo("Es wurde kein passendes Kundenkonto gefunden! Bitte versuchen Sie es später erneut.");
     }
 } else {
-    logMessage("Fehler beim Bestätigen der E-Mail-Adresse es wurde kein Token übergeben)", "WARNUNG");
+    logMessage("[Mail-Bestätigung PK] Fehler beim Bestätigen der E-Mail-Adresse es wurde kein Token übergeben)", "WARNUNG");
     echo 'Kein Bestätigungstoken angegeben.';
 }
 

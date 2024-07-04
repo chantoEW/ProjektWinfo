@@ -15,7 +15,7 @@ $password = "";
 $dbname = "portal";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-logMessage("DB Verbindung hergestellt");
+logMessage("[Login] DB Verbindung hergestellt");
 
 // Benutzereingaben überprüfen und Anmeldung durchführen
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -49,12 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Passwort stimmt nicht überein
             echo "<script>alert('Falsches Passwort'); window.location.href = 'login.html';</script>";
-            logMessage('Falsches Passwort', 'ERROR');
+            logMessage('[Login] Falsches Passwort', 'ERROR');
         }
     } else {
         // Benutzer nicht gefunden
         echo "<script>alert('Benutzer nicht gefunden'); window.location.href = 'login.html';</script>";
-        logMessage('Benutzer nicht gefunden', 'ERROR');
+        logMessage('[Login] Benutzer nicht gefunden', 'ERROR');
     }
 }
 

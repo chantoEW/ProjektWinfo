@@ -57,11 +57,11 @@ try {
 
     $mail->send();
 
-    logmessage("Registrierungsmail versendet an: " . $vorname . " " . $nachname . ", Benutzername: " . $benutzername);
+    logmessage("[Registrierungs-Mail-PK] Mail versendet an: " . $vorname . " " . $nachname . ", Benutzername: " . $benutzername);
 
     echo "<script>alert('Die Daten wurden erfolgreich übermittelt. Wir informieren Sie per E-mail, sobald die Plausibilätsprüfung abgeschlossen ist.'); window.location.href='login.html';</script>";
     exit();
 } catch (Exception $e) {
-    logmessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}", "ERROR");
+    logmessage("[Registrierungs-Mail-PK] Message could not be sent. Mailer Error: {$mail->ErrorInfo}", "ERROR");
 }
 ?>
