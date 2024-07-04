@@ -105,9 +105,9 @@ if (isset($_SESSION['error_message'])) {
     <nav>
         <div class="link-container">
             <a href="javascript:history.back()" class="link"><i class="bi bi-arrow-left"></i> Zurück</a>
-            <a href="startseite.html" class="link" onclick="event.preventDefault();"><i class="bi bi-house"></i>
+            <a href="marketingStartseite.html" class="link" onclick="event.preventDefault();"><i class="bi bi-house"></i>
                 Startseite</a>
-            <a href="#" class="link"><i class="bi bi-door-closed"></i> Abmelden</a>
+            <a href="index.html" class="link"><i class="bi bi-door-closed"></i> Abmelden</a>
         </div>
     </nav>
 
