@@ -7,9 +7,9 @@ require 'C:/xampp/php/vendor/autoload.php';
 // E-Mail-Instanz erstellen
 $mail = new PHPMailer(true);
 
-function logMessage($message) {
-    $logFile = 'logfile.json';
-    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+function logMessage($message, $type = 'INFO') {
+    $logFile = 'logfile.txt';
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$type] - " . $message . PHP_EOL;
     file_put_contents($logFile, $formattedMessage, FILE_APPEND);
 }
 
@@ -23,9 +23,9 @@ $dbname = "portal";
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Verbindung überprüfen
 if ($conn->connect_error) {
-    logMessage("Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error);
+    logMessage("[Erinnerungs-Mails] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
 } else {
-    logMessage("Verbindung zur Datenbank wurde hergestellt und überprüft");
+    logMessage("[Erinnerungs-Mails] Verbindung zur Datenbank wurde hergestellt und überprüft");
 }
 
 $heutigesDatum = date('Y-m-d');
@@ -64,7 +64,7 @@ try {
             $rabatcode_PK = $row['Rabattcode'];
             $datum_FristEnde_PK = $row['Datum_FristEnde'];
 
-        logMessage("Erinnerungs-Mail versendet an: " . $mail_PK . ", " . $vorname_PK . ", KundenID:  " . $KundenID_PK . ", Rabattcode: " . $name_PK . ", Rabattcode: " . $rabatcode_PK . ", Rabattart: " . $rabattart_PK . ", " . $prozentsatz_PK . "%, FristEnde: " . $datum_FristEnde_PK . ".");
+        logMessage("[Erinnerungs-Mails] Mail versendet an: " . $mail_PK . ", " . $vorname_PK . ", KundenID:  " . $KundenID_PK . ", Rabattcode: " . $name_PK . ", Rabattcode: " . $rabatcode_PK . ", Rabattart: " . $rabattart_PK . ", " . $prozentsatz_PK . "%, FristEnde: " . $datum_FristEnde_PK);
         }
 
         // Nur die Mail zum letzten Datensatz raussenden, falls Datensätze existieren
@@ -157,7 +157,7 @@ try {
             $rabatcode_FK = $row['Rabattcode'];
             $datum_FristEnde_FK = $row['Datum_FristEnde'];
 
-            logMessage("Erinnerungs-Mail versendet an: " . $mail_FK . ", " . $vorname_FK . ", " . $nachname_FK . " von Firma " . $firma_FK . ", KundenID:  " . $KundenID_FK . ", Rabattcode: " . $rabatcode_FK . ", Rabattart: " . $rabattart_FK . ", " . $prozentsatz_FK . "%, FristEnde: " . $datum_FristEnde_FK . ".");
+            logMessage("[Erinnerungs-Mails] Mail versendet an: " . $mail_FK . ", " . $vorname_FK . ", " . $nachname_FK . " von Firma " . $firma_FK . ", KundenID:  " . $KundenID_FK . ", Rabattcode: " . $rabatcode_FK . ", Rabattart: " . $rabattart_FK . ", " . $prozentsatz_FK . "%, FristEnde: " . $datum_FristEnde_FK);
         }
 
         // Nur die Mail zum letzten Datensatz raussenden, falls Datensätze existieren
@@ -234,7 +234,7 @@ try {
     }
 
     } catch (Exception $e) {
-        logmessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+        logmessage("[Erinnerungs-Mails] Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
 }
 
 ?>

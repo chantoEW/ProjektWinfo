@@ -1,8 +1,8 @@
 <?php
 session_start();
-function logMessage($message) {
-    $logFile = 'logfile.json';
-    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+function logMessage($message, $type = 'INFO') {
+    $logFile = 'logfile.txt';
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$type] - " . $message . PHP_EOL;
     file_put_contents($logFile, $formattedMessage, FILE_APPEND);
 }
 
@@ -67,23 +67,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Hier kannst du entsprechende Aktionen basierend auf dem Kundentyp durchführen
         if ($kundentyp == 'Privatkunde') {
             // SQL-Query zum Einfügen der Daten in die entsprechende Tabelle
-            // $sql = "INSERT INTO privatkunde (Benutzername, Vorname, Nachname, Passwort, eMail, Geburtsdatum, Kundentyp) VALUES ('$benutzername', '$vorname', '$nachname', '$hashed_password', '$email', '$geburtsdatum', '$kundentyp')";
+
             $sql = "INSERT INTO privatkunde (Name, Vorname, GebDatum, Eintrittsdatum) VALUES ('$nachname', '$vorname', '$geburtsdatum', '$eintrittsdatum')";
             if (mysqli_query($conn, $sql)) {
                 $PKundenID = mysqli_insert_id($conn);
-                //echo "$PKundenID";
+
                 $sql = "INSERT INTO kunden (PKundenID, FKunde_PKunde) VALUES ('$PKundenID', 'p')";
                 if (mysqli_query($conn, $sql)) {
                     $KundenID = mysqli_insert_id($conn);
-                    //echo "$KundenID";
+
                     $sql = "INSERT INTO kontaktdaten (Strasse, Ort, PLZ, Telefonnummer, Mail, PKundenID, FKunde_PKunde) VALUES ('$strasse', '$ort', '$plz', '$telefonnummer', '$email', '$PKundenID', 'p')";
                     if (mysqli_query($conn, $sql)) {
                         $KontaktID = mysqli_insert_id($conn);
-                        //echo "$KontaktID";
+
                         $sql = "INSERT INTO zahlungsinformationen (BLZ, Institut, IBAN, Inhaber, KundenID) VALUES ('$blz', '$institut', '$iban', '$inhaber', '$KundenID')";
                         if (mysqli_query($conn, $sql)) {
                             $ZahlungsID = mysqli_insert_id($conn);
-                            //echo "$ZahlungsID";
+
                             $sql = "UPDATE privatkunde SET KontaktID='$KontaktID', ZahlungsID='$ZahlungsID', KundenID='$KundenID' WHERE PKundenID='$PKundenID'";
                             if (mysqli_query($conn, $sql)) {
                                 $sql = "INSERT INTO user (Benutzername, Passwort, KundenID) VALUES ('$benutzername', '$hashed_password', '$KundenID')";
@@ -93,24 +93,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         logmessage("Datensatz für neuen Privatkunden mit der KundenID " . $KundenID . " erfolgreich erzeugt.");
                                         include 'mail_registrierung_privatkunde.php';
                                     } else {
-                                        logmessage("Fehler beim Einfügen in die Tabelle kundenauswertung: " . mysqli_error($conn));}
+                                        logmessage("Fehler beim Einfügen in die Tabelle kundenauswertung: " . mysqli_error($conn), "ERROR");}
                                 } else {
-                                    logmessage("Fehler beim Einfügen der Log-In-Daten: " . mysqli_error($conn));
+                                    logmessage("Fehler beim Einfügen der Log-In-Daten: " . mysqli_error($conn), "ERROR");
                                 }
                             } else {
-                                logmessage("Fehler beim Aktualisieren der Privatkunden-Daten: " . mysqli_error($conn));
+                                logmessage("Fehler beim Aktualisieren der Privatkunden-Daten: " . mysqli_error($conn), "ERROR");
                             }
                         } else {
-                            logmessage("Fehler beim Einfügen der Zahlungsinformationen: " . mysqli_error($conn));
+                            logmessage("Fehler beim Einfügen der Zahlungsinformationen: " . mysqli_error($conn), "ERROR");
                         }
                     } else {
-                        logmessage("Fehler beim Einfügen der Kontaktdaten: " . mysqli_error($conn));
+                        logmessage("Fehler beim Einfügen der Kontaktdaten: " . mysqli_error($conn), "ERROR");
                     }
                 } else {
-                    logmessage("Fehler beim Einfügen der Kunden-Daten: " . mysqli_error($conn));
+                    logmessage("Fehler beim Einfügen der Kunden-Daten: " . mysqli_error($conn), "ERROR");
                 }
             } else {
-                logmessage("Fehler beim Einfügen in die Tabelle privatkunde: " . mysqli_error($conn));
+                logmessage("Fehler beim Einfügen in die Tabelle privatkunde: " . mysqli_error($conn), "ERROR");
             }
         } elseif ($kundentyp == 'Geschäftskunde') {
             $firmenname = $_POST['firmenname'];
@@ -146,25 +146,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             logmessage("Datensatz für neuen Firmekunden mi der KundenID " . $KundenID . " erfolgreich erzeugt.");
                                             include 'mail_registrierung_firmenkunde.php';
                                         } else {
-                                            logmessage("Fehler beim Einfügen in die Tabelle kundenauswertung: " . mysqli_error($conn));}
+                                            logmessage("Fehler beim Einfügen in die Tabelle kundenauswertung: " . mysqli_error($conn), "ERROR");}
                                     } else {
-                                        logmessage("Fehler beim Einfügen in die Tabelle user: " . mysqli_error($conn));}
+                                        logmessage("Fehler beim Einfügen in die Tabelle user: " . mysqli_error($conn), "ERROR");}
                                 } else {
-                                    logmessage("Fehler beim Aktualisierung der Tabelle firmenkunde: " . mysqli_error($conn));}
+                                    logmessage("Fehler beim Aktualisierung der Tabelle firmenkunde: " . mysqli_error($conn), "ERROR");}
                             } else {
-                                logmessage("Fehler beim Einfügen in die Tabelle firma: " . mysqli_error($conn));}
+                                logmessage("Fehler beim Einfügen in die Tabelle firma: " . mysqli_error($conn), "ERROR");}
                         } else {
-                            logmessage("Fehler beim Einfügen in die Tabelle zahlungsinformationen: " . mysqli_error($conn));}
+                            logmessage("Fehler beim Einfügen in die Tabelle zahlungsinformationen: " . mysqli_error($conn), "ERROR");}
                     } else {
-                        logmessage("Fehler beim Einfügen in die Tabelle kontaktdaten: " . mysqli_error($conn));}
+                        logmessage("Fehler beim Einfügen in die Tabelle kontaktdaten: " . mysqli_error($conn), "ERROR");}
                 } else {
-                    logmessage("Fehler beim Einfügen in die Tabelle kunden: " . mysqli_error($conn));}
+                    logmessage("Fehler beim Einfügen in die Tabelle kunden: " . mysqli_error($conn), "ERROR");}
             } else {
-                logmessage("Fehler beim Einfügen in die Tabelle firmenkunde: " . mysqli_error($conn));}
+                logmessage("Fehler beim Einfügen in die Tabelle firmenkunde: " . mysqli_error($conn), "ERROR");}
         } else {
-            logmessage(("Kundentyp ist ungültig"));}
+            logmessage("Kundentyp ist ungültig", "WARNUNG");}
     } else {
-        logmessage(("Kundentyp nicht ausgewählt"));}
+        logmessage("Kundentyp nicht ausgewählt", "WARNUNG");}
 
     // Verbindung schließen
     mysqli_close($conn);

@@ -62,6 +62,6 @@ try {
     echo "<script>alert('Die Daten wurden erfolgreich übermittelt. Wir informieren Sie per E-mail, sobald die Plausibilätsprüfung abgeschlossen ist.'); window.location.href='login.html';</script>";
     exit();
 } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    logmessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}", "ERROR");
 }
 ?>

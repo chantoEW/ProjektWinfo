@@ -98,11 +98,15 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Passwort vergessen</h2>
+        <!--
         <form id="forgotPasswordForm" action="javascript:void(0);" method="POST" onsubmit="pruefeBenutzername()">
             <input type="text" id="forgotPasswordUsername" name="benutzername" class="input-field" placeholder="Benutzername" required>
             <br>
-            <button type="submit" class="button">E-Mail versenden</button>
+            <button type="submit" class="button">Passwort anfragen</button>
         </form>
+        -->
+        <p>Falls Sie Ihr Passwort vergessen haben, wenden Sie sich bitte an einen unserer Service-Mitarbeiter.</p>
+        <a href="login.html" class="button">Zurück zum Login</a>
     </div>
 </div>
 
@@ -115,7 +119,7 @@
     </div>
 </div>
 
-<script>
+<script>/*
     function logMessage(message, type = 'INFO') {
         if (!['ERROR', 'INFO', 'WARNING'].includes(type)) {
             console.error(`[ERROR] Invalid log type: ${type}`);
@@ -137,7 +141,7 @@
             .then(response => response.json())
             .then(data => console.log('Server response:', data))
             .catch(error => console.error('Error:', error));
-    }
+    }*/
 
 
     // Popup-Fenster für Passwort vergessen öffnen
@@ -176,8 +180,8 @@
             modalSuccessMessage.style.display = "none";
         }
     }
-
-   /* function pruefeBenutzername() {
+/*
+   function pruefeBenutzername() {
         var username = document.getElementById("forgotPasswordUsername").value;
         alert("test");
         checkUsername(benutzername, function(exists) {
@@ -190,6 +194,7 @@
                 error = false; // Setzt den Fehlerstatus auf false, wenn der Benutzername nicht existiert
             }
     }*/
+
 </script>
 
 </body>

@@ -63,6 +63,6 @@ try {
     exit();
     
 } catch (Exception $e) {
-    logmessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+    logmessage("Message could not be sent. Mailer Error: {$mail->ErrorInfo}", "ERROR");
 }
 ?>

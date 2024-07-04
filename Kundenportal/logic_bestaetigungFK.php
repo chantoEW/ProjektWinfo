@@ -1,8 +1,8 @@
 <?php
 
-function logMessage($message) {
-    $logFile = 'logfile.json';
-    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+function logMessage($message, $type = 'INFO') {
+    $logFile = 'logfile.txt';
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$type] - " . $message . PHP_EOL;
     file_put_contents($logFile, $formattedMessage, FILE_APPEND);
 }
 
@@ -16,7 +16,7 @@ $dbname = "portal";
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Verbindung überprüfen
 if ($conn->connect_error) {
-    logMessage("Verbindung zur Datenbank kann nicht hergestellt werden");
+    logMessage("Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
 } else {
     logMessage("Verbindung zur Datenbank wurde hergestellt und überprüft");
 }
@@ -46,7 +46,7 @@ if (isset($_GET['benutzername'])) {
                 if ($row['Bestaetigung'] == 1) {
 
                     echo("E-Mail-Adresse wurde bereits bestätigt!");
-                    logMessage("E-Mail-Adresse " . $row['Mail'] . " wurde bereits bestätigt!");
+                    logMessage("E-Mail-Adresse " . $row['Mail'] . " wurde bereits bestätigt!", "WARNUNG");
                 }
                 else if ($row['Bestaetigung'] == 0)
                 {
@@ -56,31 +56,31 @@ if (isset($_GET['benutzername'])) {
                         echo "<script>alert('E-Mail-Adresse wurde erfolgreich bestätigt! Sie können sich nun einloggen.'); window.location.href='login.html';</script>";
                         exit();
                     }else{
-                        logMessage("Fehler beim Bestätigen der E-Mail-Adresse " . $row['Mail'] . " für user " . $benutzername . " (Update für Tabelle Kontaktdaten nicht erfolgreich!)");
+                        logMessage("Fehler beim Bestätigen der E-Mail-Adresse " . $row['Mail'] . " für user " . $benutzername . " (Update für Tabelle Kontaktdaten nicht erfolgreich!)", "ERROR");
                         echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
                     }
                 }
                 else {
-                    logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Keinen korrekten Datensatz in der Datenbank gefunden!)");
+                    logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Keinen korrekten Datensatz in der Datenbank gefunden!)", "ERROR");
                     echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
                 }
             } else
             {
-                logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle kontaktdaten fehlerhaft)");
+                logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle kontaktdaten fehlerhaft)", "ERROR");
                 echo("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut!");
             }
         } else
         {
-            logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle kunden fehlerhaft)");
+            logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle kunden fehlerhaft)", "ERROR");
             echo("Es wurde kein passendes Firmen-Kundenkonto gefunden! Bitte versuchen Sie es später erneut.");
         }
     } else
     {
-        logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle user fehlerhaft)");
+        logMessage("Fehler beim Bestätigen der E-Mail-Adresse für user " . $benutzername . " (Ergebnis aus Tabelle user fehlerhaft)", "ERROR");
         echo("Es wurde kein passendes Kundenkonto gefunden! Bitte versuchen Sie es später erneut.");
     }
 } else {
-    logMessage("Fehler beim Bestätigen der E-Mail-Adresse es wurde kein Token übergeben)");
+    logMessage("Fehler beim Bestätigen der E-Mail-Adresse es wurde kein Token übergeben)", "WARNUNG");
     echo 'Kein Bestätigungstoken angegeben.';
 }
 
