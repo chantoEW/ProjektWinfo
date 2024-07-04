@@ -401,7 +401,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                 document.getElementById('institut').value = data.data.Institut || '';
                 document.getElementById('iban').value = data.data.IBAN || '';
                 document.getElementById('inhaber').value = data.data.Inhaber || '';
-                document.getElementById('bonitaetsklasse').value = data.data.Bonitätsklasse || '';
+                document.getElementById('bonitaetsklasse').value = data.data.Bonitaetsklasse || '';
                 document.getElementById('abc_klassifikation').value = data.data.ABC_Klasse || '';
 
                 if (data.data.Firmenname != null) {

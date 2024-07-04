@@ -41,8 +41,58 @@ if (isset($_SESSION['benutzername'])) {
         die("Keine ID gefunden.");
     }
 
+    //Kundentyp holen
+    $sql = "SELECT FKunde_PKunde FROM kunden WHERE KundenID = ?";
+
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        die("Vorbereitung fehlgeschlagen: " . $conn->error);
+    }
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_assoc();
+    $kundentyp = $row["FKunde_PKunde"];
+
+
+    if ($kundentyp == 'F') {
+
+        $sql = "SELECT * 
+        FROM kunden AS k
+        JOIN firmenkunde AS fk
+        ON k.FKundenID = fk.FKundenID
+        JOIN zahlungsinformationen AS zi
+        ON fk.ZahlungsID = zi.ZahlungsID
+        JOIN user 
+        ON user.KundenID = k.KundenID
+        JOIN firma
+        ON fk.FirmenID = firma.FirmenID
+        JOIN kontaktdaten AS kd
+        ON firma.KontaktID = kd.KontaktID
+        JOIN kundenauswertung AS ka
+        ON ka.KundenID = k.KundenID
+        WHERE k.KundenID = ?";
+
+    } else if ($kundentyp == 'P') {
+
+        $sql = "SELECT * 
+        FROM kunden AS k
+        JOIN privatkunde AS pk
+        ON pk.PKundenID = k.PKundenID
+        JOIN kontaktdaten AS kd
+        ON pk.KontaktID = kd.KontaktID
+        JOIN zahlungsinformationen AS zi
+        ON pk.ZahlungsID = zi.ZahlungsID
+        JOIN user 
+        ON user.KundenID = k.KundenID
+        JOIN kundenauswertung AS ka
+        ON ka.KundenID = k.KundenID
+        WHERE k.KundenID = ?";
+    }
+
     // SQL-Abfrage für Kundeninformationen
-    $sql = "SELECT * 
+    /*$sql = "SELECT * 
             FROM kunden AS k
             LEFT JOIN firmenkunde AS fk ON k.FKundenID = fk.FKundenID
             LEFT JOIN privatkunde AS pk ON k.PKundenID = pk.PKundenID
@@ -52,7 +102,7 @@ if (isset($_SESSION['benutzername'])) {
             LEFT JOIN kontaktdaten AS kd ON (firma.KontaktID = kd.KontaktID OR pk.KontaktID = kd.KontaktID)
             LEFT JOIN kundenauswertung AS ka ON ka.KundenID = k.KundenID
             WHERE k.KundenID = ?";
-
+    */
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         die("Vorbereitung fehlgeschlagen: " . $conn->error);
@@ -80,6 +130,7 @@ if (isset($_SESSION['benutzername'])) {
             error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
         }
     }
+   
 
     $stmt->close();
     $conn->close();
@@ -97,6 +148,13 @@ if (isset($_SESSION['benutzername'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">-->
     <link href="../CRM-System/styleCRM.css" rel="stylesheet">
+    <script>function switchTab(tabName) {
+        var tabs = document.querySelectorAll('.content');
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].style.display = "none";
+        }
+        document.getElementById(tabName).style.display = "block";
+    }</script>
     <title>CRM-System</title>
 </head>
 <body>
@@ -116,9 +174,8 @@ if (isset($_SESSION['benutzername'])) {
             <a href="#" class="link" onclick="event.preventDefault(); switchTab('benutzerdaten')">Benutzerdaten</a>
             <a href="#" class="link" onclick="event.preventDefault(); switchTab('kontaktdaten')">Kontaktdaten</a>
             <a href="#" class="link" onclick="event.preventDefault(); switchTab('zahlungsdaten')">Zahlungsdaten</a>
-            <a href="#" class="link" onclick="event.preventDefault(); switchTab('kennzahlen')">Kennzahlen</a>
         </nav>
-        <form  method="POST" action="kundeAendernSpeichern.php">
+        <form  method="POST" action="logic_datenSpeichern.php">
             <div id="benutzerdaten" class="content">
                 <div class="input-title">Benutzerdaten</div>
                 <span id="kundenIdDiv"></span><br><br>
@@ -157,27 +214,16 @@ if (isset($_SESSION['benutzername'])) {
                 <input type="email" class="input-field" id="email" name="email"><br>
             </div>
             <div id="zahlungsdaten" class="content" style="display:none;">
-                <div class="input-title">Zahlungsdaten</div>
-                <label for="karteninhaber">Karteninhaber:</label><br>
-                <input type="text" class="input-field" id="karteninhaber" name="karteninhaber"><br>
-                <label for="kartennummer">Kartennummer:</label><br>
-                <input type="text" class="input-field" id="kartennummer" name="kartennummer"><br>
-                <label for="ablaufdatum">Ablaufdatum:</label><br>
-                <input type="text" class="input-field" id="ablaufdatum" name="ablaufdatum"><br>
-                <label for="pruefziffer">Prüfziffer:</label><br>
-                <input type="text" class="input-field" id="pruefziffer" name="pruefziffer"><br>
-            </div>
-            <div id="kennzahlen" class="content" style="display:none;">
-                <div class="input-title">Kennzahlen</div>
-                <label for="umsatz">Umsatz:</label><br>
-                <input type="text" class="input-field" id="umsatz" name="umsatz"><br>
-                <label for="anrufe">Anrufe:</label><br>
-                <input type="text" class="input-field" id="anrufe" name="anrufe"><br>
-                <label for="emails">E-Mails:</label><br>
-                <input type="text" class="input-field" id="emails" name="emails"><br>
-                <label for="zufriedenheit">Zufriedenheit:</label><br>
-                <input type="text" class="input-field" id="zufriedenheit" name="zufriedenheit"><br>
-            </div>
+                    <div class="input-title">Zahlungsdaten</div>
+                    <label for="blz">BLZ:</label><br>
+                    <input type="text" class="input-field" id="blz" name="blz"><br>
+                    <label for="institut">Institut:</label><br>
+                    <input type="text" class="input-field" id="institut" name="institut"><br>
+                    <label for="iban">IBAN:</label><br>
+                    <input type="text" class="input-field" id="iban" name="iban"><br>
+                    <label for="inhaber">Inhaber:</label><br>
+                    <input type="text" class="input-field" id="inhaber" name="inhaber"><br>
+                </div>
             <button type="submit">Änderungen speichern</button>
         </form>
     </div>
@@ -213,13 +259,11 @@ if (isset($_SESSION['benutzername'])) {
             document.getElementById('ort').value = data.data.Ort || '';
             document.getElementById('postleitzahl').value = data.data.PLZ || '';
             document.getElementById('telefonnummer').value = data.data.Telefonnummer || '';
-            document.getElementById('mailadresse').value = data.data.Mail || '';
+            document.getElementById('email').value = data.data.Mail || '';
             document.getElementById('blz').value = data.data.BLZ || '';
             document.getElementById('institut').value = data.data.Institut || '';
             document.getElementById('iban').value = data.data.IBAN || '';
             document.getElementById('inhaber').value = data.data.Inhaber || '';
-            document.getElementById('bonitaetsklasse').value = data.data.Bonitätsklasse || '';
-            document.getElementById('abc_klassifikation').value = data.data.ABC_Klasse || '';
 
             if (data.data.Firmenname != null) {
                 document.getElementById('firma').value = data.data.Firmenname || '';
