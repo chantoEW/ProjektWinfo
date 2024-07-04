@@ -1,4 +1,102 @@
 <?php
+
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'C:/xampp/php/vendor/autoload.php';
+
+function logMessage($message)
+{
+    $logFile = 'logfile.json';
+    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
+}
+
+function sendCustomerUpdateEmail($kundenId, $kundentyp, $changedData)
+{
+    // Datenbankverbindung herstellen
+    $servername = "localhost";
+    $username = "Chantal";
+    $password = "";
+    $dbname = "portal";
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        logMessage("Verbindung zur Datenbank kann nicht hergestellt werden: " . $conn->connect_error);
+        return;
+    }
+
+    // Kundendaten abrufen
+    if ($kundentyp == "privat")
+    {
+        $sql = "SELECT kd.Mail, pk.Name, pk.Vorname
+        FROM kunden AS k
+        JOIN privatkunde AS pk ON k.PKundenID = pk.PKundenID
+        JOIN kontaktdaten AS kd ON pk.KontaktID = kd.KontaktID
+        WHERE k.KundenID = ?";
+    }
+    else
+    {
+        $sql = "SELECT kd.Mail, fk.Name, fk.Vorname
+        FROM kunden AS k
+        JOIN firmenkunde AS fk ON k.FKundenID = fk.FKundenID
+        JOIN firma ON firma.FirmenID = fk.FirmenID
+        JOIN kontaktdaten AS kd ON firma.KontaktID = kd.KontaktID
+        WHERE k.KundenID = ?";
+    }
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $kundenId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $customer = $result->fetch_assoc();
+
+    if (!$customer) {
+        logMessage("Kunde mit ID $kundenId nicht gefunden.");
+        return;
+    }
+
+    // E-Mail-Inhalt generieren
+    $emailSubject = "Aktualisierung Ihrer Kundendaten";
+    $emailBody = "Sehr geehrte/r " . $customer['Vorname'] . " " . $customer['Name'] . ",\n\n";
+    $emailBody .= "Ihre Kundendaten wurden wie folgt aktualisiert:\n\n";
+    foreach ($changedData as $key => $value) {
+        $emailBody .= ucfirst($key) . ": " . $value . "\n";
+    }
+    $emailBody .= "\nMit freundlichen Grüßen,\nIhr Kundenservice";
+
+    // E-Mail-Instanz erstellen
+    $mail = new PHPMailer(true);
+
+    try {
+        // Servereinstellungen konfigurieren
+        $mail->isSMTP();
+        $mail->Host = 'smtp.office365.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'autovermietung.jomaface@outlook.de';
+        $mail->Password = '!krusewhs';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+        $mail->CharSet = 'UTF-8';
+
+        // Empfänger, Betreff und Nachricht einstellen
+        $mail->setFrom('autovermietung.jomaface@outlook.de', 'Autovermietung jomaface');
+        $mail->addAddress('maxiwehning@gmail.com', 'Maximilian Wehning');
+        $mail->Subject = $emailSubject;
+        $mail->isHTML(false);
+        $mail->Body = $emailBody;
+
+        // E-Mail senden
+        $mail->send();
+        logMessage("Aktualisierungs-E-Mail an " . $customer['Vorname'] . " " . $customer['Name'] . " gesendet.");
+    } catch (Exception $e) {
+        logMessage("E-Mail konnte nicht gesendet werden. Fehler: " . $mail->ErrorInfo);
+    }
+
+    // Verbindung schließen
+    $conn->close();
+}
+
 // Datenbankverbindung herstellen
 $servername = "localhost";
 $username = "Chantal";
@@ -7,12 +105,7 @@ $dbname = "portal";
 
 // Verbindung erstellen
 $conn = new mysqli($servername, $username, $password, $dbname);
-function logMessage($message)
-{
-    $logFile = 'logfile.json';
-    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
-    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
-}
+
 // Verbindung überprüfen
 if ($conn->connect_error) {
     die("Verbindung fehlgeschlagen: " . $conn->connect_error);
@@ -239,16 +332,21 @@ if (
             $stmt = $conn->prepare($sql);
             // Parametertypen und -werte binden
             $stmt->bind_param($types, ...$params);
-            print_r($types);
+            
             $changes = "";
             if ($stmt->execute()) {
                 echo "Die Daten wurden erfolgreich aktualisiert.";
+                $changedDataForMail;
                 for ($i = 0; $i < count($updates); $i++) {
 
                     $changes = $changes . explode(' ', $updates[$i])[0] . ', ';
+                    $changedDataForMail[$i] = explode(' ', $updates[$i])[0] . ', ';
                 }
                 $changes = rtrim($changes, ', ');
                 logMessage("Folgende Daten für Kunde mit der ID $kundenId wurden aktualisiert: $changes");
+
+                //Versenden der Mail an den Kunden zur Information der Datenänderung
+                sendCustomerUpdateEmail($kundenId, $kundentyp, $changedDataForMail);
             } else {
                 echo "Fehler beim Aktualisieren der Daten: " . $stmt->error;
                 logMessage("Fehler beim Aktualisieren für Kunde mit der ID $kundenId: " . $stmt->error);
