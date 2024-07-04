@@ -25,6 +25,7 @@ $dbname = "portal";
 
 // Verbindung herstellen
 $conn = new mysqli($servername, $username, $password, $dbname);
+$conn->set_charset("utf8");
 // Verbindung überprüfen
 if ($conn->connect_error) {
     logMessage("[Treue-Mails] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
@@ -222,7 +223,7 @@ try {
 
 
     // Noch mal für Firmenkunden
-    $sql = "SELECT DISTINCT a.Mail, b.KundenID, b.Vorname, b.Name as Nachname, c.Firmenname as Firmenname, b.Eintrittsdatum FROM firma as c, kontaktdaten AS a INNER JOIN firmenkunde AS b ON a.FKundenID = b.FKundenID WHERE (a.FKundenID IS NOT NULL) AND ((b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 2 YEAR) OR (b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 5 YEAR) OR (b.Eintrittsdatum) = DATE_SUB('$heutigesDatum', INTERVAL 10 YEAR))";
+    $sql = "SELECT DISTINCT a.Mail, b.KundenID, b.Vorname, b.Name as Nachname, c.Firmenname as Firmenname, b.Eintrittsdatum FROM firma as c inner join kontaktdaten AS a on c.KontaktID = a.KontaktID INNER JOIN firmenkunde AS b ON a.FKundenID = b.FKundenID WHERE (a.FKundenID IS NOT NULL) AND ((b.Eintrittsdatum) = DATE_SUB('2024-07-04', INTERVAL 2 YEAR) OR (b.Eintrittsdatum) = DATE_SUB('2024-07-04', INTERVAL 5 YEAR) OR (b.Eintrittsdatum) = DATE_SUB('2024-07-04', INTERVAL 10 YEAR))";
     $rabattCode = generateRandomCode();
     $result_FKunden = mysqli_query($conn, $sql);
     if ($result_FKunden) {
@@ -255,7 +256,7 @@ try {
                     logMessage("[Treue-Mails] Mail versendet an: " . $row['Vorname'] . " " . $row['Nachname'] . " der Firma " . $row['Firmenname'] . " (KundenID: " . $kundenID . ") mit der Email-Adresse " . $row['Mail'] . " (RabattCode: " . $rabattCode . " für " . $jahreDifferenz . " Jahre, " . $prozentsatz . ")");
                     echo '<tr>';
                     echo '<td>' . $row['Vorname'] . '</td>';
-                    echo '<td>' . $row['Name'] . '</td>';
+                    echo '<td>' . $row['Nachname'] . '</td>';
                     echo '<td>' . $row['Firmenname'] . '</td>';
                     echo '<td>' . $kundenID . '</td>';
                     echo '<td>' . $row['Mail'] . '</td>';

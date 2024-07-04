@@ -26,13 +26,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Passwort stimmt überein, Benutzer ist erfolgreich angemeldet
             $_SESSION['benutzername'] = $benutzername;
 
-            if($row['Berechtigungen'] == 'Marketing') {
+            if($row['Berechtigungen'] == 'Marketing'|| $row['Berechtigungen'] == 'Admin') {
                 header("Location: marketingStartseite.html");
             }
-            if($row['Berechtigungen'] == 'Verwaltung')
+            else if($row['Berechtigungen'] == 'Verwaltung' || $row['Berechtigungen'] == 'Admin')
             {
                 header("Location: verwaltungStartseite.html");
             }
+            else {
+                echo "<script>alert('Du besitzt keine Berechtigungen!'); window.location.href = 'index.html';</script>";
+            }
+
         } else {
             // Passwort stimmt nicht überein
             echo "<script>alert('Falsches Passwort'); window.location.href = 'index.html';</script>";

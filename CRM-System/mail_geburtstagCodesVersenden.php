@@ -25,6 +25,7 @@ $dbname = "portal";
 
 // Verbindung herstellen
 $conn = new mysqli($servername, $username, $password, $dbname);
+$conn->set_charset("utf8");
 // Verbindung überprüfen
 if ($conn->connect_error) {
     logMessage("[Geburtstags-Mails] Verbindung zur Datenbank kann nicht hergestellt werden"  . $conn->connect_error, "ERROR");
