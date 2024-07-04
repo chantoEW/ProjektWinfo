@@ -54,6 +54,11 @@ try {
     $sql = "SELECT DISTINCT a.Mail, b.Vorname, b.Name, c.KundenID, c.Prozentsatz, c.Rabattart, c.Rabattcode, c.Datum_FristEnde FROM kontaktdaten AS a, privatkunde as b, rabattlog as c WHERE c.KundenID = b. KundenID AND b.PKundenID = a.PKundenID AND c.Eingeloest = false AND c.Datum_FristEnde = (CURDATE() + INTERVAL 7 DAY)";
     $result = mysqli_query($conn, $sql);
     if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            echo 'Privatkunden:';
+            echo '<table border="1">';
+            echo '<tr><th>Vorname</th><th>Nachname</th><th>KundenID</th><th>E-Mail</th><th>RabattCode</th><th>Prozentsatz</th><th>Rabattart</th></tr>';
+
         while($row = $result->fetch_assoc()) {
             $KundenID_PK = $row['KundenID'];
             $mail_PK = $row['Mail'];
@@ -64,11 +69,22 @@ try {
             $rabatcode_PK = $row['Rabattcode'];
             $datum_FristEnde_PK = $row['Datum_FristEnde'];
 
-        logMessage("[Erinnerungs-Mails] Mail versendet an: " . $mail_PK . ", " . $vorname_PK . ", KundenID:  " . $KundenID_PK . ", Rabattcode: " . $name_PK . ", Rabattcode: " . $rabatcode_PK . ", Rabattart: " . $rabattart_PK . ", " . $prozentsatz_PK . "%, FristEnde: " . $datum_FristEnde_PK);
+            logMessage("[Erinnerungs-Mails] Mail versendet an: " . $mail_PK . ", " . $vorname_PK . ", KundenID:  " . $KundenID_PK . ", Rabattcode: " . $name_PK . ", Rabattcode: " . $rabatcode_PK . ", Rabattart: " . $rabattart_PK . ", " . $prozentsatz_PK . "%, FristEnde: " . $datum_FristEnde_PK);
+            echo '<tr>';
+            echo '<td>' . $vorname_PK . '</td>';
+            echo '<td>' . $name_PK . '</td>';
+            echo '<td>' . $KundenID_PK . '</td>';
+            echo '<td>' . $mail_PK . '</td>';
+            echo '<td>' . $rabatcode_PK . '</td>';
+            echo '<td>' . $prozentsatz_PK . '%</td>';
+            echo '<td>' . $rabattart_PK . '%</td>';
+            echo '</tr>';
         }
 
+            echo '</table><br><br>';
+
         // Nur die Mail zum letzten Datensatz raussenden, falls Datensätze existieren
-        if (mysqli_num_rows($result) != 0) {
+
             $mail->Body = "
                 <!DOCTYPE html>
                 <html lang='de'>
@@ -139,29 +155,49 @@ try {
             // Privatkunden-E-Mail senden
             $mail->send();
         }
+        else
+        {
+            echo 'Keine Erinnerungs-Mails an Privatkunden versendet. Kein Rabattcode läuft In 7 Tagen ab!<br><br>';
+            logmessage("[Erinnerungs-Mail] Keine Erinnerungs-Mails an Privatkunden versendet. Kein Rabattcode läuft In 7 Tagen ab!");
+        }
+
     }
 
 
     // Firmen-Kunden ermitteln
-    $sql = "SELECT DISTINCT a.Mail, b.Vorname, b.Name as Nachname, c.KundenID, d.Name as Firma, c.Prozentsatz, c.Rabattart, c.Rabattcode, c.Datum_FristEnde FROM kontaktdaten AS a, firmenkunde as b, rabattlog as c, firma as d WHERE c.KundenID = b. KundenID AND b.FKundenID = a.FKundenID AND c.KundenID = d.KundenID AND c.Eingeloest = false AND c.Datum_FristEnde = (CURDATE() + INTERVAL 7 DAY)";
+    $sql = "SELECT DISTINCT a.Mail, b.Vorname, b.Name as Nachname, c.KundenID, d.Firmenname as Firma, c.Prozentsatz, c.Rabattart, c.Rabattcode, c.Datum_FristEnde FROM kontaktdaten AS a, firmenkunde as b, rabattlog as c, firma as d WHERE c.KundenID = b. KundenID AND b.FKundenID = a.FKundenID AND c.KundenID = d.KundenID AND c.Eingeloest = false AND c.Datum_FristEnde = (CURDATE() + INTERVAL 7 DAY)";
     $result = mysqli_query($conn, $sql);
     if ($result) {
-        while($row = $result->fetch_assoc()) {
-            $KundenID_FK = $row['KundenID'];
-            $mail_FK = $row['Mail'];
-            $vorname_FK = $row['Vorname'];
-            $nachname_FK = $row['Nachname'];
-            $firma_FK = $row['Firma'];
-            $prozentsatz_FK = $row['Prozentsatz']*100;
-            $rabattart_FK = $row['Rabattart'];
-            $rabatcode_FK = $row['Rabattcode'];
-            $datum_FristEnde_FK = $row['Datum_FristEnde'];
+        if (mysqli_num_rows($result) > 0) {
+            echo 'Firmenkunden:';
+            echo '<table border="1">';
+            echo '<tr><th>Vorname</th><th>Nachname</th><th>Firma</th><th>KundenID</th><th>E-Mail</th><th>RabattCode</th><th>Prozentsatz</th><th>Rabattart</th></tr>';
+            while ($row = $result->fetch_assoc()) {
+                $KundenID_FK = $row['KundenID'];
+                $mail_FK = $row['Mail'];
+                $vorname_FK = $row['Vorname'];
+                $nachname_FK = $row['Nachname'];
+                $firma_FK = $row['Firma'];
+                $prozentsatz_FK = $row['Prozentsatz'] * 100;
+                $rabattart_FK = $row['Rabattart'];
+                $rabatcode_FK = $row['Rabattcode'];
+                $datum_FristEnde_FK = $row['Datum_FristEnde'];
 
-            logMessage("[Erinnerungs-Mails] Mail versendet an: " . $mail_FK . ", " . $vorname_FK . ", " . $nachname_FK . " von Firma " . $firma_FK . ", KundenID:  " . $KundenID_FK . ", Rabattcode: " . $rabatcode_FK . ", Rabattart: " . $rabattart_FK . ", " . $prozentsatz_FK . "%, FristEnde: " . $datum_FristEnde_FK);
-        }
+                logMessage("[Erinnerungs-Mails] Mail versendet an: " . $mail_FK . ", " . $vorname_FK . ", " . $nachname_FK . " von Firma " . $firma_FK . ", KundenID:  " . $KundenID_FK . ", Rabattcode: " . $rabatcode_FK . ", Rabattart: " . $rabattart_FK . ", " . $prozentsatz_FK . "%, FristEnde: " . $datum_FristEnde_FK);
+                echo '<tr>';
+                echo '<td>' . $vorname_FK . '</td>';
+                echo '<td>' . $nachname_FK . '</td>';
+                echo '<td>' . $firma_FK . '</td>';
+                echo '<td>' . $KundenID_FK . '</td>';
+                echo '<td>' . $mail_FK . '</td>';
+                echo '<td>' . $rabatcode_FK . '</td>';
+                echo '<td>' . $prozentsatz_FK . '%</td>';
+                echo '<td>' . $rabattart_FK . '</td>';
+                echo '</tr>';
+            }
+            echo '</table><br><br>';
 
-        // Nur die Mail zum letzten Datensatz raussenden, falls Datensätze existieren
-        if (mysqli_num_rows($result) != 0) {
+            // Nur die Mail zum letzten Datensatz raussenden, falls Datensätze existieren
             $mail->Body = "
                     <!DOCTYPE html>
                     <html lang='de'>
@@ -231,7 +267,32 @@ try {
             // Firmenkunden-E-Mail senden
             $mail->send();
         }
+        else
+        {
+            echo 'Keine Erinnerungs-Mails an Firmenkunden versendet. Kein Rabattcode läuft In 7 Tagen ab!<br>';
+            logmessage("[Erinnerungs-Mail] Keine Erinnerungs-Mails an Firmenkunden versendet. Kein Rabattcode läuft In 7 Tagen ab!");
+        }
     }
+    echo '<style>
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: green;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none; /* Entfernen Sie die Unterstreichung für Links */
+        transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+        background-color: darkgreen;
+    }
+    </style>';
+
+    echo '<a href="marketingStartseite.html" class="button">Zurück zum Marketing-Portal</a>';
 
     } catch (Exception $e) {
         logmessage("[Erinnerungs-Mails] Message could not be sent. Mailer Error: {$mail->ErrorInfo}");

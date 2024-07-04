@@ -123,7 +123,7 @@ try {
                 $rabattCode = generateRandomCode();
 
             }
-            echo '</table>';
+            echo '</table><br><br>';
 
                     // Servereinstellungen konfigurieren
                     $mail->isSMTP();
@@ -214,7 +214,7 @@ try {
             $mail->send();
         }
         else{
-            echo 'Keine Treue-Mails an Privatkunden versendet. Heute feiert kein Privatkunde Jubiläum!';
+            echo 'Keine Treue-Mails an Privatkunden versendet. Heute feiert kein Privatkunde Jubiläum!<br><br>';
             logmessage("[Treue-Mails] Keine Mails versendet. Heute feiert kein Kunde Jubiläum!");
         }
     }
@@ -269,7 +269,7 @@ try {
                 $rabattCode = generateRandomCode();
 
             }
-            echo '</table>';
+            echo '</table><br><br>';
 
             // Servereinstellungen konfigurieren
             $mail->isSMTP();
@@ -360,12 +360,31 @@ try {
             $mail->send();
         }
         else{
-            echo 'Keine Treue-Mails an Firmenkunden versendet. Heute feiert kein Firmenkunde Jubiläum!';
+            echo 'Keine Treue-Mails an Firmenkunden versendet. Heute feiert kein Firmenkunde Jubiläum!<br><br>';
             logmessage("[Treue-Mails] Keine Mails versendet. Heute feiert kein Kunde Jubiläum!");
         }
     }
 
+    echo '<style>
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: green;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none; /* Entfernen Sie die Unterstreichung für Links */
+        transition: background-color 0.3s ease;
+    }
 
+    .button:hover {
+        background-color: darkgreen;
+    }
+    </style>';
+
+    echo '<a href="marketingStartseite.html" class="button">Zurück zum Marketing-Portal</a>';
 
 } catch (Exception $e) {
     logmessage("[Treue-Mails] Message could not be sent. Mailer Error: {$mail->ErrorInfo}", "ERROR");

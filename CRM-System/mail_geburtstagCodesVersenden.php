@@ -65,11 +65,11 @@ if ($result_PKunden) {
                 echo '<td>' . $RabattProzentsatz . '%</td>';
                 echo '</tr>';
             } else {
-                logMessage("[Geburtstags-Mails] Mail konnte nicht an: " . $row['Vorname'] . " " . $row['Name'] . " (KundenID: " . $KundenID . ") mit der Email-Adresse " . $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz . " versendet werden!", "ERROR");
+                logMessage("[Geburtstags-Mails] Mail konnte nicht an: " . $row['Vorname'] . " " . $row['Name'] . " (KundenID: " . $KundenID . ") mit der Email-Adresse " . $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz . "% versendet werden!", "ERROR");
             }
             $RabattCode = generateRandomCode();
         }
-        echo '</table>';
+        echo '</table><br><br>';
 
         // Servereinstellungen konfigurieren
         $mail->isSMTP();
@@ -160,8 +160,8 @@ if ($result_PKunden) {
         $mail->send();
     }
     else{
-        echo 'Heute hat kein Privatkunde Geburtstag!';
-        logmessage("[Geburstags-Mail] Kein Privatkunde hat heute Geburtstag!");
+        echo 'Heute hat kein Privatkunde Geburtstag!<br><br>';
+        logmessage("[Geburstags-Mails] Kein Privatkunde hat heute Geburtstag!");
     }
 }
 
@@ -172,35 +172,46 @@ if ($result_FKunden) {
         echo 'Firmenkunden:';
         echo '<table border="1">';
         echo '<tr><th>Vorname</th><th>Nachname</th><th>Firma</th><th>KundenID</th><th>E-Mail</th><th>RabattCode</th><th>Prozentsatz</th></tr>';
-        while($row = $result_FKunden->fetch_assoc()){
+        while ($row = $result_FKunden->fetch_assoc()) {
             $KundenID = $row['KundenID'];
 
             $sql = "INSERT INTO RabattLog (Rabattcode, Datum_Erzeugung, Datum_FristEnde, Eingeloest, Prozentsatz, Rabattart, KundenID) VALUES ('$RabattCode', '$heutigesDatum_komplett', '$ablaufDatum', false, $RabattProzentsatz, 'Geburstag', $KundenID)";
             if ($conn->query($sql) === TRUE) {
-                logMessage("GeburtstagsMail versendet an: ". $row['Vorname'] . " ". $row['Nachname'] . " der Firma " . $row['Firmenname'] . " mit der Email-Adresse ". $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz);
+                logMessage("[Geburstags-Mails] Mail versendet an: " . $row['Vorname'] . " " . $row['Nachname'] . " der Firma " . $row['Firmenname'] . " mit der Email-Adresse " . $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz);
                 echo '<tr>';
                 echo '<td>' . $row['Vorname'] . '</td>';
-                echo '<td>' . $row['Name'] . '</td>';
+                echo '<td>' . $row['Nachname'] . '</td>';
                 echo '<td>' . $row['Firmenname'] . '</td>';
                 echo '<td>' . $KundenID . '</td>';
                 echo '<td>' . $row['Mail'] . '</td>';
                 echo '<td>' . $RabattCode . '</td>';
                 echo '<td>' . $RabattProzentsatz . '%</td>';
                 echo '</tr>';
-            }
-            else{
-                logMessage("[Geburtstags-Mails] Mail konnte nicht an: ". $row['Vorname'] . " ". $row['Name'] . " der Firma " . $row['Firmenname'] . " (KundenID: " . $KundenID . ") mit der Email-Adresse ". $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz . " versendet werden!");
+            } else {
+                logMessage("[Geburtstags-Mails] Mail konnte nicht an: " . $row['Vorname'] . " " . $row['Name'] . " der Firma " . $row['Firmenname'] . " (KundenID: " . $KundenID . ") mit der Email-Adresse " . $row['Mail'] . ", Rabattcode: " . $RabattCode . ", Prozentsatz: " . $RabattProzentsatz . "% versendet werden!");
             }
             $RabattCode = generateRandomCode();
-            echo '</table>';
         }
 
+        echo '</table><br><br>';
 
-            $mail->setFrom('autovermietung.jomaface@outlook.de', 'Autovermietung jomaface');
-            $mail->addAddress('fschlaghecken@gmx.de', 'Fabian Schlaghecken');
-            $mail->Subject = 'Herzlichen Glückwunsch zum Geburtstag!';
-            $mail->isHTML(true);
-            $mail->Body = "
+        // Servereinstellungen konfigurieren
+        $mail->isSMTP();
+        $mail->Host = 'smtp.office365.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'autovermietung.jomaface@outlook.de';
+        $mail->Password = '!krusewhs';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        // Zeichencodierung setzen
+        $mail->CharSet = 'UTF-8';
+
+        $mail->setFrom('autovermietung.jomaface@outlook.de', 'Autovermietung jomaface');
+        $mail->addAddress('fschlaghecken@gmx.de', 'Fabian Schlaghecken');
+        $mail->Subject = 'Herzlichen Glückwunsch zum Geburtstag!';
+        $mail->isHTML(true);
+        $mail->Body = "
             <!DOCTYPE html>
             <html lang='de'>
             <head>
@@ -268,14 +279,37 @@ if ($result_FKunden) {
             </html>
             ";
 
-            // E-Mail senden
-            $mail->send();
-            }
-            else {
-                echo 'Heute hat kein Privatkunde Geburtstag!';
-                logmessage("[Geburstags-Mail] Kein Privatkunde hat heute Geburtstag!");
-            }
+        // E-Mail senden
+        $mail->send();
+    } else {
+        echo 'Heute hat kein Firmenkunde Geburtstag!<br><br>';
+        logmessage("[Geburstags-Mails] Kein Firmenkunde hat heute Geburtstag!");
+
     }
+}
+
+    echo '<style>
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: green;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none; /* Entfernen Sie die Unterstreichung für Links */
+        transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+        background-color: darkgreen;
+    }
+    </style>';
+
+    echo '<a href="marketingStartseite.html" class="button">Zurück zum Marketing-Portal</a>';
+
+
 } catch (Exception $e) {
     logmessage("[Geburtstags-Mails] Message could not be sent. Mailer Error: {$mail->ErrorInfo}", "ERROR");
 }

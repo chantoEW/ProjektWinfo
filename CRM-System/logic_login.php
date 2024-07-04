@@ -22,14 +22,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows == 1) {
         // Benutzer gefunden, überprüfen ob das Passwort übereinstimmt
         $row = $result->fetch_assoc();
-        // Ausgabe des $row-Arrays zur Fehlerbehebung
-        var_dump($row);
         if (password_verify($passwort, $row['Passwort'])) { // Überprüfung auf "Passwort" statt "password"
             // Passwort stimmt überein, Benutzer ist erfolgreich angemeldet
             $_SESSION['benutzername'] = $benutzername;
 
             if($row['Berechtigungen'] == 'Marketing') {
-                header("Location: zugangAbteilungMarketing.html");
+                header("Location: marketingStartseite.html");
             }
             if($row['Berechtigungen'] == 'Verwaltung')
             {
@@ -37,11 +35,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } else {
             // Passwort stimmt nicht überein
-            echo "Falsches Passwort";
+            echo "<script>alert('Falsches Passwort'); window.location.href = 'index.html';</script>";
         }
     } else {
         // Benutzer nicht gefunden
-        echo "Benutzer nicht gefunden";
+        echo "<script>alert('Benutzer nicht gefunden'); window.location.href = 'index.html';</script>";
     }
 }
 
