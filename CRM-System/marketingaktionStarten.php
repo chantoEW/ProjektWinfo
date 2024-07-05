@@ -99,7 +99,16 @@ function logMessage($message, $type = 'INFO') {
             margin: 20px;
         }
 
-        
+        /* Stile für die Radio-Buttons inline */
+        .radio-inline {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .radio-inline label {
+            display: inline;
+            margin-left: 5px;
+        }
     </style>
 </head>
 
@@ -129,19 +138,19 @@ function logMessage($message, $type = 'INFO') {
             </div>
             <div class="form-group">
                 <label>Empfänger:</label>
-                <div>
+                <div class="radio-inline">
                     <input type="radio" id="kundenA" name="empfaenger" value="a-kunden" required>
                     <label for="kundenA">A-Kunden</label>
                 </div>
-                <div>
+                <div class="radio-inline">
                     <input type="radio" id="kundenB" name="empfaenger" value="b-kunden">
                     <label for="kundenB">B-Kunden</label>
                 </div>
-                <div>
+                <div class="radio-inline">
                     <input type="radio" id="kundenC" name="empfaenger" value="c-kunden">
                     <label for="kundenC">C-Kunden</label>
                 </div>
-                <div>
+                <div class="radio-inline">
                     <input type="radio" id="kundenAlle" name="empfaenger" value="alle">
                     <label for="kundenAlle">Alle</label>
                 </div>
