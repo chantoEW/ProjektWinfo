@@ -1,7 +1,7 @@
 # ProjektWinfo
 ## Gruppe Gamma (Fall A)
 
-[Logbuch] (https://github.com/chantoEW/ProjektWinfo/issues)
+[Logbuch](https://github.com/chantoEW/ProjektWinfo/issues)
 
 [Zeiterfassung / Kostenreporting (Gantt Diagramm)](https://w-hs.sciebo.de/f/312592459)  
 
