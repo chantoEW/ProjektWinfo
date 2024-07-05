@@ -9,6 +9,12 @@ if (isset($_SESSION['error_message'])) {
     echo '<script>alert("' . $_SESSION['error_message'] . '");</script>';
     unset($_SESSION['error_message']);
 }
+
+function logMessage($message, $type = 'INFO') {
+    $logFile = 'logfile.txt';
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$type] - " . $message . PHP_EOL;
+    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
+}
 ?>
 
 <!DOCTYPE html>

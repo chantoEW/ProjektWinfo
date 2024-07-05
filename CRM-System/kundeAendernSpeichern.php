@@ -283,8 +283,8 @@ if (
             $params[] = $inhaber;
             $types .= "s";
         }
-        if ($existingData['Bonitätsklasse'] != $bonitaetsklasse) {
-            $updates[] = "Bonitätsklasse = ?";
+        if ($existingData['Bonitaetsklasse'] != $bonitaetsklasse) {
+            $updates[] = "Bonitaetsklasse = ?";
             $params[] = $bonitaetsklasse;
             $types .= "s";
         }
