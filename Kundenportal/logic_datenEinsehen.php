@@ -1,6 +1,12 @@
 <?php
 session_start(); // Session starten
 
+function logMessage($message, $type = 'INFO') {
+    $logFile = 'logfile.txt';
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$type] - " . $message . PHP_EOL;
+    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
+}
+
 if (isset($_SESSION['benutzername'])) {
     // Datenbankverbindung herstellen
     $servername = "localhost";
@@ -13,7 +19,9 @@ if (isset($_SESSION['benutzername'])) {
 
     // Verbindung prüfen
     if ($conn->connect_error) {
-        die("Verbindung fehlgeschlagen: " . $conn->connect_error);
+        logMessage("[DatenEinsehen] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
+    } else {
+        logMessage("[DatenEinsehen] Verbindung zur Datenbank wurde hergestellt und überprüft");
     }
 
     // ID aus der Datenbank abfragen (Abfrage basierend auf einem Benutzernamen)
@@ -21,7 +29,7 @@ if (isset($_SESSION['benutzername'])) {
     $sqlForId = "SELECT KundenID FROM user WHERE Benutzername = ?";
     $stmtForId = $conn->prepare($sqlForId);
     if (!$stmtForId) {
-        die("Vorbereitung fehlgeschlagen: " . $conn->error);
+        logMessage("[DatenEinsehen] Vorbereiten des Statements für das Ermitteln der KundenID fehlgeschlagen", "ERROR");
     }
     $stmtForId->bind_param("s", $benutzername);
     $stmtForId->execute();
@@ -31,14 +39,14 @@ if (isset($_SESSION['benutzername'])) {
         $rowForId = $resultForId->fetch_assoc();
         $id = $rowForId['KundenID'];
     } else {
-        die("Keine ID gefunden für den angegebenen Benutzernamen.");
+        logMessage("[DatenEinsehen] Keine ID gefunden für den angegebenen Benutzernamen: $benutzername.", "ERROR");
     }
 
     $stmtForId->close();
 
     // Überprüfen, ob die ID gefunden wurde
     if (!isset($id)) {
-        die("Keine ID gefunden.");
+        logMessage("[DatenEinsehen] Keine ID gefunden für den angegebenen Benutzernamen: $benutzername.", "ERROR");
     }
 
     //Kundentyp holen
@@ -46,7 +54,7 @@ if (isset($_SESSION['benutzername'])) {
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
-        die("Vorbereitung fehlgeschlagen: " . $conn->error);
+        logMessage("[DatenEinsehen] Vorbereiten des Statements für das Ermitteln von FKunde_PKunde fehlgeschlagen", "ERROR");
     }
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -105,7 +113,7 @@ if (isset($_SESSION['benutzername'])) {
     */
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
-        die("Vorbereitung fehlgeschlagen: " . $conn->error);
+        logMessage("[DatenEinsehen] Daten konnten für den Username $benutzername nicht ermittelt werden", "ERROR");
     }
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -117,17 +125,17 @@ if (isset($_SESSION['benutzername'])) {
         $data = ['success' => true, 'data' => $row];
         $jsonFilename = 'query_result.json';
         if (file_put_contents($jsonFilename, json_encode($data)) === false) {
-            error_log("Fehler beim Schreiben der JSON-Datei.");
+            logMessage("[DatenEinsehen] Fehler beim Schreiben der JSON-Datei.", "ERROR");
         } else {
-            error_log("JSON-Datei erfolgreich geschrieben: " . $jsonFilename);
+            logMessage("[DatenEinsehen] JSON-Datei erfolgreich geschrieben: " . $jsonFilename);
         }
     } else {
         $error = ['success' => false, 'error' => 'Keine Daten gefunden'];
         $jsonFilename = 'query_result.json';
         if (file_put_contents($jsonFilename, json_encode($error)) === false) {
-            error_log("Fehler beim Schreiben der JSON-Datei.");
+            logMessage("[DatenEinsehen] Fehler beim Schreiben der JSON-Datei.", "ERROR");
         } else {
-            error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
+            logMessage("[DatenEinsehen] JSON-Datei erfolgreich geschrieben: " . $jsonFilename);
         }
     }
    

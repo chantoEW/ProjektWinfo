@@ -9,10 +9,9 @@ session_start();
 // E-Mail-Instanz erstellen
 $mail = new PHPMailer(true);
 
-function logMessage($message)
-{
-    $logFile = 'logfile.json';
-    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+function logMessage($message, $type = 'INFO') {
+    $logFile = 'logfile.txt';
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$type] - " . $message . PHP_EOL;
     file_put_contents($logFile, $formattedMessage, FILE_APPEND);
 }
 
@@ -33,10 +32,10 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 // Verbindung überprüfen
 if ($conn->connect_error) {
     die("Verbindung fehlgeschlagen: " . $conn->connect_error);
-    logMessage("Verbindung zur Datenbank kann nicht hergestellt werden");
+    logMessage("[MarketingaktionMail] Verbindung zur Datenbank kann nicht hergestellt werden");
 } else {
     echo ("Verbindung zur DB wurde hergestellt.");
-    logMessage("Verbindung zur Datenbank wurde hergestellt und überprüft");
+    logMessage("[MarketingaktionMail] Verbindung zur Datenbank wurde hergestellt und überprüft");
 }
 
 //Variablen aus marketingaktionStarten.php
@@ -189,9 +188,9 @@ try {
             $kundenID = $row['KundenID'];
             $sql = "INSERT INTO RabattLog (Rabattcode, Datum_Erzeugung, Datum_FristEnde, Eingeloest, Prozentsatz, Rabattart, KundenID) VALUES ('$RabattCode', '$heutigesDatum', '$ablaufDatum', false, $rabattProzentsatz, '$firstPart', $kundenID)";
             if ($conn->query($sql) === TRUE) {
-                logMessage("$aktionsart" . "-Mail versendet an: " . $row['Vorname'] . " " . $row['Name'] . " mit der Email-Adresse " . $row['Mail']);
+                logMessage("[MarketingaktionMail] $aktionsart" . "-Mail versendet an: " . $row['Vorname'] . " " . $row['Name'] . " mit der Email-Adresse " . $row['Mail']);
             } else {
-                logMessage("Fehler beim Einfügen des Rabattcodes für: " . $row['Vorname'] . " " . $row['Name']);
+                logMessage("[MarketingaktionMail] Fehler beim Einfügen des Rabattcodes für: " . $row['Vorname'] . " " . $row['Name'], "ERROR");
             }
         }
     }
@@ -202,9 +201,9 @@ try {
             $kundenID = $row['KundenID'];
             $sql = "INSERT INTO RabattLog (Rabattcode, Datum_Erzeugung, Datum_FristEnde, Eingeloest, Prozentsatz, Rabattart, KundenID) VALUES ('$RabattCode', '$heutigesDatum', '$ablaufDatum', false, $rabattProzentsatz, '$firstPart', $kundenID)";
             if ($conn->query($sql) === TRUE) {
-                logMessage("$aktionsart" . "-Mail versendet an: " . $row['Vorname'] . " " . $row['Name'] . " mit der Email-Adresse " . $row['Mail']);
+                logMessage("[MarketingaktionMail] $aktionsart" . "-Mail versendet an: " . $row['Vorname'] . " " . $row['Name'] . " mit der Email-Adresse " . $row['Mail']);
             } else {
-                logMessage("Fehler beim Einfügen des Rabattcodes für: " . $row['Vorname'] . " " . $row['Name']);
+                logMessage("[MarketingaktionMail] Fehler beim Einfügen des Rabattcodes für: " . $row['Vorname'] . " " . $row['Name'], "ERROR");
             }
         }
     }

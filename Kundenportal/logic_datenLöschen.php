@@ -138,6 +138,12 @@
 </script>
 <?php
 
+function logMessage($message, $type = 'INFO') {
+    $logFile = 'logfile.txt';
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$type] - " . $message . PHP_EOL;
+    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
+}
+
 $filename = 'kundenID.txt';
 $jsonFilename = 'query_result.json';
 
@@ -149,7 +155,7 @@ if (file_exists($filename)) {
     // Prüfen, ob die Datei erfolgreich gelesen wurde
     if ($id !== false) {
         // Debugging: Anzeigen der gelesenen ID
-        error_log("Gelesene ID: " . $id);
+        logMessage("[DatenLöschen] Datei für folgende ID konnte nicht gelesen werden: " . $id, "ERROR");
 
         // Datei leeren
         $file = fopen($filename, 'w');
@@ -157,7 +163,7 @@ if (file_exists($filename)) {
             fclose($file);
 
             // Debugging: Bestätigung, dass die Datei geleert wurde
-            error_log("Datei erfolgreich geleert: " . $filename);
+            logMessage("[DatenLöschen] Datei erfolgreich geleert: " . $filename);
 
             // Datenbankverbindung herstellen
             $servername = "localhost";
@@ -170,7 +176,9 @@ if (file_exists($filename)) {
 
             // Verbindung prüfen
             if ($conn->connect_error) {
-                die("Verbindung fehlgeschlagen: " . $conn->connect_error);
+                logMessage("[DatenLöschen] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
+            } else {
+                logMessage("[DatenLöschen] Verbindung zur Datenbank wurde hergestellt und überprüft");
             }
 
             // SQL-Abfrage
@@ -196,9 +204,9 @@ if (file_exists($filename)) {
 
                 // Daten in query_result.json speichern
                 if (file_put_contents($jsonFilename, json_encode($data)) === false) {
-                    error_log("Fehler beim Schreiben der JSON-Datei.");
+                    logMessage("[DatenLöschen] Fehler beim Schreiben der JSON-Datei für ID: " . $id, "ERROR");
                 } else {
-                    error_log("JSON-Datei erfolgreich geschrieben: " . $jsonFilename);
+                    logMessage("[DatenLöschen] JSON-Datei erfolgreich geschrieben: " . $jsonFilename);
                 }
             } else {
                 $error = ['success' => false, 'error' => 'Keine Daten gefunden'];
@@ -206,9 +214,9 @@ if (file_exists($filename)) {
 
                 // Fehler in query_result.json speichern
                 if (file_put_contents($jsonFilename, json_encode($error)) === false) {
-                    error_log("Fehler beim Schreiben der JSON-Datei.");
+                    logMessage("[DatenLöschen] Fehler beim Schreiben der JSON-Datei für ID: " . $id, "ERROR");
                 } else {
-                    error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
+                    logMessage("[DatenLöschen] JSON-Datei erfolgreich geschrieben: " . $jsonFilename);
                 }
             }
 
@@ -217,37 +225,37 @@ if (file_exists($filename)) {
         } else {
             $error = ['error' => 'Fehler beim Öffnen der Datei'];
             echo json_encode($error);
-            error_log("Fehler beim Öffnen der Datei: " . $filename);
+            logMessage("[DatenLöschen] Fehler beim Öffnen der Datei: " . $filename, "ERROR");
 
             // Fehler in query_result.json speichern
             if (file_put_contents($jsonFilename, json_encode($error)) === false) {
-                error_log("Fehler beim Schreiben der JSON-Datei.");
+                logMessage("[DatenLöschen] Fehler beim Schreiben der JSON-Datei." , "ERROR");
             } else {
-                error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
+                logMessage("[DatenLöschen] Fehler in JSON-Datei geschrieben: " . $jsonFilename);
             }
         }
     } else {
         $error = ['error' => 'Fehler beim Lesen der Datei'];
         echo json_encode($error);
-        error_log("Fehler beim Lesen der Datei: " . $filename);
+        logMessage("[DatenLöschen] Fehler beim Lesen der Datei: " . $filename, "ERROR");
 
         // Fehler in query_result.json speichern
         if (file_put_contents($jsonFilename, json_encode($error)) === false) {
-            error_log("Fehler beim Schreiben der JSON-Datei.");
+            logMessage("[DatenLöschen] Fehler beim Schreiben der JSON-Datei.", "ERROR");
         } else {
-            error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
+            logMessage("[DatenLöschen] Fehler in JSON-Datei geschrieben: " . $jsonFilename, "ERROR");
         }
     }
 } else {
     $error = ['error' => 'Datei nicht gefunden'];
     echo json_encode($error);
-    error_log("Datei nicht gefunden: " . $filename);
+    logMessage("[DatenLöschen] Datei nicht gefunden: " . $filename, "ERROR");
 
     // Fehler in query_result.json speichern
     if (file_put_contents($jsonFilename, json_encode($error)) === false) {
-        error_log("Fehler beim Schreiben der JSON-Datei.");
+        logMessage("[DatenLöschen] Fehler beim Schreiben der JSON-Datei.", "ERROR");
     } else {
-        error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
+        logMessage("[DatenLöschen] Fehler in JSON-Datei geschrieben: " . $jsonFilename, "ERROR");
     }
 }
 ?>

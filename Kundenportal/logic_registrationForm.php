@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn = new mysqli($servername, $username, $password, $dbname);
 // Verbindung überprüfen
     if ($conn->connect_error) {
-        logMessage("[Registrierung] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error);
+        logMessage("[Registrierung] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
     } else {
         logMessage("[Registrierung] Verbindung zur Datenbank wurde hergestellt und überprüft");
     }

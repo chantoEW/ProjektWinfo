@@ -30,6 +30,7 @@
 
     <section class="container">
         <?php
+
         // Verbindungsdaten
         $servername = "localhost";
         $username = "Chantal";

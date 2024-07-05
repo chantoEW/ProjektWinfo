@@ -157,7 +157,9 @@ if (isset($_SESSION['error_message'])) {
 
                     // Verbindung überprüfen
                     if ($conn->connect_error) {
-                        die("Verbindung fehlgeschlagen: " . $conn->connect_error);
+                        logMessage("[MarketingaktionStarten] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
+                    } else {
+                        logMessage("[MarketingaktionStarten] Verbindung zur Datenbank wurde hergestellt und überprüft");
                     }
 
                     // Daten aus der Tabelle "rabattart" abrufen

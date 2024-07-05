@@ -6,10 +6,9 @@ use PHPMailer\PHPMailer\Exception;
 
 require 'C:/xampp/php/vendor/autoload.php';
 
-function logMessage($message)
-{
-    $logFile = 'logfile.json';
-    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+function logMessage($message, $type = 'INFO') {
+    $logFile = 'logfile.txt';
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$type] - " . $message . PHP_EOL;
     file_put_contents($logFile, $formattedMessage, FILE_APPEND);
 }
 
@@ -23,8 +22,9 @@ function sendCustomerUpdateEmail($kundenId, $kundentyp, $changedData)
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     if ($conn->connect_error) {
-        logMessage("Verbindung zur Datenbank kann nicht hergestellt werden: " . $conn->connect_error);
-        return;
+        logMessage("[DatenSpeichern] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
+    } else {
+        logMessage("[DatenSpeichern] Verbindung zur Datenbank wurde hergestellt und überprüft");
     }
 
     // Kundendaten abrufen
@@ -52,7 +52,7 @@ function sendCustomerUpdateEmail($kundenId, $kundentyp, $changedData)
     $customer = $result->fetch_assoc();
 
     if (!$customer) {
-        logMessage("Kunde mit ID $kundenId nicht gefunden.");
+        logMessage("[DatenSpeichern] Kunde mit ID $kundenId nicht gefunden werden.", "ERROR");
         return;
     }
 
@@ -323,21 +323,21 @@ if (
                     $changedDataForMail[$i] = explode(' ', $updates[$i])[0] . ', ';
                 }
                 $changes = rtrim($changes, ', ');
-                logMessage("Folgende Daten für Kunde mit der ID $kundenId wurden aktualisiert: $changes");
+                logMessage("[DatenSpeichern] Folgende Daten für Kunde mit der ID $kundenId wurden aktualisiert: $changes");
 
                 //Versenden der Mail an den Kunden zur Information der Datenänderung
                 sendCustomerUpdateEmail($kundenId, $kundentyp, $changedDataForMail);        
             } else {
                 echo "Fehler beim Aktualisieren der Daten: " . $stmt->error;
-                logMessage("Fehler beim Aktualisieren für Kunde mit der ID $kundenId: " . $stmt->error);
+                logMessage("[DatenSpeichern] Fehler beim Aktualisieren für Kunde mit der ID $kundenId: " . $stmt->error, "ERROR");
             }
         } else {
             echo "Keine Änderungen gefunden.";
-            logMessage("Keine Änderungen der Kundendaten gefunden.");
+            logMessage("[DatenSpeichern] Keine Änderungen der Kundendaten gefunden.", "WARNING");
         }
     } else {
         echo "Kunde nicht gefunden.";
-        logMessage("Der Kunde mit der ID $kundenId wurde nicht gefunden.");
+        logMessage("[DatenSpeichern] Der Kunde mit der ID $kundenId wurde nicht gefunden.", "ERROR");
     }
 }
 // Verbindung schließen

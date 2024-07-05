@@ -13,7 +13,9 @@ if (isset($_SESSION['benutzername'])) {
 
 // Überprüfe die Verbindung
     if ($conn->connect_error) {
-        die("Verbindung fehlgeschlagen: " . $conn->connect_error);
+        logMessage("[DatenÄndern] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
+    } else {
+        logMessage("[DatenÄndern] Verbindung zur Datenbank wurde hergestellt und überprüft");
     }
 
 // Benutzername aus der Session abrufen
@@ -49,10 +51,12 @@ if (isset($_SESSION['benutzername'])) {
             $geburtsdatum = $row['Geburtsdatum'];
         } else {
             echo "Keine Daten gefunden.";
+            logMessage("[DatenÄndern] Keine Daten gefunden für " . $benutzername, "ERROR");
             exit();
         }
     } else {
         echo "Benutzer nicht gefunden.";
+        logMessage("[DatenÄndern] Keinen Benutzer gefunden für " . $benutzername, "ERROR");
         exit();
     }
 }

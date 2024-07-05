@@ -6,10 +6,9 @@ use PHPMailer\PHPMailer\Exception;
 
 require 'C:/xampp/php/vendor/autoload.php';
 
-function logMessage($message)
-{
-    $logFile = 'logfile.json';
-    $formattedMessage = date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL;
+function logMessage($message, $type = 'INFO') {
+    $logFile = 'logfile.txt';
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$type] - " . $message . PHP_EOL;
     file_put_contents($logFile, $formattedMessage, FILE_APPEND);
 }
 
@@ -23,8 +22,9 @@ function sendAccountDeletionEmail($kundentyp, $customerId)
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     if ($conn->connect_error) {
-        logMessage("Verbindung zur Datenbank kann nicht hergestellt werden: " . $conn->connect_error);
-        return;
+        logMessage("[KundeLöschen] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
+    } else {
+        logMessage("[KundeLöschen] Verbindung zur Datenbank wurde hergestellt und überprüft");
     }
 
     // Kundendaten abrufen
@@ -85,9 +85,9 @@ function sendAccountDeletionEmail($kundentyp, $customerId)
 
         // E-Mail senden
         $mail->send();
-        logMessage("Löschungs-E-Mail an " . $customer['Vorname'] . " " . $customer['Name'] . " gesendet.");
+        logMessage("[KundeLöschen] Löschungs-E-Mail an " . $customer['Vorname'] . " " . $customer['Name'] . " gesendet.");
     } catch (Exception $e) {
-        logMessage("E-Mail konnte nicht gesendet werden. Fehler: " . $mail->ErrorInfo);
+        logMessage("[KundeLöschen] E-Mail konnte nicht gesendet werden. Fehler: " . $mail->ErrorInfo, "ERROR");
     }
 
     // Verbindung schließen
@@ -107,7 +107,9 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Verbindung überprüfen
 if ($conn->connect_error) {
-    die("Verbindung fehlgeschlagen: " . $conn->connect_error);
+    logMessage("[KundeLöschen] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
+} else {
+    logMessage("[KundeLöschen] Verbindung zur Datenbank wurde hergestellt und überprüft");
 }
 
 
@@ -153,10 +155,10 @@ if (isset($_POST['kundentyp']) && isset($_POST['kundenId'])) {
     // Abfrage ausführen und Ergebnis überprüfen
     if ($stmt->execute()) {
         echo "Der Kunde wurde erfolgreich gelöscht.";
-        logMessage("Die Daten für Kunde mit der ID $kundenId wurden gelöscht.");
+        logMessage("[KundeLöschen] Die Daten für Kunde mit der ID $kundenId wurden gelöscht.");
     } else {
         echo "Fehler beim Löschen des Kunden: " . $stmt->error;
-        logMessage("Fehler beim Löschen des Kunden mit der ID $KundenId.");
+        logMessage("[KundeLöschen] Fehler beim Löschen des Kunden mit der ID $kundenId.", "ERROR");
     }
 
     // Statement schließen

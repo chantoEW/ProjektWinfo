@@ -1,4 +1,11 @@
 <?php
+
+function logMessage($message, $type = 'INFO') {
+    $logFile = 'logfile.txt';
+    $formattedMessage = date('Y-m-d H:i:s') . " - [$type] - " . $message . PHP_EOL;
+    file_put_contents($logFile, $formattedMessage, FILE_APPEND);
+}
+
 $jsonFilePath = 'query_result.json';
 
 // JSON-Datei einlesen
@@ -6,7 +13,7 @@ $jsonString = file_get_contents($jsonFilePath);
 
 // Überprüfen, ob das Einlesen erfolgreich war
 if ($jsonString === false) {
-    die("Fehler beim Einlesen der JSON-Datei.");
+    logMessage("[KundeAnzeigen] Fehler beim Einlesen der JSON-Datei.", "ERROR");
 }
 
 // JSON-Daten dekodieren
@@ -14,7 +21,7 @@ $jsonData = json_decode($jsonString, true);
 
 // Überprüfen, ob das Dekodieren erfolgreich war
 if ($jsonData === null) {
-    die("Fehler beim Dekodieren der JSON-Daten.");
+    logMessage("[KundeAnzeigen] Fehler beim Dekodieren der JSON-Daten." , "ERROR");
 }
 
 // Wert von FKunde_PKunde extrahieren
@@ -186,7 +193,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
         // Prüfen, ob die Datei erfolgreich gelesen wurde
         if ($id !== false) {
             // Debugging: Anzeigen der gelesenen ID
-            error_log("Gelesene ID: " . $id);
+            logMessage("[KundeAnzeigen] Fehler beim Lesen der ID: " . $id, "ERROR");
 
             // Datei leeren
             $file = fopen($filename, 'w');
@@ -194,7 +201,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                 fclose($file);
 
                 // Debugging: Bestätigung, dass die Datei geleert wurde
-                error_log("Datei erfolgreich geleert: " . $filename);
+                logMessage("[KundeAnzeigen] Datei erfolgreich geleert: " . $filename);
 
                 // Datenbankverbindung herstellen
                 $servername = "localhost";
@@ -207,7 +214,9 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
 
                 // Verbindung prüfen
                 if ($conn->connect_error) {
-                    die("Verbindung fehlgeschlagen: " . $conn->connect_error);
+                    logMessage("[KundeAnzeigen] Verbindung zur Datenbank kann nicht hergestellt werden" . $conn->connect_error, "ERROR");
+                } else {
+                    logMessage("[KundeAnzeigen] Verbindung zur Datenbank wurde hergestellt und überprüft");
                 }
 
 
@@ -218,7 +227,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
 
                 // Überprüfen, ob das Einlesen erfolgreich war
                 if ($jsonString === false) {
-                    die("Fehler beim Einlesen der JSON-Datei.");
+                    logMessage("[KundeAnzeigen] Fehler beim Einlesen der JSON-Datei.", "ERROR");
                 }
 
                 // JSON-Daten dekodieren
@@ -226,7 +235,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
 
                 // Überprüfen, ob das Dekodieren erfolgreich war
                 if ($jsonData === null) {
-                    die("Fehler beim Dekodieren der JSON-Daten.");
+                    logMessage("[KundeAnzeigen] Fehler beim Dekodieren der JSON-Daten.", "ERROR");
                 }
 
                 // Wert von FKunde_PKunde extrahieren
@@ -240,7 +249,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                 $stmt2->execute();
                 $result2 = $stmt2->get_result();
                 if ($result2 === false) {
-                    die("Fehler beim Abrufen des Ergebnisses: " . $stmt2->error);
+                    logMessage("[KundeAnzeigen] Fehler beim Abrufen des Ergebnisses: " . $stmt2->error, "ERROR");
                 }
                 if ($result2->num_rows > 0) {
                     while ($row = $result2->fetch_assoc()) {
@@ -249,7 +258,7 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
                         $kundentyp = $row['FKunde_PKunde'];
                     }
                 } else {
-                    echo "Keine Ergebnisse gefunden.";
+                    logMessage("[KundeAnzeigen] Keine Ergebnisse gefunden.", "ERROR");
                 }
 
 
@@ -307,9 +316,9 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
     
                     // Daten in query_result.json speichern
                     if (file_put_contents($jsonFilename, json_encode($data)) === false) {
-                        error_log("Fehler beim Schreiben der JSON-Datei.");
+                        logMessage("[KundeAnzeigen] Fehler beim Schreiben der JSON-Datei.", "ERROR");
                     } else {
-                        error_log("JSON-Datei erfolgreich geschrieben: " . $jsonFilename);
+                        logMessage("[KundeAnzeigen] JSON-Datei erfolgreich geschrieben: " . $jsonFilename);
                     }
                 } else {
                     $error = ['success' => false, 'error' => 'Keine Daten gefunden1'];
@@ -317,9 +326,9 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
 
                     // Fehler in query_result.json speichern
                     if (file_put_contents($jsonFilename, json_encode($error)) === false) {
-                        error_log("Fehler beim Schreiben der JSON-Datei.");
+                        logMessage("[KundeAnzeigen] Fehler beim Schreiben der JSON-Datei.", "ERROR");
                     } else {
-                        error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
+                        logMessage("[KundeAnzeigen] Fehler in JSON-Datei geschrieben: " . $jsonFilename, "ERROR");
                     }
                 }
 
@@ -328,37 +337,37 @@ if (isset($jsonData['data']['FKunde_PKunde'])) {
             } else {
                 $error = ['error' => 'Fehler beim Öffnen der Datei'];
                 echo json_encode($error);
-                error_log("Fehler beim Öffnen der Datei: " . $filename);
+                logMessage("[KundeAnzeigen] Fehler beim Öffnen der Datei: " . $filename, "ERROR");
 
                 // Fehler in query_result.json speichern
                 if (file_put_contents($jsonFilename, json_encode($error)) === false) {
-                    error_log("Fehler beim Schreiben der JSON-Datei.");
+                    logMessage("[KundeAnzeigen] Fehler beim Schreiben der JSON-Datei.", "ERROR");
                 } else {
-                    error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
+                    logMessage("[KundeAnzeigen] Fehler in JSON-Datei geschrieben: " . $jsonFilename, "ERROR");
                 }
             }
         } else {
             $error = ['error' => 'Fehler beim Lesen der Datei'];
             echo json_encode($error);
-            error_log("Fehler beim Lesen der Datei: " . $filename);
+            logMessage("[KundeAnzeigen] Fehler beim Lesen der Datei: " . $filename, "ERROR");
 
             // Fehler in query_result.json speichern
             if (file_put_contents($jsonFilename, json_encode($error)) === false) {
-                error_log("Fehler beim Schreiben der JSON-Datei.");
+                logMessage("[KundeAnzeigen] Fehler beim Schreiben der JSON-Datei.", "ERROR");
             } else {
-                error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
+                logMessage("[KundeAnzeigen] Fehler in JSON-Datei geschrieben: " . $jsonFilename, "ERROR");
             }
         }
     } else {
         $error = ['error' => 'Datei nicht gefunden'];
         echo json_encode($error);
-        error_log("Datei nicht gefunden: " . $filename);
+        logMessage("[KundeAnzeigen] Datei nicht gefunden: " . $filename, "ERROR");
 
         // Fehler in query_result.json speichern
         if (file_put_contents($jsonFilename, json_encode($error)) === false) {
-            error_log("Fehler beim Schreiben der JSON-Datei.");
+            logMessage("[KundeAnzeigen] Fehler beim Schreiben der JSON-Datei.", "ERROR");
         } else {
-            error_log("Fehler in JSON-Datei geschrieben: " . $jsonFilename);
+            logMessage("[KundeAnzeigen] Fehler in JSON-Datei geschrieben: " . $jsonFilename, "ERROR");
         }
     }
 
