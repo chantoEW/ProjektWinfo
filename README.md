@@ -15,7 +15,7 @@
 
 [BPMN-Diagramme (Signavio)](https://academic.signavio.com/p/explorer#)  
 
-[Komponentendiagramm]()
+[Komponentendiagramm](https://github.com/chantoEW/ProjektWinfo/blob/main/Komponentendiagramm.drawio)
 
 [Allgemeine Dokumentation]()
 
