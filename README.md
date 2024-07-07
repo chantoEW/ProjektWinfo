@@ -11,9 +11,13 @@
 
 [Risikomanagement](https://github.com/chantoEW/ProjektWinfo/wiki/Dokumentation#risikoanalyse)   
 
-[Übersicht der Aktivitäten]()
+[Übersicht der Aktivitäten](https://github.com/chantoEW/ProjektWinfo/issues/14)  
 
-[BPMN-Diagramme (Signavio)](https://academic.signavio.com/p/explorer#)    
+[BPMN-Diagramme (Signavio)](https://academic.signavio.com/p/explorer#)  
+
+[Komponentendiagramm]()
+
+[Allgemeine Dokumentation]()
 
 # Rolleneinteilung
 
