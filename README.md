@@ -17,7 +17,7 @@
 
 [Komponentendiagramm](https://github.com/chantoEW/ProjektWinfo/blob/main/Komponentendiagramm.drawio)
 
-[Allgemeine Dokumentation]()
+[Allgemeine Dokumentation](https://github.com/chantoEW/ProjektWinfo/wiki/Dokumentation)
 
 # Rolleneinteilung
 
