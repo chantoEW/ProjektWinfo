@@ -1,13 +1,17 @@
 # ProjektWinfo
 ## Gruppe Gamma (Fall A)
 
+[Lastenheft](https://moodle.w-hs.de/pluginfile.php/485234/mod_resource/content/3/20240411_Lastenheft_DVProjektWinfo_SS2024_Autovermietung.pdf)  
+
 [Logbuch](https://github.com/chantoEW/ProjektWinfo/issues)
 
 [Zeiterfassung & Kostenplanung](https://w-hs.sciebo.de/f/312592459)   
 
 [Gantt Diagramm](https://w-hs.sciebo.de/f/313560067)   
-  
-[Lastenheft](https://moodle.w-hs.de/pluginfile.php/485234/mod_resource/content/3/20240411_Lastenheft_DVProjektWinfo_SS2024_Autovermietung.pdf)
+
+[Risikomanagement](https://github.com/chantoEW/ProjektWinfo/wiki/Dokumentation#risikoanalyse)   
+
+[Übersicht der Aktivitäten]()
 
 [BPMN-Diagramme (Signavio)](https://academic.signavio.com/p/explorer#)    
 
