@@ -86,7 +86,7 @@ if (isset($_SESSION['benutzername'])) {
         <div style="display: flex;"> <!-- Flex-Container für die Buttons -->
             <button onclick="window.location.href='logic_datenEinsehen.php'" name="einsehen" class="button">Benutzerdaten einsehen</button>
             <button onclick="window.location.href='logic_datenEinsehen.php'" name="ändern" class="button">Benutzerdaten ändern</button>
-            <button onclick="window.location.href='logic_datenLöschen.php'" name="löschen" class="button">Benutzeraccount löschen</button>
+            <button onclick="alert('Bitte wenden Sie sich an den Kundensupport, wenn Sie ihren Benutzeraccount löschen wollen.');" name="löschen" class="button">Benutzeraccount löschen</button>
         </div>
     </div>
 </section>
